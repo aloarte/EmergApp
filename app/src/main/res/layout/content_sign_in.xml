@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.uc3m.p4r4d0x.emergapp.SignIn"
+    tools:showIn="@layout/activity_sign_in">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text=""
+        android:hint="Name"
+        android:ems="10"
+        android:id="@+id/etSIUser"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="71dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:hint="Password"
+        android:id="@+id/etSIPassword"
+        android:layout_below="@+id/etSIUser"
+        android:layout_alignLeft="@+id/etSIUser"
+        android:layout_alignStart="@+id/etSIUser" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:hint="Repeat Password"
+        android:id="@+id/etSIRepPassword"
+        android:layout_below="@+id/etSIPassword"
+        android:layout_alignLeft="@+id/etSIPassword"
+        android:layout_alignStart="@+id/etSIPassword" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:hint="Email"
+        android:id="@+id/etSIemail"
+        android:layout_below="@+id/etSIRepPassword"
+        android:layout_alignLeft="@+id/etSIRepPassword"
+        android:layout_alignStart="@+id/etSIRepPassword" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:hint="Date"
+        android:id="@+id/etSIdate"
+        android:layout_below="@+id/etSIemail"
+        android:layout_alignLeft="@+id/etSIemail"
+        android:layout_alignStart="@+id/etSIemail" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signin"
+        android:id="@+id/bSSignIn"
+        android:onClick="onClickInsert"
+        android:layout_below="@+id/etSIdate"
+        android:layout_alignLeft="@+id/etSIdate"
+        android:layout_alignStart="@+id/etSIdate"
+        android:layout_marginTop="40dp"
+        android:layout_alignRight="@+id/etSIdate"
+        android:layout_alignEnd="@+id/etSIdate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/titlesignin"
+        android:id="@+id/textView2"
+        android:layout_alignLeft="@+id/etSIUser"
+        android:layout_alignStart="@+id/etSIUser"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/etSIUser"
+        android:layout_alignEnd="@+id/etSIUser" />
+</RelativeLayout>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Emergapp</string>
+    <string name="action_settings">Settings</string>
+    <string name="password">Password</string>
+    <string name="signin">Sign In"</string>
+    <string name="login">Log In</string>
+    <string name="user">User</string>
+    <string name="titlesignin">Write your data</string>
+    <string name="title_activity_emergency">EmergencyActivity</string>
+    <string name="title_activity_sign_in">SignIn</string>
+    <string name="selImage">Select image.</string>
+    <string name="FileNotFound">Unable to open image</string>
+    <string name="GpsNotAct">Please turn on your GPS.</string>
+    <string name="sendMessage">If you are ready send your message</string>
+    <string name="HumDamContent">Click if you or somebody else have damages</string>
+    <string name="HumDamQuestion">Are there human damages?</string>
+    <string name="SelfDamQuestion">Do you need help?</string>
+    <string name="SelfDamContent">Click yes if you are directly involved into the emergency</string>
+    <string name="editMessage">Write a new message or aditional info.</string>
+
+</resources>
