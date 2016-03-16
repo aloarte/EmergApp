@@ -130,6 +130,7 @@ public class EmergencyActivity extends AppCompatActivity {
                             }
                         });
                 Dialog dialog = alertBuilder.create();
+                int a =0;
                 dialog.show();
             }
         });
@@ -354,6 +355,14 @@ public class EmergencyActivity extends AppCompatActivity {
             }
         }
     }
+
+    /*
+    * Desc: Compare the current date with the date from the media and and check if
+    *       the content is older than 30'
+    * Param: a string mediaDate, wich contains the date obtained from the query
+    * Ret: true if the media is not older than 30 or false if it does
+    *
+    * */
 
     public boolean isMediaRecent(String mediaDate){
 
