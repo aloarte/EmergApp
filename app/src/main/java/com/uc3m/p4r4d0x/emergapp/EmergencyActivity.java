@@ -130,7 +130,6 @@ public class EmergencyActivity extends AppCompatActivity {
                             }
                         });
                 Dialog dialog = alertBuilder.create();
-                int a =0;
                 dialog.show();
             }
         });
@@ -182,9 +181,11 @@ public class EmergencyActivity extends AppCompatActivity {
         GPSService sGPS = new GPSService(getApplicationContext());
         tViewGPS = (TextView) findViewById(R.id.tvGPS);
         if (sGPS.getLocation()) {
+            Log.d("ALR", "EmAct: Setting view");
             sGPS.setView(this.tViewGPS);
-        } else {
 
+        } else {
+            Log.d("ALR", "EmAct: Cant get any");
             tViewGPS.setText(R.string.GpsNotAct);
         }
 
@@ -561,10 +562,6 @@ public class EmergencyActivity extends AppCompatActivity {
         startActivityForResult(intentVideo, C_VIDEO);
     }
 
-    public void onClickEditMessage(View v){
-
-
-    }
 
     public void selectGP1(View v) {
         if (!gP1) {
