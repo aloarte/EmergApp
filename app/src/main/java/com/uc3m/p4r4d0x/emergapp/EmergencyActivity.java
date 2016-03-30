@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.uc3m.p4r4d0x.emergapp.servicios.FetchAddressService;
 import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
 
 import java.io.File;
@@ -177,16 +178,21 @@ public class EmergencyActivity extends AppCompatActivity {
     * Desc: Calls GPS Service and prints in the TextView the result
     * */
     public void getGPSposition() {
-        //create service
-        GPSService sGPS = new GPSService(getApplicationContext());
+        //Get the TextView to show the address value
         tViewGPS = (TextView) findViewById(R.id.tvGPS);
-        if (sGPS.getLocation()) {
-            Log.d("ALR", "EmAct: Setting view");
-            sGPS.setView(this.tViewGPS);
 
-        } else {
-            Log.d("ALR", "EmAct: Cant get any");
-            tViewGPS.setText(R.string.GpsNotAct);
+        //create service passing the TextView as a param
+        GPSService sGPS = new GPSService(getApplicationContext(),this.tViewGPS);
+
+        //Try to get the location from GPS or network
+        if (sGPS.getLocation()) {
+            //If was successful call startFetchAddressService, who will obtain the address bassed on the location obtained
+            sGPS.startFetchAddressService();
+
+        }
+        else{
+            //If the location couldnt get obtained
+            tViewGPS.setText(R.string.address_not_obtained);
         }
 
     }
@@ -498,6 +504,10 @@ public class EmergencyActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
     //---------------------ON CLICK BUTTON METHODS---------------
 
     /*
@@ -582,6 +592,7 @@ public class EmergencyActivity extends AppCompatActivity {
             gP2 = false;
         }
     }
+
 
 
 

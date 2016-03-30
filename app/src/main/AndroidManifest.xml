@@ -53,10 +53,16 @@
                         android:name="android.support.PARENT_ACTIVITY"
                         android:value="com.uc3m.p4r4d0x.emergapp.LoginActivity" />
                 </activity>
-                <!-- GPS service -->
-        <service android:name=".servicios.GPSService" />
 
-        <activity android:name=".EmMessage1" />
+                <!-- Services -->
+
+                <!-- GPS service -->
+        <service android:name=".servicios.GPSService"> </service>
+                <!-- FetchAddress service -->
+        <service android:name=".servicios.FetchAddressService"> </service>
+
+
+                <activity android:name=".EmMessage1" />
         <activity android:name=".EmMessage2"></activity>
     </application>
 

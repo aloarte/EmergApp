@@ -1,57 +1,49 @@
 package com.uc3m.p4r4d0x.emergapp.servicios;
 
-import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.uc3m.p4r4d0x.emergapp.EmergencyActivity;
+import com.uc3m.p4r4d0x.emergapp.Constants;
+import com.uc3m.p4r4d0x.emergapp.MyResultReceiver;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 /**
- * Created by p4r4d0x on 20/02/16.
+ * Created by Alvaro Loarte Rodriguez on 20/02/16.
+ * Desc: GPS service: gets the Location by network or GPS provider and calls FetchAddress service to get the
+ *       address based in the location obtained
+ *
  */
-public class GPSService extends Service implements LocationListener {
+public class GPSService extends Service implements LocationListener  {
 
     private Context sContext;
     double latitude,longitude;
-    //Guarda diferentes coordenadas(latitud,longitud,precision)
     Location locationG;
-    LocationManager locationManager;
-    boolean gpsActive;
-    TextView tvWriteCoord;
+    TextView paramView;
 
 
-    //Default constructor
+
+    protected MyResultReceiver mReceiver;
+
+    //Default constructor (Neccesary for the AndroidManifest.xml)
     public GPSService (){
         //SUper ejecuta el constructor de  la clase Service extendida
         super();
         this.sContext = this.getApplicationContext();
+
     }
     //Constructor
-    public GPSService (Context c){
+    public GPSService (Context c, TextView v){
         super();
         this.sContext=c;
+        this.paramView=v;
     }
     @Override
     public IBinder onBind(Intent intent) {
@@ -79,14 +71,7 @@ public class GPSService extends Service implements LocationListener {
 
     }
 
-    /*
-    * Par : A View object to set new values on it
-    * Desc: Prints the latitude and longitude values  in the View
-    * */
-    public void setView(View v){
-        tvWriteCoord= (TextView) v;
-        tvWriteCoord.setText("Coordenadas:"+latitude+","+longitude+".");
-    }
+
 
 
     /*
@@ -95,13 +80,16 @@ public class GPSService extends Service implements LocationListener {
     *       First try by GPS and if fails, try by network
     * */
     public boolean getLocation(){
+        boolean locationObtained;
+
         //Try to get location by GPS
         if(getLocationByGPS()){
             //Put values obtained from locationG
             latitude = locationG.getLatitude();
             longitude = locationG.getLongitude();
             Log.d("ALR", "GetLocation:GPS location"+latitude+","+longitude);
-            return true;
+            locationObtained = true;
+
         }
         //If fails, try to get location by network
         else if(getLocationByNetwork()){
@@ -109,40 +97,16 @@ public class GPSService extends Service implements LocationListener {
             latitude = locationG.getLatitude();
             longitude = locationG.getLongitude();
             Log.d("ALR", "GetLocation:NW location"+latitude+","+longitude);
-            return true;
+            locationObtained = true;
+
         }
         //If both fail, return error status
         else{
+
             Log.d("ALR", "GetLocation:Cant get any location");
-            return false;
-        }
-        /*
-            Toast.makeText(
-                    getBaseContext(),
-                    "Location changed: Lat: " + locationG.getLatitude() + " Lng: "
-                            + locationG.getLongitude(), Toast.LENGTH_SHORT).show();
-            String longitude = "Longitude: " + locationG.getLongitude();
-            Log.v("Emergapp", longitude);
-            String latitude = "Latitude: " + locationG.getLatitude();
-            Log.v("Emergapp", latitude);
-
-        //------- To get city name from coordinates --------
-            String cityName = null;
-            Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-            List<Address> addresses;
-            try {
-                addresses = gcd.getFromLocation(locationG.getLatitude(),
-                        locationG.getLongitude(), 1);
-                if (addresses.size() > 0) {
-                    System.out.println(addresses.get(0).getLocality());
-                    cityName = addresses.get(0).getLocality();
-                }
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-   */
-
+            locationObtained = false;
+       }
+        return locationObtained;
     }
 
 
@@ -152,7 +116,7 @@ public class GPSService extends Service implements LocationListener {
     * */
     public boolean getLocationByGPS(){
         //Local location
-        Location locationL = null;
+        Location locationL;
 
         try {
             //Get a local locationManager by location service
@@ -168,21 +132,18 @@ public class GPSService extends Service implements LocationListener {
                 mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, this);
                 Log.d("ALR", "GPS Enabled");
 
-                //Check if the previos operation was successful
-                if (mLocationManager != null) {
+                //Obtain a local location
+                locationL = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                    //Obtain a local location
-                    locationL = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-                    //Check if the previous operation was successful
-                    if (locationL != null) {
-                        //Set the current local location as the valid location in locationG
-                        isLocationObtainedByGPS=true;
-                        locationG=locationL;
-                        Log.d("ALR", "GPS get the location");
-                    }
+                //Check if the previous operation was successful
+                if (locationL != null) {
+                    //Set the current local location as the valid location in locationG
+                    isLocationObtainedByGPS=true;
+                    locationG=locationL;
+                    Log.d("ALR", "GPS get the location");
                 }
             }
+
             return isLocationObtainedByGPS;
         }
         catch (SecurityException se){
@@ -199,7 +160,7 @@ public class GPSService extends Service implements LocationListener {
     * Desc: Obtain the location item by Network
     * */
     public boolean getLocationByNetwork(){
-        Location locationL = null;
+        Location locationL;
         try {
             //Get a local locationManager by location service
             LocationManager mLocationManager = (LocationManager) sContext.getSystemService(LOCATION_SERVICE);
@@ -213,19 +174,16 @@ public class GPSService extends Service implements LocationListener {
                 mLocationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER,  0,  0, this);
                 Log.d("ALR", "Network");
 
-                //Check if the previos operation was successful
-                if (mLocationManager != null) {
+                //Get a local location
+                locationL = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-                    //Get a local location
-                    locationL = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                //Check if the previous operation was successful
+                if (locationL != null) {
+                    //Set the current local location as the valid location in locationG
+                    isLocationObtainedByNW=true;
+                    locationG=locationL;
+                    Log.d("ALR", "NW get the location");
 
-                    //Check if the previous operation was successful
-                    if (locationL != null) {
-                        //Set the current local location as the valid location in locationG
-                        isLocationObtainedByNW=true;
-                        locationG=locationL;
-                        Log.d("ALR", "NW get the location");
-                    }
                 }
             }
             return isLocationObtainedByNW;
@@ -238,4 +196,23 @@ public class GPSService extends Service implements LocationListener {
             return false;
         }
     }
+
+   /*
+   * Desc: Start FetchAddress service, passing a MyResultReceiver object to
+   *       get the result value and the Location obtained by this service
+   * */
+    public void startFetchAddressService() {
+
+        //Iniciate MyResultReceiver object
+        mReceiver = new MyResultReceiver(new android.os.Handler(),paramView);
+
+        //Create the intent to start the FetchAddressService
+        Intent intent = new Intent(sContext, FetchAddressService.class);
+        //Add the params for the service
+        intent.putExtra(Constants.RECEIVER, mReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, locationG);
+        //Start service based on sContext (getApplicationContext fails)
+        sContext.startService(intent);
+  }
+
 }
