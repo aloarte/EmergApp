@@ -2,6 +2,7 @@ package com.uc3m.p4r4d0x.emergapp;
 
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.widget.TextView;
 
 
@@ -13,6 +14,7 @@ import android.widget.TextView;
 public class MyResultReceiver extends ResultReceiver {
         private Receiver mReceiver=null;
         private String address="";
+        private String errorMessage="";
         private TextView addressView;
 
     /*
@@ -54,6 +56,8 @@ public class MyResultReceiver extends ResultReceiver {
                 setView(true);
             }
             else{
+                //Get the error message from the resultData
+                errorMessage= resultData.getString(Constants.RESULT_DATA_KEY);
                 //Print an error message on the Textview
                 setView(false);
             }
@@ -72,8 +76,16 @@ public class MyResultReceiver extends ResultReceiver {
             addressView.setText(address);
         }
         else{
-            //Display an error message
-            addressView.setText(R.string.address_not_obtained);
+
+            if(errorMessage.compareTo("Please turn on your network connection")==0){
+                //Display an error message
+                addressView.setText(errorMessage);
+            }
+            else{
+                //Display an error message
+                addressView.setText(R.string.no_address_found);
+            }
+
         }
 
     }

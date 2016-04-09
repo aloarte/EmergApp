@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.uc3m.p4r4d0x.emergapp.Constants;
 import com.uc3m.p4r4d0x.emergapp.MyResultReceiver;
 
+import java.util.List;
+
 
 /**
  * Created by Alvaro Loarte Rodriguez on 20/02/16.
@@ -21,56 +23,106 @@ import com.uc3m.p4r4d0x.emergapp.MyResultReceiver;
  *       address based in the location obtained
  *
  */
-public class GPSService extends Service implements LocationListener  {
+public class GPSService extends Service implements LocationListener {
 
     private Context sContext;
-    double latitude,longitude;
+    double latitude, longitude;
     Location locationG;
+    LocationListener locationListener;
     TextView paramView;
-
 
 
     protected MyResultReceiver mReceiver;
 
     //Default constructor (Neccesary for the AndroidManifest.xml)
-    public GPSService (){
+    public GPSService() {
         //SUper ejecuta el constructor de  la clase Service extendida
         super();
         this.sContext = this.getApplicationContext();
+        //Create a new location listener with its inner methods
+        this.locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
 
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
     }
+
     //Constructor
-    public GPSService (Context c, TextView v){
+    public GPSService(Context c, TextView v) {
         super();
-        this.sContext=c;
-        this.paramView=v;
+        this.sContext = c;
+        this.paramView = v;
+        //Create a new location listener with its inner methods
+        this.locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-    //pendiente de cada cuanto cambia la posicion nuestra. Actualizacion de ubicacion
+
+    //Upgrade location if onLocationChanged is called
     @Override
     public void onLocationChanged(Location location) {
-        locationG=location;
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
 
     }
-    //Si te conectas o no te conexctas
+
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
-    //Si esta habilitado el gps
+
+
     @Override
     public void onProviderEnabled(String provider) {
 
     }
-    //Si no esta habilitado
+
+
     @Override
     public void onProviderDisabled(String provider) {
 
     }
-
 
 
 
@@ -79,33 +131,33 @@ public class GPSService extends Service implements LocationListener  {
     * Desc: Obtain the location item by GPS or Network method.
     *       First try by GPS and if fails, try by network
     * */
-    public boolean getLocation(){
+    public boolean getLocation() {
         boolean locationObtained;
 
         //Try to get location by GPS
-        if(getLocationByGPS()){
+        if (getLocationByGPS()) {
             //Put values obtained from locationG
             latitude = locationG.getLatitude();
             longitude = locationG.getLongitude();
-            Log.d("ALR", "GetLocation:GPS location"+latitude+","+longitude);
+            //Log.d("ALR", "GetLocation:GPS location" + latitude + "," + longitude);
             locationObtained = true;
 
         }
         //If fails, try to get location by network
-        else if(getLocationByNetwork()){
+        else if (getLocationByNetwork()) {
             //Put values obtained from locationG
             latitude = locationG.getLatitude();
             longitude = locationG.getLongitude();
-            Log.d("ALR", "GetLocation:NW location"+latitude+","+longitude);
+            //Log.d("ALR", "GetLocation:NW location" + latitude + "," + longitude);
             locationObtained = true;
 
         }
         //If both fail, return error status
-        else{
+        else {
 
-            Log.d("ALR", "GetLocation:Cant get any location");
+            //Log.d("ALR", "GetLocation:Cant get any location");
             locationObtained = false;
-       }
+        }
         return locationObtained;
     }
 
@@ -114,42 +166,68 @@ public class GPSService extends Service implements LocationListener  {
     * Ret : True or false if the location was obtained by GPS
     * Desc: Obtain the location item by GPS
     * */
-    public boolean getLocationByGPS(){
+    public boolean getLocationByGPS() {
         //Local location
         Location locationL;
 
         try {
             //Get a local locationManager by location service
-            LocationManager mLocationManager = (LocationManager) sContext.getSystemService(LOCATION_SERVICE);
+            String location_context = sContext.LOCATION_SERVICE;
+            LocationManager mLocationManager =(LocationManager) sContext.getSystemService(location_context);
+
             //Get GPS status checking if is enabled
             boolean isGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            boolean isLocationObtainedByGPS=false;
+            boolean isLocationObtainedByGPS = false;
 
-            //Get the location by gps if GPS was enable
+            //Get the location by gps if GPS was enabled
             if (isGPSEnabled) {
 
-                //RequestLocationUpdates by GPS_PROVIDER
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, this);
-                Log.d("ALR", "GPS Enabled");
+                //Obtain a list of providers to get GPS position
+                List<String> providers = mLocationManager.getProviders(true);
 
-                //Obtain a local location
-                locationL = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                //Iterate list of providers
+                for (String provider : providers) {
 
-                //Check if the previous operation was successful
-                if (locationL != null) {
-                    //Set the current local location as the valid location in locationG
-                    isLocationObtainedByGPS=true;
-                    locationG=locationL;
-                    Log.d("ALR", "GPS get the location");
-                }
-            }
+                    //In each iteration, try to get getLastKnownLocation
+                    try {
+                        Location location = mLocationManager.getLastKnownLocation(provider);
 
+                        //If the location was obtained
+                        if (location != null) {
+
+                            //Get the latitude and longitude elements
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+
+                            //Set the current local location as the valid location in locationG
+                            isLocationObtainedByGPS = true;
+                            locationG = location;
+
+                        }
+
+                        //RequestLocationUpgrades setting provider as valid
+                        mLocationManager.requestLocationUpdates(provider, 1000, 0, locationListener);
+
+                    }
+                    catch (SecurityException e) {
+                        e.printStackTrace();
+                    }
+                } //End For
+
+            } //end if GPS is enabled
+
+            //Return true or false if location is obtained
             return isLocationObtainedByGPS;
+
         }
-        catch (SecurityException se){
+        //Catch SecurityExceptions
+        catch (SecurityException se) {
+
             return false;
         }
+        //Catch generic exception
         catch (Exception e) {
+
             e.printStackTrace();
             return false;
         }
@@ -159,20 +237,19 @@ public class GPSService extends Service implements LocationListener  {
     * Ret : True or false if the location was obtained by Network
     * Desc: Obtain the location item by Network
     * */
-    public boolean getLocationByNetwork(){
+    public boolean getLocationByNetwork() {
         Location locationL;
         try {
             //Get a local locationManager by location service
             LocationManager mLocationManager = (LocationManager) sContext.getSystemService(LOCATION_SERVICE);
             //Get Network status checking if is enabled
             boolean isNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            boolean isLocationObtainedByNW=false;
+            boolean isLocationObtainedByNW = false;
 
             //Get the location by gps if Network was enable
             if (isNetworkEnabled) {
 
-                mLocationManager.requestLocationUpdates( LocationManager.NETWORK_PROVIDER,  0,  0, this);
-                Log.d("ALR", "Network");
+                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
                 //Get a local location
                 locationL = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -180,31 +257,28 @@ public class GPSService extends Service implements LocationListener  {
                 //Check if the previous operation was successful
                 if (locationL != null) {
                     //Set the current local location as the valid location in locationG
-                    isLocationObtainedByNW=true;
-                    locationG=locationL;
-                    Log.d("ALR", "NW get the location");
+                    isLocationObtainedByNW = true;
+                    locationG = locationL;
 
                 }
             }
             return isLocationObtainedByNW;
-        }
-        catch (SecurityException se){
+        } catch (SecurityException se) {
             return false;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-   /*
-   * Desc: Start FetchAddress service, passing a MyResultReceiver object to
-   *       get the result value and the Location obtained by this service
-   * */
+    /*
+    * Desc: Start FetchAddress service, passing a MyResultReceiver object to
+    *       get the result value and the Location obtained by this service
+    * */
     public void startFetchAddressService() {
 
         //Iniciate MyResultReceiver object
-        mReceiver = new MyResultReceiver(new android.os.Handler(),paramView);
+        mReceiver = new MyResultReceiver(new android.os.Handler(), paramView);
 
         //Create the intent to start the FetchAddressService
         Intent intent = new Intent(sContext, FetchAddressService.class);
@@ -213,6 +287,5 @@ public class GPSService extends Service implements LocationListener  {
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, locationG);
         //Start service based on sContext (getApplicationContext fails)
         sContext.startService(intent);
-  }
-
+    }
 }

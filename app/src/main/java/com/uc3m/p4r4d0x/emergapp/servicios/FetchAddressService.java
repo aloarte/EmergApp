@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.text.TextUtils;
@@ -48,7 +50,6 @@ public class FetchAddressService extends IntentService {
     * */
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d("ALR", "Entro en on handleIntent de FAS");
         String errorMessage = "";
         //Create a Geocoder object
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -64,11 +65,17 @@ public class FetchAddressService extends IntentService {
 
         try {
             //Obtain the addres based on the latitude and longitude values from the location
-            addresses = geocoder.getFromLocation(
-                    locationFromGPS.getLatitude(),
-                    locationFromGPS.getLongitude(),
-                    //Get just a single address.
-                    1);
+            //Check if we have network connection (needed for calling the geocoder.getFromLocation
+            if(isConnectedToNetwork()) {
+                addresses = geocoder.getFromLocation(
+                        locationFromGPS.getLatitude(),
+                        locationFromGPS.getLongitude(),
+                        //Get just a single address.
+                        1);
+            }
+            else{
+                errorMessage = getString(R.string.no_network);
+            }
         } catch (IOException ioException) {
             // Catch network or other I/O problems.
             errorMessage = getString(R.string.service_not_available);
@@ -85,7 +92,7 @@ public class FetchAddressService extends IntentService {
         // Handle case where no address was found.
         if (addresses == null || addresses.size() == 0) {
             if (errorMessage.isEmpty()) {
-                errorMessage = getString(R.string.no_address_found);
+                 errorMessage = getString(R.string.no_address_found);
             }
 
             //Call deliverResultToReceiver with failure result code and error message
@@ -121,5 +128,49 @@ public class FetchAddressService extends IntentService {
         //Send the values
         mSender.send(resultCode, bundle);
     }
+
+    protected Boolean isConnectedToNetwork(){
+        if(isConnectedByWifi()){
+            //Log.d("ALR", "connected by wifi");
+            return true;
+        }else{
+            if(isConnectedBy3G()){
+                //Log.d("ALR", "connected by 3g");
+                return true;
+            }else{
+                //Log.d("ALR", "Not connected to network");
+
+                return false;
+            }
+        }
+    }
+
+    protected Boolean isConnectedByWifi(){
+        ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if (info != null) {
+                if (info.isConnected()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    protected Boolean isConnectedBy3G(){
+        ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if (info != null) {
+                if (info.isConnected()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
 }
 

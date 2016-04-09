@@ -158,16 +158,25 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="109dp" >
+        android:layout_height="109dp"
+        android:weightSum="1"
+        android:background="#dddddd">
 
         <TextView
-            android:layout_width="384dp"
+            android:layout_width="278dp"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/tvGPS"
-            android:text="GPS 0.0.0.0"
+            android:text="Loading position..."
             android:gravity="center"
-            android:background="#dddddd" />
+            android:layout_weight="0.41" />
+
+        <ImageView
+            android:layout_width="77dp"
+            android:layout_height="66dp"
+            android:id="@+id/ivChangePosition"
+            android:src="@mipmap/map"
+            android:layout_gravity="center" />
     </LinearLayout>
 
     <LinearLayout
@@ -198,9 +207,10 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="94dp"
+        android:layout_height="fill_parent"
         android:weightSum="1"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:background="#dddddd">
 
         <TextView
             android:layout_width="229dp"
