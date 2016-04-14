@@ -27,6 +27,7 @@
     <string name="loc_network">LocationByNetwork</string>
     <string name="address_not_obtained">Address cannot be obtained</string>
     <string name="no_network">Please turn on your network connection</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,317 +13,273 @@
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.uc3m.p4r4d0x.emergapp.EmergencyActivity"
-    tools:showIn="@layout/activity_emergency"
-    android:weightSum="1">
+    android:weightSum="1"
     >
-
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        style="@android:style/ButtonBar"
-        android:background="#510876a1">
-        <ImageView
-            android:layout_width="66dp"
-            android:layout_height="72dp"
-            android:src="@mipmap/camera_128"
-            android:id="@+id/ivCapturePhoto"
-            android:onClick="onClickTakePhoto"
-            android:layout_margin="10dp"
-            android:adjustViewBounds="true"
-            android:longClickable="true"
-            android:nestedScrollingEnabled="false" />
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        android:layout_height="match_parent">
+
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            style="@android:style/ButtonBar"
+            android:background="#510876a1">
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="72dp"
+                android:src="@mipmap/camera_128"
+                android:id="@+id/ivCapturePhoto"
+                android:onClick="onClickTakePhoto"
+                android:layout_margin="10dp"
+                android:adjustViewBounds="true"
+                android:longClickable="true"
+                android:nestedScrollingEnabled="false" />
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="66dp"
                     android:layout_height="66dp"
                     android:id="@+id/ivPicture1"
+                    android:longClickable="true"
+                    android:tag="5"
                     android:src="@mipmap/grey_rect"
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true" />
-
                 <ImageView
                     android:layout_width="66dp"
                     android:layout_height="66dp"
                     android:id="@+id/ivPicture2"
+                    android:longClickable="true"
+                    android:tag="6"
                     android:src="@mipmap/grey_rect"
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true" />
-            <ImageView
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:id="@+id/ivPicture3"
-                android:src="@mipmap/grey_rect"
-                android:layout_margin="15dp"
-                android:adjustViewBounds="true" />
-            <ImageView
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:id="@+id/ivPicture4"
-                android:src="@mipmap/grey_rect"
-                android:layout_margin="15dp"
-                android:adjustViewBounds="true" />
-
                 <ImageView
-                    android:layout_width="58dp"
-                    android:layout_height="58dp"
-                    android:id="@+id/ivSelPictureGallery"
-                    android:onClick="onClickGalleryImages"
-                    android:src="@mipmap/plusicon"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:id="@+id/ivPicture3"
+                    android:longClickable="true"
+                    android:tag="7"
+                    android:src="@mipmap/grey_rect"
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true" />
-            </LinearLayout>
+                <ImageView
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
+                    android:id="@+id/ivPicture4"
+                    android:longClickable="true"
+                    android:tag="8"
+                    android:src="@mipmap/grey_rect"
+                    android:layout_margin="15dp"
+                    android:adjustViewBounds="true" />
 
-        </HorizontalScrollView>
-    </LinearLayout>
+                    <ImageView
+                        android:layout_width="58dp"
+                        android:layout_height="58dp"
+                        android:id="@+id/ivSelPictureGallery"
+                        android:onClick="onClickGalleryImages"
+                        android:src="@mipmap/plusicon"
+                        android:layout_margin="15dp"
+                        android:adjustViewBounds="true" />
+                </LinearLayout>
 
-    <LinearLayout
-        style="@android:style/ButtonBar"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:background="#510876a1" >
+            </HorizontalScrollView>
+        </LinearLayout>
 
-        <ImageView
-            android:layout_width="66dp"
-            android:layout_height="72dp"
-            android:src="@mipmap/video"
-            android:id="@+id/ivCaptureVideo"
-            android:onClick="onClickTakeVideo"
-            android:layout_margin="10dp"
-            android:adjustViewBounds="true"
-            android:longClickable="true"
-            android:nestedScrollingEnabled="false"
-            android:clickable="false" />
+        <LinearLayout
+            style="@android:style/ButtonBar"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:background="#510876a1" >
 
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <LinearLayout
+            <ImageView
+                android:layout_width="66dp"
+                android:layout_height="72dp"
+                android:src="@mipmap/video"
+                android:id="@+id/ivCaptureVideo"
+                android:onClick="onClickTakeVideo"
+                android:layout_margin="10dp"
+                android:adjustViewBounds="true"
+                android:longClickable="true"
+                android:nestedScrollingEnabled="false"
+                android:clickable="false" />
+
+            <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <VideoView
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
-                    android:id="@+id/ivVideo1"
-                    android:src="@mipmap/grey_rect"
-                    android:layout_margin="15dp"
-                    android:adjustViewBounds="true" />
+                    <VideoView
+                        android:layout_width="66dp"
+                        android:layout_height="66dp"
+                        android:id="@+id/ivVideo1"
+                        android:tag="1"
+                        android:longClickable="true"
+                        android:src="@mipmap/grey_rect"
+                        android:layout_margin="15dp"
+                        android:adjustViewBounds="true"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:clickable="false"
+                        android:contextClickable="false" />
 
-                <VideoView
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
-                    android:id="@+id/ivVideo2"
-                    android:src="@mipmap/grey_rect"
-                    android:layout_margin="15dp"
-                    android:adjustViewBounds="true" />
-                <VideoView
+                    <VideoView
+                        android:layout_width="66dp"
+                        android:layout_height="66dp"
+                        android:id="@+id/ivVideo2"
+                        android:tag="2"
+                        android:longClickable="true"
+                        android:src="@mipmap/grey_rect"
+                        android:layout_margin="15dp"
+                        android:adjustViewBounds="true"
+                        android:focusableInTouchMode="false"
+                        android:focusable="false"
+                        android:contextClickable="false"
+                        android:clickable="false" />
+
+                    <VideoView
                         android:layout_width="66dp"
                         android:layout_height="66dp"
                         android:id="@+id/ivVideo3"
+                        android:tag="3"
+                        android:longClickable="true"
                         android:src="@mipmap/grey_rect"
                         android:layout_margin="15dp"
-                        android:adjustViewBounds="true" />
+                        android:adjustViewBounds="true"
+                        android:clickable="false"
+                        android:contextClickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" />
+
                     <VideoView
                         android:layout_width="66dp"
                         android:layout_height="66dp"
                         android:id="@+id/ivVideo4"
+                        android:tag="4"
+                        android:longClickable="true"
                         android:src="@mipmap/grey_rect"
                         android:layout_margin="15dp"
+                        android:adjustViewBounds="true"
+                        android:contextClickable="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:clickable="false" />
+
+                    <ImageView
+                        android:layout_width="58dp"
+                        android:layout_height="58dp"
+                        android:id="@+id/ivSelVideoGallery"
+                        android:onClick="onClickGalleryVideos"
+                        android:src="@mipmap/plusicon"
+                        android:layout_margin="15dp"
                         android:adjustViewBounds="true" />
+                </LinearLayout>
 
-                <ImageView
-                    android:layout_width="58dp"
-                    android:layout_height="58dp"
-                    android:id="@+id/ivSelVideoGallery"
-                    android:onClick="onClickGalleryVideos"
-                    android:src="@mipmap/plusicon"
-                    android:layout_margin="15dp"
-                    android:adjustViewBounds="true" />
-            </LinearLayout>
+            </HorizontalScrollView>
 
-        </HorizontalScrollView>
+        </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="109dp"
-        android:weightSum="1"
-        android:background="#dddddd">
-
-        <TextView
-            android:layout_width="278dp"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/tvGPS"
-            android:text="Loading position..."
-            android:gravity="center"
-            android:layout_weight="0.41" />
-
-        <ImageView
-            android:layout_width="77dp"
-            android:layout_height="66dp"
-            android:id="@+id/ivChangePosition"
-            android:src="@mipmap/map"
-            android:layout_gravity="center" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="109dp"
-        android:weightSum="1"
-        android:background="#dddddd">
-
-        <TextView
-            android:layout_width="264dp"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/tvInfoMessage"
-            android:text="Message info here"
-            android:gravity="center"
-            android:layout_weight="0.72" />
-
-        <ImageView
-            android:layout_width="77dp"
-            android:layout_height="66dp"
-            android:id="@+id/ivChangeMessage"
-            android:src="@mipmap/message"
-            android:layout_gravity="center"
-            android:onClick="onClickEditMessage" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:weightSum="1"
-        android:layout_gravity="center"
-        android:background="#dddddd">
-
-        <TextView
-            android:layout_width="229dp"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/sendMessage"
-            android:id="@+id/tvSendMessage"
-            android:gravity="center|center_horizontal"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:src="@mipmap/mail"
-            android:id="@+id/ivSendMessage"
-            android:layout_margin="10dp"
-            android:adjustViewBounds="true"
-            android:longClickable="true"
-            android:nestedScrollingEnabled="false"
-            android:layout_gravity="left|center"
-            android:layout_weight="1" />
-    </LinearLayout>
-</LinearLayout>
-
-
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.uc3m.p4r4d0x.emergapp.EmergencyActivity"
-    tools:showIn="@layout/activity_emergency">
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Foto"
-        android:id="@+id/bCapturePhoto"
-        android:onClick="onClickTakePhoto"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="142dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/bSelectImageGallery"
-        android:layout_alignEnd="@+id/bSelectImageGallery" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/selImage"
-        android:id="@+id/bSelectImageGallery"
-        android:layout_alignTop="@+id/bCapturePhoto"
-        android:onClick="onClickGallery"
-        android:layout_marginTop="58dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@+id/bCapturePhoto">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ibGallery1"
-                android:onClick="selectGP1"
-                android:layout_gravity="start|top" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ibGallery2"
-                android:onClick="selectGP2"
-                android:layout_gravity="center_horizontal|top" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ivGallery"
-                android:onClick="selectGP2"
-                android:layout_gravity="end|top" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ivCamera"
-                android:layout_gravity="start|center_vertical" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="109dp"
+            android:weightSum="1"
+            android:background="#dddddd">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="278dp"
+                android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text=""
-                android:id="@+id/tvGPS" />
+                android:id="@+id/tvGPS"
+                android:text="Loading position..."
+                android:gravity="center"
+                android:layout_weight="0.41" />
+
+            <ImageView
+                android:layout_width="77dp"
+                android:layout_height="66dp"
+                android:id="@+id/ivChangePosition"
+                android:src="@mipmap/map"
+                android:layout_gravity="center"
+                android:onClick="onClickChangeLocation" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="109dp"
+            android:weightSum="1"
+            android:background="#dddddd">
+
+            <TextView
+                android:layout_width="264dp"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/tvInfoMessage"
+                android:text="Message info here"
+                android:gravity="center"
+                android:layout_weight="0.72" />
+
+            <ImageView
+                android:layout_width="77dp"
+                android:layout_height="66dp"
+                android:id="@+id/ivChangeMessage"
+                android:src="@mipmap/message"
+                android:layout_gravity="center"
+                android:onClick="onClickEditMessage" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="1"
+            android:layout_gravity="center"
+            android:background="#dddddd"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="229dp"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/sendMessage"
+                android:id="@+id/tvSendMessage"
+                android:gravity="center|center_horizontal"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@mipmap/mail"
+                android:id="@+id/ivSendMessage"
+                android:layout_margin="10dp"
+                android:adjustViewBounds="true"
+                android:longClickable="true"
+                android:nestedScrollingEnabled="false"
+                android:layout_gravity="left|center"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/google_MAPVIEW"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:transitionGroup="true" />
 
 
+</FrameLayout>
 
-        </FrameLayout>
-
-
-</LinearLayout>
--->

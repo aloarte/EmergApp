@@ -9,61 +9,67 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!-- Internet permission -->
-
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Network state permission -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    >
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!--android:name="com.google.android.maps.v2.API_KEY"-->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCiZyNl-qN8jU5iqbI1dTce7ZGUz-Lfrl0" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".EmergencyActivity"
+            android:label="@string/title_activity_emergency"
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uc3m.p4r4d0x.emergapp.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".SignIn"
+            android:label="@string/title_activity_sign_in"
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uc3m.p4r4d0x.emergapp.LoginActivity" />
+        </activity>
+
+        <!-- Services -->
 
 
-        >
-            <application
-                android:allowBackup="true"
-                android:icon="@mipmap/ic_launcher"
-                android:label="@string/app_name"
-                android:supportsRtl="true"
-                android:theme="@style/AppTheme">
-                <activity
-                    android:name=".LoginActivity"
-                    android:label="@string/app_name"
-                    android:theme="@style/AppTheme.NoActionBar">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN" />
+        <!-- GPS service -->
+        <service android:name=".servicios.GPSService"></service>
+        <!-- FetchAddress service -->
+        <service android:name=".servicios.FetchAddressService"></service>
 
-                        <category android:name="android.intent.category.LAUNCHER" />
-                    </intent-filter>
-                </activity>
-                <activity
-                    android:name=".EmergencyActivity"
-                    android:label="@string/title_activity_emergency"
-                    android:parentActivityName=".LoginActivity"
-                    android:theme="@style/AppTheme.NoActionBar">
-                    <meta-data
-                        android:name="android.support.PARENT_ACTIVITY"
-                        android:value="com.uc3m.p4r4d0x.emergapp.LoginActivity" />
-                </activity>
-                <activity
-                    android:name=".SignIn"
-                    android:label="@string/title_activity_sign_in"
-                    android:parentActivityName=".LoginActivity"
-                    android:theme="@style/AppTheme.NoActionBar">
-                    <meta-data
-                        android:name="android.support.PARENT_ACTIVITY"
-                        android:value="com.uc3m.p4r4d0x.emergapp.LoginActivity" />
-                </activity>
-
-                <!-- Services -->
-
-                <!-- GPS service -->
-        <service android:name=".servicios.GPSService"> </service>
-                <!-- FetchAddress service -->
-        <service android:name=".servicios.FetchAddressService"> </service>
+        <activity android:name=".EmMessage1" />
+        <activity android:name=".EmMessage2" />
 
 
-                <activity android:name=".EmMessage1" />
-        <activity android:name=".EmMessage2"></activity>
     </application>
 
 </manifest>

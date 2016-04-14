@@ -3,6 +3,7 @@ package com.uc3m.p4r4d0x.emergapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 public class EmMessage2 extends AppCompatActivity {
@@ -17,6 +18,7 @@ public class EmMessage2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_em_message2);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //Get the result from the previous pop up activity
         Bundle extras = getIntent().getExtras();

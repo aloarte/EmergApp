@@ -1,12 +1,17 @@
 package com.uc3m.p4r4d0x.emergapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,11 +20,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class LoginActivity extends AppCompatActivity {
 
     Button bLogin,bNewAc;
     EditText etPassword,etUser;
-
+    final String MyPREFERENCES="userPreferences";
+    SharedPreferences sharedpreferences;
     TextView tvFailLogin;
     int retriesLogin = 3;
 
@@ -27,6 +34,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //Get the buttons
         bLogin=(Button)findViewById(R.id.bSSignIn);
@@ -38,6 +48,23 @@ public class LoginActivity extends AppCompatActivity {
         tvFailLogin=(TextView)findViewById(R.id.tvRetry);
         //hide text view
         tvFailLogin.setVisibility(View.GONE);
+
+
+        //Check if there is any user logged into the aplication checking shared preferences
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String a = sharedpreferences.getString("username", "default");
+        //if there is no user
+        if(a.compareTo("default")==0){
+            //Continue:no session
+        }
+        else{
+
+            //Create and launch next activity: EmMessage1
+            Intent myIntent = new Intent(getApplicationContext(), EmMessage1.class);
+            startActivity(myIntent);
+        }
+
+
     }
 
     /*
@@ -47,9 +74,15 @@ public class LoginActivity extends AppCompatActivity {
     public void onClickLogin(View v){
         //If the login was correct
         if (checkLogIn()) {
-             //Create and launch a new activity
-             Intent myIntent = new Intent(v.getContext(), EmMessage1.class);
-             startActivity(myIntent);
+            // If the loggin is successfoul, save the user as a logged user into a shared preferences
+            String username=etUser.getText().toString();
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("username", username);
+            editor.commit();
+
+            //Create and launch a new activity
+            Intent myIntent = new Intent(getApplicationContext(), EmMessage1.class);
+            startActivity(myIntent);
         }
         //Wrong login
         else {

@@ -1,24 +1,28 @@
 package com.uc3m.p4r4d0x.emergapp;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
@@ -27,30 +31,38 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.uc3m.p4r4d0x.emergapp.servicios.FetchAddressService;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.sql.Time;
 import java.util.Calendar;
-import java.util.Date;
 
 import static java.lang.Long.*;
 
 public class EmergencyActivity extends AppCompatActivity {
 
+    //ImageViews for buttons
     ImageView ivTakePhoto, ivTakeVideo, ivGallery;
-    ImageView ivPicture1,ivPicture2,ivPicture3,ivPicture4;
-    VideoView ivVideo1,ivVideo2,ivVideo3,ivVideo4;
+    //Arrays with VideoViews and ImageViews for videos and pictures
+    VideoView[] videoViewsVideos = new VideoView [4];
+    ImageView[] imageViewsPictures = new ImageView [4];
+    //Arrays with info if the pictures are selected and obtained
+    boolean[] selectedImages = new boolean[4];
+    boolean[] obtainedImages = new boolean[4];
 
 
-    Bitmap bitMapPhoto, bitMapVideo, bitMapGallery;
+    final String MyPREFERENCES="userPreferences";
+    SharedPreferences sharedpreferences;
+
+
+
+    //Text views to displayu messages
     TextView tViewGPS, tvMessagePopUp1;
-    boolean gP1 = false, gP2 = false;
-    private Rect rect;
-
+    //Bit maps to print an image
+    Bitmap bitMapPhoto, bitMapGallery;
     //Define constants to identify intents
     final static int C_PHOTO = 1;
     final static int C_VIDEO = 2;
@@ -58,9 +70,9 @@ public class EmergencyActivity extends AppCompatActivity {
     final static int C_GALLERY_VIDEO = 12;
     //Define constants to identify messages
     final int C_YES_YES = 1, C_YES_NO = 2, C_NO_YES = 3, C_NO_NO = 4;
-
-
-
+    //Elements to display a googlemap view
+    GoogleMap googleMap;
+    MapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,39 +80,77 @@ public class EmergencyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_emergency);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         //Get All the image vies
         //ImageViews for taking photos or images from gallery
         ivTakePhoto = (ImageView) findViewById(R.id.ivCapturePhoto);
         ivTakeVideo = (ImageView) findViewById(R.id.ivCaptureVideo);
         ivGallery = (ImageView) findViewById(R.id.ivSelPictureGallery);
-        //ImageViews for video previews images
-        ivVideo1 = (VideoView) findViewById(R.id.ivVideo1);
-        ivVideo2 = (VideoView) findViewById(R.id.ivVideo2);
-        ivVideo3 = (VideoView) findViewById(R.id.ivVideo3);
-        ivVideo4 = (VideoView) findViewById(R.id.ivVideo4);
+        //VideoViews for video previews images
+        videoViewsVideos[0] = (VideoView) findViewById(R.id.ivVideo1);
+        videoViewsVideos[1] = (VideoView) findViewById(R.id.ivVideo2);
+        videoViewsVideos[2] = (VideoView) findViewById(R.id.ivVideo3);
+        videoViewsVideos[3] = (VideoView) findViewById(R.id.ivVideo4);
         //ImageViews for images
-        ivPicture1 = (ImageView) findViewById(R.id.ivPicture1);
-        ivPicture2 = (ImageView) findViewById(R.id.ivPicture2);
-        ivPicture3 = (ImageView) findViewById(R.id.ivPicture3);
-        ivPicture4 = (ImageView) findViewById(R.id.ivPicture4);
+        imageViewsPictures[0] = (ImageView) findViewById(R.id.ivPicture1);
+        imageViewsPictures[1] = (ImageView) findViewById(R.id.ivPicture2);
+        imageViewsPictures[2] = (ImageView) findViewById(R.id.ivPicture3);
+        imageViewsPictures[3] = (ImageView) findViewById(R.id.ivPicture4);
         //Make all dissapear innitially
-        ivVideo1.setVisibility(View.GONE);
-        ivVideo2.setVisibility(View.GONE);
-        ivVideo3.setVisibility(View.GONE);
-        ivVideo4.setVisibility(View.GONE);
-        ivPicture1.setVisibility(View.GONE);
-        ivPicture2.setVisibility(View.GONE);
-        ivPicture3.setVisibility(View.GONE);
-        ivPicture4.setVisibility(View.GONE);
+        videoViewsVideos[0].setVisibility(View.GONE);
+        videoViewsVideos[1].setVisibility(View.GONE);
+        videoViewsVideos[2].setVisibility(View.GONE);
+        videoViewsVideos[3].setVisibility(View.GONE);
+        imageViewsPictures[0].setVisibility(View.GONE);
+        imageViewsPictures[1].setVisibility(View.GONE);
+        imageViewsPictures[2].setVisibility(View.GONE);
+        imageViewsPictures[3].setVisibility(View.GONE);
+        //Set longOnClickListener attached to listener objetc/function to the picture image views to make them selected
+        imageViewsPictures[0].setOnLongClickListener(listener);
+        imageViewsPictures[1].setOnLongClickListener(listener);
+        imageViewsPictures[2].setOnLongClickListener(listener);
+        imageViewsPictures[3].setOnLongClickListener(listener);
 
         //Get the text view
         tvMessagePopUp1 = (TextView) findViewById(R.id.tvInfoMessage);
 
+        Log.d("ALR", "1");
+        //initialize map view
+        mapView = (MapView) findViewById(R.id.google_MAPVIEW);
+        mapView.onCreate(savedInstanceState);
+        googleMap = mapView.getMap();
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        googleMap.setMyLocationEnabled(true);
+        mapView.setVisibility(View.INVISIBLE);
+        /*
+        LatLng sydney = new LatLng(-33.867, 151.206);
+        Log.d("ALR", "8");
 
 
-
+        Log.d("ALR", "9");
+        googleMap.setMyLocationEnabled(true);
+        Log.d("ALR", "10");
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+        Log.d("ALR", "11");
+        googleMap.addMarker(new MarkerOptions()
+                .title("Sydney")
+                .snippet("The most populous city in Australia.")
+                .position(sydney));
+        Log.d("ALR", "12");*/
 
         //Get the first image
         putFirstImages();
@@ -111,9 +161,10 @@ public class EmergencyActivity extends AppCompatActivity {
         getGPSposition();
         //Load the emergency message
         loadMessage();
-
-         tvMessagePopUp1.getText();
-        ImageView ivChangeMessage= (ImageView) findViewById(R.id.ivChangeMessage);
+        //Get the default message with the answer in the previous boxes
+        tvMessagePopUp1.getText();
+        //Set an onclick to rewrite info in the message
+        ImageView ivChangeMessage = (ImageView) findViewById(R.id.ivChangeMessage);
         ivChangeMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +189,26 @@ public class EmergencyActivity extends AppCompatActivity {
 
     }
 
+    /*
+     *Aplication life cicle methods overrided to include mapView life cicle
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
     //---------------------INNER METHODS---------------
 
     /*
@@ -182,15 +253,14 @@ public class EmergencyActivity extends AppCompatActivity {
         tViewGPS = (TextView) findViewById(R.id.tvGPS);
 
         //create service passing the TextView as a param
-        GPSService sGPS = new GPSService(getApplicationContext(),this.tViewGPS);
+        GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS);
 
         //Try to get the location from GPS or network
         if (sGPS.getLocation()) {
             //If was successful call startFetchAddressService, who will obtain the address bassed on the location obtained
             sGPS.startFetchAddressService();
 
-        }
-        else{
+        } else {
             //If the location couldnt get obtained
             tViewGPS.setText(R.string.address_not_obtained);
         }
@@ -244,7 +314,7 @@ public class EmergencyActivity extends AppCompatActivity {
                 cursor.moveToNext();
             }
             //Check if picture is valid ( was taken recently )
-            if(isMediaRecent(cursor.getString(3))) {
+            if (isMediaRecent(cursor.getString(3))) {
                 //Picture is valid
 
 
@@ -252,7 +322,7 @@ public class EmergencyActivity extends AppCompatActivity {
                 switch (i) {
                     case 0:
                         //Get the ImageView
-                        ivPicture1.setVisibility(View.VISIBLE);
+                        imageViewsPictures[0].setVisibility(View.VISIBLE);
                         //Get the image location from the cursor element
                         String imageLocation1 = cursor.getString(1);
                         //Build File with the location
@@ -260,12 +330,14 @@ public class EmergencyActivity extends AppCompatActivity {
                         if (imageFile1.exists()) {
                             //Build a bit map and set this bit map into the image view
                             Bitmap bm = BitmapFactory.decodeFile(imageLocation1);
-                            ivPicture1.setImageBitmap(Bitmap.createScaledBitmap(bm, 120, 120, false));
+                            imageViewsPictures[0].setImageBitmap(Bitmap.createScaledBitmap(bm, 120, 120, false));
+                            //Set if the image in the position 1 is obtained
+                            obtainedImages[0]=true;
                         }
                         break;
                     case 1:
                         //Get the ImageView visible
-                        ivPicture2.setVisibility(View.VISIBLE);
+                        imageViewsPictures[1].setVisibility(View.VISIBLE);
                         //Get the image location from the cursor element
                         String imageLocation2 = cursor.getString(1);
                         //Build File with the location
@@ -273,15 +345,16 @@ public class EmergencyActivity extends AppCompatActivity {
                         if (imageFile2.exists()) {
                             //Build a bit map and set this bit map into the image view
                             Bitmap bm = BitmapFactory.decodeFile(imageLocation2);
-                            ivPicture2.setImageBitmap(Bitmap.createScaledBitmap(bm, 120, 120, false));
+                            imageViewsPictures[1].setImageBitmap(Bitmap.createScaledBitmap(bm, 120, 120, false));
+                            //Set if the image in the position 2 is obtained
+                            obtainedImages[1] = true;
                         }
                         break;
                     default:
                         break;
                 }
 
-            }
-            else{
+            } else {
                 //Picture is not valid
 
             }
@@ -328,35 +401,34 @@ public class EmergencyActivity extends AppCompatActivity {
                 cursor.moveToNext();
             }
             //Check if video is valid ( was taken recently )
-            if(isMediaRecent(cursor.getString(3))) {
+            if (isMediaRecent(cursor.getString(3))) {
                 //Video is valid
-               //Switch which VideoView have to fill
+                //Switch which VideoView have to fill
                 switch (i) {
                     case 0:
                         //Put the video view visibile
-                        ivVideo1.setVisibility(View.VISIBLE);
+                        videoViewsVideos[0].setVisibility(View.VISIBLE);
                         //Get the uri of the video
                         Uri videoLocation1 = Uri.parse(cursor.getString(1));
                         //Put the video in the VideoView
-                        ivVideo1.setVideoURI(videoLocation1);
-                        ivVideo1.setMediaController(new MediaController(this));
-                        ivVideo1.requestFocus();
+                        videoViewsVideos[0].setVideoURI(videoLocation1);
+                        videoViewsVideos[0].setMediaController(new MediaController(this));
+                        videoViewsVideos[0].requestFocus();
                         break;
                     case 1:
                         //Get the ImageView
-                        ivVideo2.setVisibility(View.VISIBLE);
+                        videoViewsVideos[1].setVisibility(View.VISIBLE);
                         //Put the video in the VideoView
                         Uri videoLocation2 = Uri.parse(cursor.getString(1));
-                        ivVideo2.setVideoURI(videoLocation2);
-                        ivVideo2.setMediaController(new MediaController(this));
-                        ivVideo2.requestFocus();
+                        videoViewsVideos[1].setVideoURI(videoLocation2);
+                        videoViewsVideos[1].setMediaController(new MediaController(this));
+                        videoViewsVideos[1].requestFocus();
                         break;
                     default:
                         break;
                 }
 
-            }
-            else{
+            } else {
                 //video is not valid
 
             }
@@ -371,19 +443,19 @@ public class EmergencyActivity extends AppCompatActivity {
     *
     * */
 
-    public boolean isMediaRecent(String mediaDate){
+    public boolean isMediaRecent(String mediaDate) {
 
-        boolean isValid=false;
+        boolean isValid = false;
 
         //Create and instanciate a Calendar object
         Calendar pictureCal = Calendar.getInstance(); // Picture Calendar
         pictureCal.setTimeInMillis(parseLong(mediaDate)); //Create by parsing picture date
         //Get the month and add a 0 if necessary
-        String pictureStrMonth=""+pictureCal.get(Calendar.MONTH);
-        if(pictureStrMonth.length()==1) pictureStrMonth="0"+pictureStrMonth;
+        String pictureStrMonth = "" + pictureCal.get(Calendar.MONTH);
+        if (pictureStrMonth.length() == 1) pictureStrMonth = "0" + pictureStrMonth;
         //Get the day and add a 0 if necessary
-        String pictureStrDay=""+pictureCal.get(Calendar.DAY_OF_MONTH);
-        if(pictureStrDay.length()==1) pictureStrDay="0"+pictureStrDay;
+        String pictureStrDay = "" + pictureCal.get(Calendar.DAY_OF_MONTH);
+        if (pictureStrDay.length() == 1) pictureStrDay = "0" + pictureStrDay;
         //Build a string with the date values (YYYYMMDD)
         String pictureStrDate = "" + (pictureCal.get(Calendar.YEAR) - 1900) +
                 "" + pictureStrMonth +
@@ -393,11 +465,11 @@ public class EmergencyActivity extends AppCompatActivity {
         //Create and instanciate a Calendar object
         Calendar currentCal = Calendar.getInstance(); //Current Calendar
         //Get the month and add a 0 if necessary
-        String currentStrMonth=""+currentCal.get(Calendar.MONTH);
-        if(currentStrMonth.length()==1) currentStrMonth="0"+currentStrMonth;
+        String currentStrMonth = "" + currentCal.get(Calendar.MONTH);
+        if (currentStrMonth.length() == 1) currentStrMonth = "0" + currentStrMonth;
         //Get the day and add a 0 if necessary
-        String currentStrDay=""+currentCal.get(Calendar.DAY_OF_MONTH);
-        if(currentStrDay.length()==1) currentStrDay="0"+currentStrDay;
+        String currentStrDay = "" + currentCal.get(Calendar.DAY_OF_MONTH);
+        if (currentStrDay.length() == 1) currentStrDay = "0" + currentStrDay;
         //Build a string with the date values (YYYYMMDD)
         String currentStrDate = "" + (currentCal.get(Calendar.YEAR) - 1900) +
                 "" + currentStrMonth +
@@ -416,25 +488,22 @@ public class EmergencyActivity extends AppCompatActivity {
         //Check if the dates matches in the same day
         if (parseLong(pictureStrDate) != parseLong(currentStrDate)) {
             //Dates didnt match
-            isValid=false;
-        }
-        else {
+            isValid = false;
+        } else {
             //dates match in the same day
             //Check if the time is lesser than 30 minutes
             if (((currentTime - pictureTime) >= 0) && ((currentTime - pictureTime) <= 30)) {
                 //Time is lower than half hour
-                isValid=true;
-            }
-            else {
+                isValid = true;
+            } else {
                 //Time is greater than half hour
-                isValid=false;
+                isValid = false;
             }
 
         }
 
         return isValid;
     }
-
 
 
     //---------------------OVERRIDED METHODS---------------
@@ -457,8 +526,10 @@ public class EmergencyActivity extends AppCompatActivity {
                 Bundle bundl = data.getExtras();
                 bitMapPhoto = (Bitmap) bundl.get("data");
                 //Set the new image (bitmapped) to the imageView
-                ivPicture3.setVisibility(View.VISIBLE);
-                ivPicture3.setImageBitmap(bitMapPhoto);
+                imageViewsPictures[2].setVisibility(View.VISIBLE);
+                imageViewsPictures[2].setImageBitmap(bitMapPhoto);
+                //Set if the image in the position 3 is obtained
+                obtainedImages[2]=true;
             }
             //onActivityResult for picking and image from gallery
             else if (requestCode == C_GALLERY_IMAGE) {
@@ -472,8 +543,10 @@ public class EmergencyActivity extends AppCompatActivity {
                     bitMapGallery = BitmapFactory.decodeStream(openInputStream);
 
                     //Assign this image to our image view
-                    ivPicture4.setVisibility(View.VISIBLE);
-                    ivPicture4.setImageBitmap(bitMapGallery);
+                    imageViewsPictures[3].setVisibility(View.VISIBLE);
+                    imageViewsPictures[3].setImageBitmap(bitMapGallery);
+                    //Set if the image in the position 4 is obtained
+                    obtainedImages[3]=true;
                 }
                 //Catch an exception if the file doesnt exist
                 catch (FileNotFoundException e) {
@@ -484,28 +557,23 @@ public class EmergencyActivity extends AppCompatActivity {
                 }
             } else if (requestCode == C_VIDEO) {
                 Uri videoLocation = data.getData();
-                ivVideo3.setVisibility(View.VISIBLE);
-                ivVideo3.setVideoURI(videoLocation);
-                ivVideo3.setMediaController(new MediaController(this));
-                ivVideo3.requestFocus();
+                videoViewsVideos[2].setVisibility(View.VISIBLE);
+                videoViewsVideos[2].setVideoURI(videoLocation);
+                videoViewsVideos[2].setMediaController(new MediaController(this));
+                videoViewsVideos[2].requestFocus();
 
 
-            }
-            else if (requestCode == C_GALLERY_VIDEO){
+            } else if (requestCode == C_GALLERY_VIDEO) {
                 //Find the path of the selected image.
                 Uri videoLocation = data.getData();
-                ivVideo4.setVisibility(View.VISIBLE);
-                ivVideo4.setVideoURI(videoLocation);
-                ivVideo4.setMediaController(new MediaController(this));
-                ivVideo4.requestFocus();
+                videoViewsVideos[3].setVisibility(View.VISIBLE);
+                videoViewsVideos[3].setVideoURI(videoLocation);
+                videoViewsVideos[3].setMediaController(new MediaController(this));
+                videoViewsVideos[3].requestFocus();
             }
         }
 
     }
-
-
-
-
 
 
     //---------------------ON CLICK BUTTON METHODS---------------
@@ -573,27 +641,54 @@ public class EmergencyActivity extends AppCompatActivity {
     }
 
 
-    public void selectGP1(View v) {
-        if (!gP1) {
-            ivPicture1.setColorFilter(Color.argb(50, 50, 0, 0));
-            gP1 = true;
-        } else {
-            ivPicture1.setColorFilter(Color.argb(0, 0, 0, 0));
-            gP1 = false;
-        }
+    /*
+    * Desc: on click function to set the map view visible
+    * */
+    public void onClickChangeLocation(View v) {
+        mapView.setVisibility(View.VISIBLE);
     }
 
-    public void selectGP2(View v) {
-        if (!gP2) {
-            ivPicture2.setColorFilter(Color.argb(50, 50, 0, 0));
-            gP2 = true;
-        } else {
-            ivPicture2.setColorFilter(Color.argb(0, 0, 0, 0));
-            gP2 = false;
-        }
+    /*
+    * Desc: on click function to logout from the aplication
+    * */
+
+    public void onClickLogout(View v){
+
+        //Remove from the shared preferences the username
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.remove("username");
+        editor.commit();
+
+        //Create and launch login activity
+        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(myIntent);
     }
 
 
+    /*
+    * Desc: function invoked as a onLongClickListener to change image view pictures status
+    *       between selected or not selected
+    * */
+    ImageView.OnLongClickListener listener = new ImageView.OnLongClickListener() {
+        public boolean onLongClick(View v) {
+            int tag = Integer.parseInt((String) v.getTag());
+            int index= tag-5;
+            //If this image was already selected
+            if(selectedImages[index]){
+                selectedImages[index] = false;
+                imageViewsPictures[index].setColorFilter(Color.argb(0, 0, 0, 0));
+            }
+            //If is not selected, select it
+            else{
+                selectedImages[index] = true;
+
+                imageViewsPictures[index].setColorFilter(Color.argb(100, 100, 0, 0));
+            }
+
+
+            return true;
+        }
+    };
 
 
 }
