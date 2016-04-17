@@ -35,6 +35,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -56,6 +58,7 @@ public class EmergencyActivity extends AppCompatActivity {
 
     final String MyPREFERENCES="userPreferences";
     SharedPreferences sharedpreferences;
+
 
 
 
@@ -82,8 +85,8 @@ public class EmergencyActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        loadToolbar();
 
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         //Get All the image vies
         //ImageViews for taking photos or images from gallery
@@ -118,7 +121,6 @@ public class EmergencyActivity extends AppCompatActivity {
         //Get the text view
         tvMessagePopUp1 = (TextView) findViewById(R.id.tvInfoMessage);
 
-        Log.d("ALR", "1");
         //initialize map view
         mapView = (MapView) findViewById(R.id.google_MAPVIEW);
         mapView.onCreate(savedInstanceState);
@@ -505,6 +507,85 @@ public class EmergencyActivity extends AppCompatActivity {
         return isValid;
     }
 
+    /*
+    * Desc: load the user content into the toolbar
+    *
+    * */
+    public void loadToolbar(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username = sharedpreferences.getString("username", "default");
+
+        //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else{
+            //Put username in the toolbar text view
+            TextView tvToolbarUser=(TextView) findViewById(R.id.tvToolbarUser);
+            tvToolbarUser.setText(username);
+
+        }
+
+        DBManager managerDB = new DBManager(this);
+
+        //Select the user
+        Cursor resultQuery= managerDB.selectUser(username);
+        //If the user exists
+        if(resultQuery.moveToFirst()==true){
+            //Get the password by searching first the column index
+            int level = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL));
+            int points = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS));
+            TextView tvToolbarLevelNumber=(TextView) findViewById(R.id.tvToolbarLevelNumber);
+            tvToolbarLevelNumber.setText(""+level);
+            TextView tvToolbarPointsNumber=(TextView) findViewById(R.id.tvToolbarPointsNumber);
+            tvToolbarPointsNumber.setText(""+points);
+
+        }
+    }
+
+    /*
+    * Desc: Upgrade into the database the points and level for the logged user
+    * */
+    public void changeUserStats(){
+        String username = sharedpreferences.getString("username", "default");
+
+        long devuelto1=0,devuelto2;
+        DBManager managerDB = new DBManager(this);
+
+        //Select the user
+        Cursor resultQuery= managerDB.selectUser(username);
+
+        //If the user exists
+        if(resultQuery.moveToFirst()==true) {
+            //Get the password by searching first the column index
+
+            devuelto1 = managerDB.upgrade(
+                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_NAME)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_PASSWORD)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_EMAIL)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_DATE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL)) + 1,
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS)));
+        }
+
+        resultQuery= managerDB.selectUser(username);
+
+        //If the user exists
+        if(resultQuery.moveToFirst()==true) {
+            devuelto2 = managerDB.upgrade(
+                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_NAME)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_PASSWORD)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_EMAIL)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_DATE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS)) + 8);
+        }
+
+
+        loadToolbar();
+    }
+
 
     //---------------------OVERRIDED METHODS---------------
 
@@ -651,7 +732,6 @@ public class EmergencyActivity extends AppCompatActivity {
     /*
     * Desc: on click function to logout from the aplication
     * */
-
     public void onClickLogout(View v){
 
         //Remove from the shared preferences the username
@@ -664,7 +744,23 @@ public class EmergencyActivity extends AppCompatActivity {
         startActivity(myIntent);
     }
 
+    /*
+    * Desc: on click function to send the data to the web service, and load the gamify system
+    * */
+    public void onClickSendInfo(View v){
+        //Add points and 1 level to the user
+        changeUserStats();
 
+
+        /*
+        * Send info to the web service // check changing to another activity        * */
+
+        /*
+        * write that any user have send succesfouly the information
+        * */
+
+
+    }
     /*
     * Desc: function invoked as a onLongClickListener to change image view pictures status
     *       between selected or not selected

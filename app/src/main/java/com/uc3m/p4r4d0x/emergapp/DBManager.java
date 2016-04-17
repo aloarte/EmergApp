@@ -23,13 +23,20 @@ public class DBManager {
         public static final String FN_PASSWORD="password";
         public static final String FN_EMAIL="email";
         public static final String FN_DATE="date";
-        //Sql sentence for building the table Users
+        public static final String FN_LEVEL="level";
+        public static final String FN_POINTS="points";
+
+
+
+    //Sql sentence for building the table Users
         public static final String CREATE_TABLE = "create table "+TABLE_NAME+" ("
                 + FN_ID +" integer primary key autoincrement,"
                 + FN_NAME + " text not null,"
                 + FN_PASSWORD + " text not null,"
                 + FN_EMAIL + " text not null,"
-                + FN_DATE + " text not null);";
+                + FN_DATE + " text not null,"
+                + FN_LEVEL + " integer not null,"
+                + FN_POINTS + " integer not null);";
 
         //DBHelper & SQLIteDatabase objects
         private DBHelper helper;
@@ -46,12 +53,14 @@ public class DBManager {
         * Param: Strings with user data
         * Ret: A filled ContentValues object
         * */
-        public ContentValues generateCV(String name, String password, String email, String date){
+        public ContentValues generateCV(String name, String password, String email, String date,int level,int points){
             ContentValues contentV = new ContentValues();
             contentV.put(FN_NAME,name);
             contentV.put(FN_PASSWORD,password);
             contentV.put(FN_EMAIL,email);
             contentV.put(FN_DATE,date);
+            contentV.put(FN_LEVEL,level);
+            contentV.put(FN_POINTS, points);
             return contentV;
         }
 
@@ -59,10 +68,17 @@ public class DBManager {
         * Desc: Insert on database a new user
         * Param: Strings with user data
         * */
-        public void insertUser(String name, String password, String email, String date){
+        public boolean insertUser(String name, String password, String email, String date){
+            int level=0,points=0;
+            long retValue=0;
+            retValue=db.insert(TABLE_NAME, null, generateCV(name, password, email, date,level,points));
+            if(retValue==-1 || retValue==0){
+                return false;
+            }
+            else{
+                return true;
+            }
 
-            db.insert(TABLE_NAME, null, generateCV(name, password, email, date));
-            // Toast.makeText(this,"Escribiendo", Toast.LENGTH_SHORT).show();
         }
 
         /*
@@ -72,6 +88,16 @@ public class DBManager {
         * */
         public Cursor selectUser(String userName){
             return db.rawQuery("SELECT * from "+TABLE_NAME+" where "+FN_NAME+"=\""+userName+"\";", null);
+        }
+
+        /*
+         * Desc: Upgrade one user in the database
+         * Param: Strings with user data, and integers with the points and the level
+         * Ret: Long with the amount of elements affected
+        * */
+        public long upgrade(String name, String password, String email, String date,int level,int points){
+            return db.update(TABLE_NAME, generateCV(name, password, email, date, level, points)
+                     ,FN_NAME+ " LIKE ? ", new String[]{name});
         }
 
         /*

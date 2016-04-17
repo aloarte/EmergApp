@@ -19,6 +19,7 @@ public class EmMessage2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_em_message2);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().hide();
 
         //Get the result from the previous pop up activity
         Bundle extras = getIntent().getExtras();

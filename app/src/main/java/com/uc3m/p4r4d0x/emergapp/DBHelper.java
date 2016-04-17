@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper{
 
         private static final String DB_NAME ="users.sqlite";
-        private static final int DB_SCHEME_VERSION =1;
+        private static final int DB_SCHEME_VERSION =2;
 
         public DBHelper(Context context) {
             super(context, DB_NAME, null, DB_SCHEME_VERSION);
@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS tareas; ");
+            db.execSQL("DROP TABLE IF EXISTS users; ");
             db.execSQL(DBManager.CREATE_TABLE);
         }
     }

@@ -77,6 +77,7 @@ public class SignIn extends AppCompatActivity {
     public boolean insertNewUser(){
         DBManager managerDB = new DBManager(this);
         boolean userInsert=true;
+        boolean insertUserResult=false;
         //Check if all fields are filled
         if(allFieldsFilled()) {
             //Check if the user already exists
@@ -84,12 +85,18 @@ public class SignIn extends AppCompatActivity {
                 //Check if the passwords match
                 if(etPassword1.getText().toString().equals(etPassword2.getText().toString())) {
                     //Insert a new user in the database
-                    managerDB.insertUser(
+                    insertUserResult=managerDB.insertUser(
                             etUser.getText().toString(), etPassword1.getText().toString(),
                             etMail.getText().toString(), etDate.getText().toString()
                     );
+                    if(insertUserResult){
+                        Toast.makeText(getApplicationContext(), "Account created.", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "An error has ocurred, account is not created.", Toast.LENGTH_SHORT).show();
+                    }
 
-                    Toast.makeText(getApplicationContext(), "Account created.", Toast.LENGTH_SHORT).show();
+
 
                 }
                 //Passwords dont match

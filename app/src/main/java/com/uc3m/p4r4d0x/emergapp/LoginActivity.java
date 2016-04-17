@@ -52,9 +52,9 @@ public class LoginActivity extends AppCompatActivity {
 
         //Check if there is any user logged into the aplication checking shared preferences
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        String a = sharedpreferences.getString("username", "default");
+        String username = sharedpreferences.getString("username", "default");
         //if there is no user
-        if(a.compareTo("default")==0){
+        if(username.compareTo("default")==0){
             //Continue:no session
         }
         else{

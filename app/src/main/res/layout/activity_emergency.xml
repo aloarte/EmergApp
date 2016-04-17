@@ -19,14 +19,125 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             >
-            <ImageView
-                android:id="@+id/ivToolbarLogout"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/logout"
-                android:onClick="onClickLogout"
+                android:weightSum="1" >
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="126dp"
+                    android:layout_height="match_parent"
+                    android:weightSum="1"
+                    android:layout_weight="0.36">
 
-                />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="87dp"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1" >
+
+                            <TextView
+                                android:layout_gravity="left"
+                                android:gravity="left"
+                                android:id="@+id/tvToolbarLevel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Level  :"
+                                android:textSize="15dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                />
+                            <TextView
+                                android:gravity="left"
+                                android:id="@+id/tvToolbarLevelNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="15dp"
+                                android:layout_weight="1.77" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1" >
+
+                            <TextView
+                                android:layout_gravity="left"
+                                android:gravity="left"
+                                android:id="@+id/tvToolbarPoints"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Points:"
+                                android:textSize="15dp"
+                                android:paddingLeft="10dp"
+                                android:paddingRight="10dp"
+                                />
+                            <TextView
+                                android:layout_gravity="left"
+                                android:gravity="left"
+                                android:id="@+id/tvToolbarPointsNumber"
+                                android:layout_width="30dp"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="31dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:src="@mipmap/logros"
+                        android:layout_weight="0.05" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="204dp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1" >
+                    <TextView
+                        android:id="@+id/tvToolbarUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Default User"
+                        android:textSize="20dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:layout_weight="0.65" />
+
+                    <ImageView
+                        android:id="@+id/ivToolbarLogout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/logout"
+                        android:onClick="onClickLogout"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:gravity="right"
+
+                        />
+                </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
         </android.support.v7.widget.Toolbar>
 
 

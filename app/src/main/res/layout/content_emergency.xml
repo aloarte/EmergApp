@@ -270,7 +270,8 @@
                 android:longClickable="true"
                 android:nestedScrollingEnabled="false"
                 android:layout_gravity="left|center"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="onClickSendInfo" />
         </LinearLayout>
     </LinearLayout>
 
