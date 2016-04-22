@@ -52,7 +52,6 @@ public class EmergencyActivity extends AppCompatActivity {
     VideoView[] videoViewsVideos = new VideoView [4];
     ImageView[] imageViewsPictures = new ImageView [4];
     //Arrays with info if the pictures are selected and obtained
-    boolean[] selectedImages = new boolean[4];
     boolean[] obtainedImages = new boolean[4];
 
 
@@ -112,11 +111,7 @@ public class EmergencyActivity extends AppCompatActivity {
         imageViewsPictures[1].setVisibility(View.GONE);
         imageViewsPictures[2].setVisibility(View.GONE);
         imageViewsPictures[3].setVisibility(View.GONE);
-        //Set longOnClickListener attached to listener objetc/function to the picture image views to make them selected
-        imageViewsPictures[0].setOnLongClickListener(listener);
-        imageViewsPictures[1].setOnLongClickListener(listener);
-        imageViewsPictures[2].setOnLongClickListener(listener);
-        imageViewsPictures[3].setOnLongClickListener(listener);
+
 
         //Get the text view
         tvMessagePopUp1 = (TextView) findViewById(R.id.tvInfoMessage);
@@ -761,30 +756,7 @@ public class EmergencyActivity extends AppCompatActivity {
 
 
     }
-    /*
-    * Desc: function invoked as a onLongClickListener to change image view pictures status
-    *       between selected or not selected
-    * */
-    ImageView.OnLongClickListener listener = new ImageView.OnLongClickListener() {
-        public boolean onLongClick(View v) {
-            int tag = Integer.parseInt((String) v.getTag());
-            int index= tag-5;
-            //If this image was already selected
-            if(selectedImages[index]){
-                selectedImages[index] = false;
-                imageViewsPictures[index].setColorFilter(Color.argb(0, 0, 0, 0));
-            }
-            //If is not selected, select it
-            else{
-                selectedImages[index] = true;
 
-                imageViewsPictures[index].setColorFilter(Color.argb(100, 100, 0, 0));
-            }
-
-
-            return true;
-        }
-    };
 
 
 }
