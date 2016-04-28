@@ -37,6 +37,16 @@
                 android:adjustViewBounds="true"
                 android:longClickable="true"
                 android:nestedScrollingEnabled="false" />
+
+            <ImageView
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:id="@+id/ivSelPictureGallery"
+                android:onClick="onClickGalleryImages"
+                android:src="@mipmap/plusicon"
+                android:layout_margin="15dp"
+                android:adjustViewBounds="true" />
+
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -81,15 +91,7 @@
                     android:layout_margin="15dp"
                     android:adjustViewBounds="true" />
 
-                    <ImageView
-                        android:layout_width="58dp"
-                        android:layout_height="58dp"
-                        android:id="@+id/ivSelPictureGallery"
-                        android:onClick="onClickGalleryImages"
-                        android:src="@mipmap/plusicon"
-                        android:layout_margin="15dp"
-                        android:adjustViewBounds="true" />
-                </LinearLayout>
+            </LinearLayout>
 
             </HorizontalScrollView>
         </LinearLayout>
@@ -113,6 +115,15 @@
                 android:longClickable="true"
                 android:nestedScrollingEnabled="false"
                 android:clickable="false" />
+
+            <ImageView
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:id="@+id/ivSelVideoGallery"
+                android:onClick="onClickGalleryVideos"
+                android:src="@mipmap/plusicon"
+                android:layout_margin="15dp"
+                android:adjustViewBounds="true" />
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"
@@ -178,14 +189,6 @@
                         android:focusableInTouchMode="false"
                         android:clickable="false" />
 
-                    <ImageView
-                        android:layout_width="58dp"
-                        android:layout_height="58dp"
-                        android:id="@+id/ivSelVideoGallery"
-                        android:onClick="onClickGalleryVideos"
-                        android:src="@mipmap/plusicon"
-                        android:layout_margin="15dp"
-                        android:adjustViewBounds="true" />
                 </LinearLayout>
 
             </HorizontalScrollView>

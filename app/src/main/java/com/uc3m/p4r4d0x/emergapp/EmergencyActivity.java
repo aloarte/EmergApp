@@ -51,8 +51,14 @@ public class EmergencyActivity extends AppCompatActivity {
     //Arrays with VideoViews and ImageViews for videos and pictures
     VideoView[] videoViewsVideos = new VideoView [4];
     ImageView[] imageViewsPictures = new ImageView [4];
+    VideoView[] videoViewsVideosSelected = new VideoView [4];
+    ImageView[] imageViewsPicturesSelected = new ImageView [4];
+    ImageView[] imageViewsDeleteSelected = new ImageView[8];
+
     //Arrays with info if the pictures are selected and obtained
     boolean[] obtainedImages = new boolean[4];
+    boolean[] obtainedVideos = new boolean[4];
+
 
 
     final String MyPREFERENCES="userPreferences";
@@ -64,7 +70,8 @@ public class EmergencyActivity extends AppCompatActivity {
     //Text views to displayu messages
     TextView tViewGPS, tvMessagePopUp1;
     //Bit maps to print an image
-    Bitmap bitMapPhoto, bitMapGallery;
+    Bitmap [] bitMapPictures= new Bitmap[4];
+    Uri [] uriVideos= new Uri [4];
     //Define constants to identify intents
     final static int C_PHOTO = 1;
     final static int C_VIDEO = 2;
@@ -102,6 +109,9 @@ public class EmergencyActivity extends AppCompatActivity {
         imageViewsPictures[1] = (ImageView) findViewById(R.id.ivPicture2);
         imageViewsPictures[2] = (ImageView) findViewById(R.id.ivPicture3);
         imageViewsPictures[3] = (ImageView) findViewById(R.id.ivPicture4);
+
+
+
         //Make all dissapear innitially
         videoViewsVideos[0].setVisibility(View.GONE);
         videoViewsVideos[1].setVisibility(View.GONE);
@@ -111,6 +121,11 @@ public class EmergencyActivity extends AppCompatActivity {
         imageViewsPictures[1].setVisibility(View.GONE);
         imageViewsPictures[2].setVisibility(View.GONE);
         imageViewsPictures[3].setVisibility(View.GONE);
+
+
+
+
+
 
 
         //Get the text view
@@ -182,6 +197,81 @@ public class EmergencyActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        ImageView ivSendInfo = (ImageView) findViewById(R.id.ivSendMessage);
+        ivSendInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(EmergencyActivity.this);
+                View layView = (LayoutInflater.from(EmergencyActivity.this)).inflate(R.layout.sel_images, null);
+                alertBuilder.setView(layView);
+
+                //FOR THE SELECTION MENU
+                //VideoViews for video previews images
+
+                videoViewsVideosSelected[0] = (VideoView) layView.findViewById(R.id.ivSelectedVid1);
+                videoViewsVideosSelected[1] = (VideoView) layView.findViewById(R.id.ivSelectedVid2);
+                videoViewsVideosSelected[2] = (VideoView) layView.findViewById(R.id.ivSelectedVid3);
+                videoViewsVideosSelected[3] = (VideoView) layView.findViewById(R.id.ivSelectedVid4);
+                //ImageViews for images
+                imageViewsPicturesSelected[0] = (ImageView) layView.findViewById(R.id.ivSelectedPic1);
+                imageViewsPicturesSelected[1] = (ImageView) layView.findViewById(R.id.ivSelectedPic2);
+                imageViewsPicturesSelected[2] = (ImageView) layView.findViewById(R.id.ivSelectedPic3);
+                imageViewsPicturesSelected[3] = (ImageView) layView.findViewById(R.id.ivSelectedPic4);
+
+                //Make all dissapear innitially
+                videoViewsVideosSelected[0].setVisibility(View.GONE);
+                videoViewsVideosSelected[1].setVisibility(View.GONE);
+                videoViewsVideosSelected[2].setVisibility(View.GONE);
+                videoViewsVideosSelected[3].setVisibility(View.GONE);
+                imageViewsPicturesSelected[0].setVisibility(View.GONE);
+                imageViewsPicturesSelected[1].setVisibility(View.GONE);
+                imageViewsPicturesSelected[2].setVisibility(View.GONE);
+                imageViewsPicturesSelected[3].setVisibility(View.GONE);
+
+
+                //For the popup screen
+                imageViewsDeleteSelected[0] = (ImageView) layView.findViewById(R.id.ivDeletePic1);
+                imageViewsDeleteSelected[1] = (ImageView) layView.findViewById(R.id.ivDeletePic2);
+                imageViewsDeleteSelected[2] = (ImageView) layView.findViewById(R.id.ivDeletePic3);
+                imageViewsDeleteSelected[3] = (ImageView) layView.findViewById(R.id.ivDeletePic4);
+                imageViewsDeleteSelected[4] = (ImageView) layView.findViewById(R.id.ivDeleteVid1);
+                imageViewsDeleteSelected[5] = (ImageView) layView.findViewById(R.id.ivDeleteVid2);
+                imageViewsDeleteSelected[6] = (ImageView) layView.findViewById(R.id.ivDeleteVid3);
+                imageViewsDeleteSelected[7] = (ImageView) layView.findViewById(R.id.ivDeleteVid4);
+                imageViewsDeleteSelected[0].setVisibility(View.GONE);
+                imageViewsDeleteSelected[1].setVisibility(View.GONE);
+                imageViewsDeleteSelected[2].setVisibility(View.GONE);
+                imageViewsDeleteSelected[3].setVisibility(View.GONE);
+                imageViewsDeleteSelected[4].setVisibility(View.GONE);
+                imageViewsDeleteSelected[5].setVisibility(View.GONE);
+                imageViewsDeleteSelected[6].setVisibility(View.GONE);
+                imageViewsDeleteSelected[7].setVisibility(View.GONE);
+                //end popup screen
+
+
+                for(int i=0;i<4;i++) {
+                    if (obtainedImages[i]){
+                        imageViewsPicturesSelected[i].setVisibility(View.VISIBLE);
+                        imageViewsDeleteSelected[i].setVisibility(View.VISIBLE);
+                        imageViewsPicturesSelected[i].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[i], 120, 120, false));
+                    }
+                    if(obtainedVideos[i]){
+
+                        videoViewsVideosSelected[i].setVisibility(View.VISIBLE);
+                        imageViewsDeleteSelected[i+4].setVisibility(View.VISIBLE);
+                        videoViewsVideosSelected[i].setVideoURI(uriVideos[i]);
+                        videoViewsVideosSelected[i].setMediaController(new MediaController(EmergencyActivity.this));
+                        videoViewsVideosSelected[i].requestFocus();
+                    }
+
+                }
+                Dialog dialog = alertBuilder.create();
+                dialog.show();
+            }
+        });
+
+
 
 
     }
@@ -326,8 +416,8 @@ public class EmergencyActivity extends AppCompatActivity {
                         File imageFile1 = new File(imageLocation1);
                         if (imageFile1.exists()) {
                             //Build a bit map and set this bit map into the image view
-                            Bitmap bm = BitmapFactory.decodeFile(imageLocation1);
-                            imageViewsPictures[0].setImageBitmap(Bitmap.createScaledBitmap(bm, 120, 120, false));
+                            bitMapPictures[0] = BitmapFactory.decodeFile(imageLocation1);
+                            imageViewsPictures[0].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[0], 120, 120, false));
                             //Set if the image in the position 1 is obtained
                             obtainedImages[0]=true;
                         }
@@ -335,14 +425,16 @@ public class EmergencyActivity extends AppCompatActivity {
                     case 1:
                         //Get the ImageView visible
                         imageViewsPictures[1].setVisibility(View.VISIBLE);
+
                         //Get the image location from the cursor element
                         String imageLocation2 = cursor.getString(1);
                         //Build File with the location
                         File imageFile2 = new File(imageLocation2);
                         if (imageFile2.exists()) {
                             //Build a bit map and set this bit map into the image view
-                            Bitmap bm = BitmapFactory.decodeFile(imageLocation2);
-                            imageViewsPictures[1].setImageBitmap(Bitmap.createScaledBitmap(bm, 120, 120, false));
+                            bitMapPictures[1] = BitmapFactory.decodeFile(imageLocation2);
+                            imageViewsPictures[1].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[1], 120, 120, false));
+
                             //Set if the image in the position 2 is obtained
                             obtainedImages[1] = true;
                         }
@@ -406,18 +498,21 @@ public class EmergencyActivity extends AppCompatActivity {
                         //Put the video view visibile
                         videoViewsVideos[0].setVisibility(View.VISIBLE);
                         //Get the uri of the video
-                        Uri videoLocation1 = Uri.parse(cursor.getString(1));
+                        uriVideos[0] = Uri.parse(cursor.getString(1));
                         //Put the video in the VideoView
-                        videoViewsVideos[0].setVideoURI(videoLocation1);
+                        obtainedVideos[0]=true;
+                        videoViewsVideos[0].setVideoURI(uriVideos[0]);
                         videoViewsVideos[0].setMediaController(new MediaController(this));
                         videoViewsVideos[0].requestFocus();
                         break;
                     case 1:
                         //Get the ImageView
                         videoViewsVideos[1].setVisibility(View.VISIBLE);
+
                         //Put the video in the VideoView
-                        Uri videoLocation2 = Uri.parse(cursor.getString(1));
-                        videoViewsVideos[1].setVideoURI(videoLocation2);
+                        uriVideos[1] = Uri.parse(cursor.getString(1));
+                        obtainedVideos[1]=true;
+                        videoViewsVideos[1].setVideoURI(uriVideos[1]);
                         videoViewsVideos[1].setMediaController(new MediaController(this));
                         videoViewsVideos[1].requestFocus();
                         break;
@@ -600,10 +695,12 @@ public class EmergencyActivity extends AppCompatActivity {
             if (requestCode == C_PHOTO) {
                 //Obtains the image. Parse with a bundle and a bitmap
                 Bundle bundl = data.getExtras();
-                bitMapPhoto = (Bitmap) bundl.get("data");
+                bitMapPictures[2] = (Bitmap) bundl.get("data");
                 //Set the new image (bitmapped) to the imageView
                 imageViewsPictures[2].setVisibility(View.VISIBLE);
-                imageViewsPictures[2].setImageBitmap(bitMapPhoto);
+                imageViewsPictures[2].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[2], 120, 120, false));
+                //imageViewsPictures[2].setImageBitmap(bitMapPictures[2]);
+
                 //Set if the image in the position 3 is obtained
                 obtainedImages[2]=true;
             }
@@ -616,11 +713,12 @@ public class EmergencyActivity extends AppCompatActivity {
                 try {
                     InputStream openInputStream = getContentResolver().openInputStream(photoLocation);
                     //Take a stream of data and convert in to a bitmap
-                    bitMapGallery = BitmapFactory.decodeStream(openInputStream);
+                    bitMapPictures[3] = BitmapFactory.decodeStream(openInputStream);
 
                     //Assign this image to our image view
                     imageViewsPictures[3].setVisibility(View.VISIBLE);
-                    imageViewsPictures[3].setImageBitmap(bitMapGallery);
+                    //imageViewsPictures[3].setImageBitmap(bitMapPictures[3]);
+                    imageViewsPictures[3].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[3], 120, 120, false));
                     //Set if the image in the position 4 is obtained
                     obtainedImages[3]=true;
                 }
@@ -632,20 +730,24 @@ public class EmergencyActivity extends AppCompatActivity {
 
                 }
             } else if (requestCode == C_VIDEO) {
-                Uri videoLocation = data.getData();
+                uriVideos[2] = data.getData();
                 videoViewsVideos[2].setVisibility(View.VISIBLE);
-                videoViewsVideos[2].setVideoURI(videoLocation);
+                videoViewsVideos[2].setVideoURI(uriVideos[2]);
                 videoViewsVideos[2].setMediaController(new MediaController(this));
                 videoViewsVideos[2].requestFocus();
+                obtainedVideos[2]=true;
+
 
 
             } else if (requestCode == C_GALLERY_VIDEO) {
                 //Find the path of the selected image.
-                Uri videoLocation = data.getData();
+                uriVideos[3] = data.getData();
                 videoViewsVideos[3].setVisibility(View.VISIBLE);
-                videoViewsVideos[3].setVideoURI(videoLocation);
+                videoViewsVideos[3].setVideoURI(uriVideos[3]);
                 videoViewsVideos[3].setMediaController(new MediaController(this));
                 videoViewsVideos[3].requestFocus();
+                obtainedVideos[3]=true;
+
             }
         }
 
@@ -747,6 +849,9 @@ public class EmergencyActivity extends AppCompatActivity {
         changeUserStats();
 
 
+
+
+
         /*
         * Send info to the web service // check changing to another activity        * */
 
@@ -757,6 +862,39 @@ public class EmergencyActivity extends AppCompatActivity {
 
     }
 
+    /*
+    * Desc: on click function to remove an item right before sending all the info
+    * */
+    public void onClickDeleteSelectedPicture(View v) {
+        //Get the tag from the imageview
+        int tag = Integer.parseInt((String) v.getTag());
+        int index= tag-1;
+        //If the index is from 0 to 3, its a tag for pictures
+        if(index >= 0 && index<4){
+            //If this image was already selected
+            if(obtainedImages[index]){
+                //Make invisible the selection
+                imageViewsDeleteSelected[index].setVisibility(View.GONE);
+                imageViewsPicturesSelected[index].setVisibility(View.GONE);
+
+                //TODO: drop image before sending it
+            }
+        }
+        //If the index is from 4 to 7, its a tag for videos
+        else if( index >= 4 && index <8){
+            index-=4;
+            //If this image was already selected
+            if(obtainedVideos[index]){
+                //Make invisible the selection
+                imageViewsDeleteSelected[index+4].setVisibility(View.GONE);
+                videoViewsVideosSelected[index].setVisibility(View.GONE);
+
+                //TODO: drop image before sending it
+            }
+        }
+
+
+    }
 
 
 }
