@@ -53,13 +53,13 @@ public class MyResultReceiver extends ResultReceiver {
                 address = resultData.getString(Constants.RESULT_DATA_KEY);
 
                 //Print the addres on the TextView
-                setView(true);
+                setView(true,resultCode);
             }
             else{
                 //Get the error message from the resultData
                 errorMessage= resultData.getString(Constants.RESULT_DATA_KEY);
                 //Print an error message on the Textview
-                setView(false);
+                setView(false,resultCode);
             }
         }
     }
@@ -69,7 +69,7 @@ public class MyResultReceiver extends ResultReceiver {
   * Param: boolean value: true if the addres is obtained or false if not
   * Desc:  Prints the address in the TextView
   * */
-    public void setView(boolean addressObtained){
+    public void setView(boolean addressObtained,int resultCode){
         //Check if address is obtained
         if(addressObtained){
             //Display the address
@@ -77,7 +77,7 @@ public class MyResultReceiver extends ResultReceiver {
         }
         else{
 
-            if(errorMessage.compareTo("Please turn on your network connection")==0){
+            if(resultCode==Constants.FAILURE_RESULT_NETWORK){
                 //Display an error message
                 addressView.setText(errorMessage);
             }

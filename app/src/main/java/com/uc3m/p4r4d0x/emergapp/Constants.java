@@ -5,7 +5,9 @@ package com.uc3m.p4r4d0x.emergapp;
  */
 public final class Constants {
     public static final int SUCCESS_RESULT = 0;
-    public static final int FAILURE_RESULT = 1;
+    public static final int FAILURE_RESULT_NETWORK = 1;
+    public static final int FAILURE_RESULT_OTHER = 1;
+
     public static final String PACKAGE_NAME =
             "com.google.android.gms.location.sample.locationaddress";
     public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";

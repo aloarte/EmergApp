@@ -51,6 +51,7 @@ public class FetchAddressService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String errorMessage = "";
+        int errorCode =-1;
         //Create a Geocoder object
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
@@ -74,15 +75,18 @@ public class FetchAddressService extends IntentService {
                         1);
             }
             else{
-                errorMessage = getString(R.string.no_network);
+                errorMessage = ""+locationFromGPS.getLatitude()+ ", "+locationFromGPS.getLongitude();
+                errorCode=Constants.FAILURE_RESULT_NETWORK;
             }
         } catch (IOException ioException) {
             // Catch network or other I/O problems.
             errorMessage = getString(R.string.service_not_available);
+            errorCode=Constants.FAILURE_RESULT_OTHER;
             Log.e("ALR", errorMessage, ioException);
         } catch (IllegalArgumentException illegalArgumentException) {
             // Catch invalid latitude or longitude values.
             errorMessage = getString(R.string.invalid_lat_long_used);
+            errorCode=Constants.FAILURE_RESULT_OTHER;
             Log.e("ALR", errorMessage + ". " +
                     "Latitude = " + locationFromGPS.getLatitude() +
                     ", Longitude = " +
@@ -96,7 +100,7 @@ public class FetchAddressService extends IntentService {
             }
 
             //Call deliverResultToReceiver with failure result code and error message
-            deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
+            deliverResultToReceiver(errorCode, errorMessage);
         }
         //Handle case where address was found
         else {
