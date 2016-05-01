@@ -285,6 +285,7 @@ public class GPSService extends Service implements LocationListener {
         //Add the params for the service
         intent.putExtra(Constants.RECEIVER, mReceiver);
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, locationG);
+
         //Start service based on sContext (getApplicationContext fails)
         sContext.startService(intent);
     }

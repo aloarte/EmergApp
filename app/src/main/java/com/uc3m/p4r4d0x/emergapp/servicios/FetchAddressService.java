@@ -29,6 +29,8 @@ public class FetchAddressService extends IntentService {
     protected ResultReceiver mSender;
     public Context sContext;
 
+    int accuracy;
+
     //Default constructor (Neccesary for the AndroidManifest.xml)
     public FetchAddressService() {
         super("");
@@ -58,6 +60,8 @@ public class FetchAddressService extends IntentService {
         // Get the location passed to this service through an extra.
         Location locationFromGPS = intent.getParcelableExtra(
                 Constants.LOCATION_DATA_EXTRA);
+
+        accuracy=(int)locationFromGPS.getAccuracy();
         // Get the ResultReceiver object passed to this service through an extra.
         mSender=intent.getParcelableExtra(Constants.RECEIVER);
 
@@ -75,7 +79,7 @@ public class FetchAddressService extends IntentService {
                         1);
             }
             else{
-                errorMessage = ""+locationFromGPS.getLatitude()+ ", "+locationFromGPS.getLongitude();
+                errorMessage = ""+locationFromGPS.getLatitude()+ ", "+locationFromGPS.getLongitude()+ "\n(in "+accuracy+ " m)";
                 errorCode=Constants.FAILURE_RESULT_NETWORK;
             }
         } catch (IOException ioException) {
@@ -113,9 +117,10 @@ public class FetchAddressService extends IntentService {
             }
 
             //Call deliverResultToReceiver with success result code and the address
-            deliverResultToReceiver(Constants.SUCCESS_RESULT,
-                    TextUtils.join(System.getProperty("line.separator"),
-                            addressFragments));
+            String loc=TextUtils.join(System.getProperty("line.separator"),
+                    addressFragments);
+
+            deliverResultToReceiver(Constants.SUCCESS_RESULT,loc+ "\n(in "+accuracy+ " m)");
         }
     }
 
