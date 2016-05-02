@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -12,68 +13,97 @@
     tools:context="com.uc3m.p4r4d0x.emergapp.LoginActivity"
     tools:showIn="@layout/activity_login">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        tools:context="com.uc3m.p4r4d0x.emergapp.LoginActivity"
+        tools:showIn="@layout/activity_login"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Wellcome"
-        android:id="@+id/textView" />
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/etUser"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="62dp"
-        android:textColorHint="#0B173B"
-        android:hint="@string/user" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/etUser"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColorHint="#0B173B"
+            android:hint="@string/user" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/etPassword"
-        android:layout_below="@+id/etUser"
-        android:layout_centerHorizontal="true"
-        android:textColorHint="#0B173B"
-        android:hint="@string/password"
-        />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/etPassword"
+            android:layout_below="@+id/etUser"
+            android:layout_centerHorizontal="true"
+            android:textColorHint="#0B173B"
+            android:hint="@string/password"
+            />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tvRetry"
-        android:textSize="20dp"
-        android:layout_below="@+id/etUser"
-        android:layout_alignRight="@+id/bSSignIn"
-        android:layout_alignEnd="@+id/bSSignIn" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/tvRetry"
+            android:textSize="20dp"
+            android:layout_below="@+id/etUser"
+            android:layout_alignRight="@+id/bSSignIn"
+            android:layout_alignEnd="@+id/bSSignIn" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/login"
-        android:id="@+id/bSSignIn"
-        android:onClick="onClickLogin"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/bLSignIn"
-        android:layout_alignStart="@+id/bLSignIn"
-        android:layout_alignRight="@+id/etPassword"
-        android:layout_alignEnd="@+id/etPassword" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/login"
+            android:id="@+id/bSSignIn"
+            android:onClick="onClickLogin"
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/bLSignIn"
+            android:layout_alignStart="@+id/bLSignIn"
+            android:layout_alignRight="@+id/etPassword"
+            android:layout_alignEnd="@+id/etPassword" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/signin"
-        android:id="@+id/bLSignIn"
-        android:onClick="onClickSignIn"
-        android:layout_below="@+id/bSSignIn"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_alignRight="@+id/etPassword"
-        android:layout_alignEnd="@+id/etPassword" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/signin"
+            android:id="@+id/bLSignIn"
+            android:onClick="onClickSignIn"
+            android:layout_below="@+id/bSSignIn"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_alignRight="@+id/etPassword"
+            android:layout_alignEnd="@+id/etPassword" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="164dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/ivMainLogo"
+            android:src="@mipmap/logoprincipal"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.38" />
+    </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

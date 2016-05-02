@@ -24,6 +24,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="1" >
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="43dp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="33dp"
+                        android:layout_height="43dp"
+                        android:id="@+id/ivLogoToolbar"
+                        android:src="@mipmap/ic_launcher" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="126dp"
@@ -91,11 +105,12 @@
                                 android:text="0"
                                 android:textSize="15dp" />
                         </LinearLayout>
+
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="31dp"
+                        android:id="@+id/ivLogros"
+                        android:layout_width="28dp"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:src="@mipmap/logros"
@@ -105,24 +120,24 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="204dp"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1" >
+                    android:layout_width="176dp"
+                    android:layout_height="match_parent"
+                    android:weightSum="1">
                     <TextView
                         android:id="@+id/tvToolbarUser"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="51dp"
                         android:text="Default User"
-                        android:textSize="20dp"
+                        android:textSize="17dp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:layout_gravity="right"
                         android:gravity="right"
-                        android:layout_weight="0.65" />
+                        android:textIsSelectable="false"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/ivToolbarLogout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:src="@mipmap/logout"
                         android:onClick="onClickLogout"
