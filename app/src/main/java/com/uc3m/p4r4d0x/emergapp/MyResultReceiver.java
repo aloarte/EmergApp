@@ -8,22 +8,25 @@ import android.widget.TextView;
 
 /**
  * Created by Alvaro Loarte Rodriguez on 30/03/16.
- * Desc: Object that receive the result from the FetchAddress service and prints the result on an TextView
+ * Desc: Object that receive the result from the FetchAddress service and prints the result on TextViews
  */
 
 public class MyResultReceiver extends ResultReceiver {
         private Receiver mReceiver=null;
         private String address="";
+        private String gpsCoord="(0,0)";
         private String errorMessage="";
-        private TextView addressView;
+        private TextView GPSAddressView;
+        private TextView GPSCoordView;
 
     /*
-    * Param: Handler and the TextView for printing the address
+    * Param: Handler and the TextViews for printing the address and the latitude and longitude
     * Desc: Main Constructor
     * */
-    public MyResultReceiver(android.os.Handler handler, TextView addrView) {
+    public MyResultReceiver(android.os.Handler handler, TextView addrView,TextView GPSView) {
         super(handler);
-        addressView=addrView;
+        GPSAddressView=addrView;
+        GPSCoordView=GPSView;
     }
 
     /*
@@ -49,8 +52,9 @@ public class MyResultReceiver extends ResultReceiver {
             //If the resultCode was success, print the address on the TextView
             if (resultCode == Constants.SUCCESS_RESULT) {
 
-                // Get the address from the resultData
+                // Get the address and the latitude and longitude from the resultData object
                 address = resultData.getString(Constants.RESULT_DATA_KEY);
+                gpsCoord=resultData.getString(Constants.RESULT_DATA_KEY2);
 
                 //Print the addres on the TextView
                 setView(true,resultCode);
@@ -70,20 +74,24 @@ public class MyResultReceiver extends ResultReceiver {
   * Desc:  Prints the address in the TextView
   * */
     public void setView(boolean addressObtained,int resultCode){
+        //Set the latitude and longitude on the textView
+        GPSCoordView.setText(gpsCoord);
         //Check if address is obtained
+
         if(addressObtained){
-            //Display the address
-            addressView.setText(address);
+            //Display the address on the textView
+            GPSAddressView.setText(address);
+
         }
         else{
 
             if(resultCode==Constants.FAILURE_RESULT_NETWORK){
                 //Display an error message
-                addressView.setText(errorMessage);
+                GPSAddressView.setText(errorMessage);
             }
             else{
                 //Display an error message
-                addressView.setText(R.string.no_address_found);
+                GPSAddressView.setText(R.string.no_address_found);
             }
 
         }

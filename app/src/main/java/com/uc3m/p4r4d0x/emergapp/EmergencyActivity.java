@@ -34,6 +34,7 @@ import android.widget.VideoView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
+import com.uc3m.p4r4d0x.emergapp.servicios.MailSenderService;
 
 import org.w3c.dom.Text;
 
@@ -59,7 +60,11 @@ public class EmergencyActivity extends AppCompatActivity {
     boolean[] obtainedImages = new boolean[4];
     boolean[] obtainedVideos = new boolean[4];
 
-
+    String [] toSendPicturesPath= new String[]{"","","",""};
+    String [] toSendVideosPath= new String[]{"","","",""};
+    String toSendGPSCoord="";
+    String toSendGPSStreet="";
+    String toSendMessage;
 
     final String MyPREFERENCES="userPreferences";
     SharedPreferences sharedpreferences;
@@ -68,7 +73,7 @@ public class EmergencyActivity extends AppCompatActivity {
 
 
     //Text views to displayu messages
-    TextView tViewGPS, tvMessagePopUp1;
+    TextView tViewGPS,tViewGPSCoord, tvMessagePopUp1;
     //Bit maps to print an image
     Bitmap [] bitMapPictures= new Bitmap[4];
     Uri [] uriVideos= new Uri [4];
@@ -338,9 +343,10 @@ public class EmergencyActivity extends AppCompatActivity {
     public void getGPSposition() {
         //Get the TextView to show the address value
         tViewGPS = (TextView) findViewById(R.id.tvGPS);
+        tViewGPSCoord= (TextView) findViewById(R.id.tvGPSCoord);
 
         //create service passing the TextView as a param
-        GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS);
+        GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS, this.tViewGPSCoord);
 
         //Try to get the location from GPS or network
         if (sGPS.getLocation()) {
@@ -411,12 +417,12 @@ public class EmergencyActivity extends AppCompatActivity {
                         //Get the ImageView
                         imageViewsPictures[0].setVisibility(View.VISIBLE);
                         //Get the image location from the cursor element
-                        String imageLocation1 = cursor.getString(1);
+                        toSendPicturesPath[0] = cursor.getString(1);
                         //Build File with the location
-                        File imageFile1 = new File(imageLocation1);
+                        File imageFile1 = new File(toSendPicturesPath[0]);
                         if (imageFile1.exists()) {
                             //Build a bit map and set this bit map into the image view
-                            bitMapPictures[0] = BitmapFactory.decodeFile(imageLocation1);
+                            bitMapPictures[0] = BitmapFactory.decodeFile(toSendPicturesPath[0]);
                             imageViewsPictures[0].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[0], 120, 120, false));
                             //Set if the image in the position 1 is obtained
                             obtainedImages[0]=true;
@@ -427,12 +433,12 @@ public class EmergencyActivity extends AppCompatActivity {
                         imageViewsPictures[1].setVisibility(View.VISIBLE);
 
                         //Get the image location from the cursor element
-                        String imageLocation2 = cursor.getString(1);
+                        toSendPicturesPath[1] = cursor.getString(1);
                         //Build File with the location
-                        File imageFile2 = new File(imageLocation2);
+                        File imageFile2 = new File(toSendPicturesPath[1]);
                         if (imageFile2.exists()) {
                             //Build a bit map and set this bit map into the image view
-                            bitMapPictures[1] = BitmapFactory.decodeFile(imageLocation2);
+                            bitMapPictures[1] = BitmapFactory.decodeFile(toSendPicturesPath[1]);
                             imageViewsPictures[1].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[1], 120, 120, false));
 
                             //Set if the image in the position 2 is obtained
@@ -498,7 +504,8 @@ public class EmergencyActivity extends AppCompatActivity {
                         //Put the video view visibile
                         videoViewsVideos[0].setVisibility(View.VISIBLE);
                         //Get the uri of the video
-                        uriVideos[0] = Uri.parse(cursor.getString(1));
+                        toSendVideosPath[0]=cursor.getString(1);
+                        uriVideos[0] = Uri.parse(toSendVideosPath[0]);
                         //Put the video in the VideoView
                         obtainedVideos[0]=true;
                         videoViewsVideos[0].setVideoURI(uriVideos[0]);
@@ -510,6 +517,7 @@ public class EmergencyActivity extends AppCompatActivity {
                         videoViewsVideos[1].setVisibility(View.VISIBLE);
 
                         //Put the video in the VideoView
+                        toSendVideosPath[1]=cursor.getString(1);
                         uriVideos[1] = Uri.parse(cursor.getString(1));
                         obtainedVideos[1]=true;
                         videoViewsVideos[1].setVideoURI(uriVideos[1]);
@@ -772,7 +780,7 @@ public class EmergencyActivity extends AppCompatActivity {
         Uri picturesDirectory = Uri.parse(path);
 
         //Set the data and type on this intent: tell it where to look for find images and what file types we want
-        photoPickerIntent.setDataAndType(picturesDirectory, "image/*"); //aqui a lo mejor  se puede especificar los ultimos videos
+        photoPickerIntent.setDataAndType(picturesDirectory, "image/*");
 
         //start the activity (C_GALLERY is the number that identifies this intent
         startActivityForResult(photoPickerIntent, C_GALLERY_IMAGE);
@@ -897,4 +905,34 @@ public class EmergencyActivity extends AppCompatActivity {
     }
 
 
+    public void onClickSendByMail(View v){
+        //Get the string values for the message, the gps addres and the gps longitude&latitude
+        toSendMessage=(String)tvMessagePopUp1.getText();
+        toSendGPSStreet=(String) tViewGPS.getText();
+        toSendGPSCoord=(String) tViewGPSCoord.getText();
+        Log.d("ALR","imprimo array");
+        Log.d("ALR","0 "+toSendPicturesPath[0]);
+        Log.d("ALR","1 "+toSendPicturesPath[1]);
+        Log.d("ALR","2 "+toSendPicturesPath[2]);
+        Log.d("ALR","3 "+toSendPicturesPath[3]);
+        //Iniciate the mail sender service
+        MailSenderService sMSS = new MailSenderService();
+
+        //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
+        sMSS.sendMessage(toSendMessage,toSendPicturesPath,toSendVideosPath,toSendGPSCoord,toSendGPSStreet);
+
+        /*try {
+            Log.d("SendMail", "antesdenviar");
+            GMailSender sender = new GMailSender("ereporteruc3m@gmail.com", "ereporterwuc3m");
+            sender.sendMail("This is Subject",
+                    "This is Body",
+                    "aloarter@gmail.com",
+                    "albrathojaverde@gmail.com");
+            Log.d("SendMail", "despuesdedenviar");
+        } catch (Exception e) {
+            Log.d("SendMail", "falloemail");
+            Log.e("SendMail", e.getMessage(), e);
+        }*/
+
+    }
 }

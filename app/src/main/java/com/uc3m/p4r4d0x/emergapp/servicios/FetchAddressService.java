@@ -28,7 +28,7 @@ import java.util.Locale;
 public class FetchAddressService extends IntentService {
     protected ResultReceiver mSender;
     public Context sContext;
-
+    double latitude=0,longitude=0;
     int accuracy;
 
     //Default constructor (Neccesary for the AndroidManifest.xml)
@@ -72,9 +72,9 @@ public class FetchAddressService extends IntentService {
             //Obtain the addres based on the latitude and longitude values from the location
             //Check if we have network connection (needed for calling the geocoder.getFromLocation
             if(isConnectedToNetwork()) {
-                addresses = geocoder.getFromLocation(
-                        locationFromGPS.getLatitude(),
-                        locationFromGPS.getLongitude(),
+                latitude=locationFromGPS.getLatitude();
+                longitude=locationFromGPS.getLongitude();
+                addresses = geocoder.getFromLocation(latitude,longitude,
                         //Get just a single address.
                         1);
             }
@@ -133,6 +133,7 @@ public class FetchAddressService extends IntentService {
         //Put the result message or the address on a Bundle
         Bundle bundle = new Bundle();
         bundle.putString(Constants.RESULT_DATA_KEY, message);
+        bundle.putString(Constants.RESULT_DATA_KEY2,"("+latitude+","+longitude+")");
 
         //Send the values
         mSender.send(resultCode, bundle);

@@ -29,7 +29,8 @@ public class GPSService extends Service implements LocationListener {
     double latitude, longitude;
     Location locationG;
     LocationListener locationListener;
-    TextView paramView;
+    TextView paramViewCoord;
+    TextView paramViewAddress;
 
 
     protected MyResultReceiver mReceiver;
@@ -65,10 +66,11 @@ public class GPSService extends Service implements LocationListener {
     }
 
     //Constructor
-    public GPSService(Context c, TextView v) {
+    public GPSService(Context c, TextView vAddress ,TextView vCoord) {
         super();
         this.sContext = c;
-        this.paramView = v;
+        this.paramViewAddress = vAddress;
+        this.paramViewCoord= vCoord;
         //Create a new location listener with its inner methods
         this.locationListener = new LocationListener() {
             @Override
@@ -278,7 +280,7 @@ public class GPSService extends Service implements LocationListener {
     public void startFetchAddressService() {
 
         //Iniciate MyResultReceiver object
-        mReceiver = new MyResultReceiver(new android.os.Handler(), paramView);
+        mReceiver = new MyResultReceiver(new android.os.Handler(), paramViewAddress,paramViewCoord);
 
         //Create the intent to start the FetchAddressService
         Intent intent = new Intent(sContext, FetchAddressService.class);

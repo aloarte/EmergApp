@@ -258,7 +258,9 @@
         android:layout_width="349dp"
         android:layout_height="wrap_content"
         android:text="Report emergency!"
-        android:id="@+id/bReportEmerg" />
+        android:id="@+id/bReportEmerg"
+        android:onClick="onClickSendByMail"
+        android:nestedScrollingEnabled="false" />
 
 </LinearLayout>
 
