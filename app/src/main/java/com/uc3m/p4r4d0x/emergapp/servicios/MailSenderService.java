@@ -10,19 +10,27 @@ import android.util.Log;
 import com.uc3m.p4r4d0x.emergapp.GMailSender;
 
 /**
- * Created by p4r4d0x on 17/05/16.
+ * Created by Alvaro Loarte Rodriguez on 17/05/16..
+ * Desc: Mail Sender service: gets the info from the EmergencyActivity (the main message, GPS position, pictures and videos)
+ *       and send it by mail.
+ *
  */
 
 public class MailSenderService extends Service {
 
-    String storedSimSerial;
-    String currentSimSerial;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
     }
 
+    /*
+    * desc: This method performs in an asyncr mode a call to GMailSender.sendMail method.
+    *       Asynch is required because the operation may take a while
+    * par: toSendPicturesLocation toSendvideosLocation : array strings with the location in the phone of the pictures/videos
+    *       toSendMessage, toSendGPSStreet, toSendGPSCoord : strings with the values
+    * */
     public int sendMessage(final String toSendMessage, final String[] toSendPicturesLocation,
                            final String[] toSendvideosLocation,final String toSendGPSCoord,
                            final String toSendGPSStreet){
@@ -37,12 +45,10 @@ public class MailSenderService extends Service {
                 @Override
                 protected Void doInBackground(Void... params)
                 {
-                    Log.d("ALR", "doInBackground() -- Here is the download");
                     GMailSender sender = new GMailSender("ereporteruc3m@gmail.com", "3r3p0rt3ruc3m");
                     //GMailSender sender = new GMailSender("eReporter@outlook.com", "3r3p0rt3ruc3m");
 
                     try {
-                        Log.d("ALR","Antes de enviar");
                         sender.sendMail("This is Subject","This is Body","aloarter@gmail.com", "albrathojaverde@gmail.com",
                                 toSendMessage,toSendPicturesLocation,toSendvideosLocation,toSendGPSCoord,toSendGPSStreet);
                         Log.d("ALR", "despues de enviar");

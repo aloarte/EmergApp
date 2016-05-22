@@ -52,38 +52,45 @@ public class EmergencyActivity extends AppCompatActivity {
     //Arrays with VideoViews and ImageViews for videos and pictures
     VideoView[] videoViewsVideos = new VideoView [4];
     ImageView[] imageViewsPictures = new ImageView [4];
+    //Arrays with VideoViews and ImageViews for the selected pictures (pop up screen)
     VideoView[] videoViewsVideosSelected = new VideoView [4];
     ImageView[] imageViewsPicturesSelected = new ImageView [4];
+    //Arrays with ImageViews for the X icons to delete selected images
     ImageView[] imageViewsDeleteSelected = new ImageView[8];
+    //Text views to get the GPS data and display the emergency message
+    TextView tViewGPS,tViewGPSCoord, tvMessagePopUp1;
 
     //Arrays with info if the pictures are selected and obtained
     boolean[] obtainedImages = new boolean[4];
     boolean[] obtainedVideos = new boolean[4];
+    boolean[] deletedImages = new boolean[4];
+    boolean[] deletedVideos = new boolean[4];
 
+    //Strings used to stock all the info that will be sended
     String [] toSendPicturesPath= new String[]{"","","",""};
     String [] toSendVideosPath= new String[]{"","","",""};
     String toSendGPSCoord="";
     String toSendGPSStreet="";
     String toSendMessage;
 
+    //Info to use shared preferences to have a session
     final String MyPREFERENCES="userPreferences";
     SharedPreferences sharedpreferences;
 
-
-
-
-    //Text views to displayu messages
-    TextView tViewGPS,tViewGPSCoord, tvMessagePopUp1;
-    //Bit maps to print an image
+    //Bit map array used for print images
     Bitmap [] bitMapPictures= new Bitmap[4];
+    //Uri array used to display videos
     Uri [] uriVideos= new Uri [4];
+
     //Define constants to identify intents
     final static int C_PHOTO = 1;
     final static int C_VIDEO = 2;
     final static int C_GALLERY_IMAGE = 11;
     final static int C_GALLERY_VIDEO = 12;
-    //Define constants to identify messages
+
+    //Define constants to identify which previous message has been chosen
     final int C_YES_YES = 1, C_YES_NO = 2, C_NO_YES = 3, C_NO_NO = 4;
+
     //Elements to display a googlemap view
     GoogleMap googleMap;
     MapView mapView;
@@ -114,9 +121,6 @@ public class EmergencyActivity extends AppCompatActivity {
         imageViewsPictures[1] = (ImageView) findViewById(R.id.ivPicture2);
         imageViewsPictures[2] = (ImageView) findViewById(R.id.ivPicture3);
         imageViewsPictures[3] = (ImageView) findViewById(R.id.ivPicture4);
-
-
-
         //Make all dissapear innitially
         videoViewsVideos[0].setVisibility(View.GONE);
         videoViewsVideos[1].setVisibility(View.GONE);
@@ -126,12 +130,6 @@ public class EmergencyActivity extends AppCompatActivity {
         imageViewsPictures[1].setVisibility(View.GONE);
         imageViewsPictures[2].setVisibility(View.GONE);
         imageViewsPictures[3].setVisibility(View.GONE);
-
-
-
-
-
-
 
         //Get the text view
         tvMessagePopUp1 = (TextView) findViewById(R.id.tvInfoMessage);
@@ -271,6 +269,15 @@ public class EmergencyActivity extends AppCompatActivity {
                     }
 
                 }
+                //Set a button to send the message and close the popup
+                alertBuilder.setCancelable(true)
+                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Send by mail
+                                sendInfoByMail();
+                            }
+                        });
                 Dialog dialog = alertBuilder.create();
                 dialog.show();
             }
@@ -345,7 +352,7 @@ public class EmergencyActivity extends AppCompatActivity {
         tViewGPS = (TextView) findViewById(R.id.tvGPS);
         tViewGPSCoord= (TextView) findViewById(R.id.tvGPSCoord);
 
-        //create service passing the TextView as a param
+        //create service passing two TextViews as a param
         GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS, this.tViewGPSCoord);
 
         //Try to get the location from GPS or network
@@ -501,25 +508,27 @@ public class EmergencyActivity extends AppCompatActivity {
                 //Switch which VideoView have to fill
                 switch (i) {
                     case 0:
-                        //Put the video view visibile
+                        //set the video view visibile
                         videoViewsVideos[0].setVisibility(View.VISIBLE);
-                        //Get the uri of the video
+                        //Get video's path
                         toSendVideosPath[0]=cursor.getString(1);
+                        //Get the uri of the video
                         uriVideos[0] = Uri.parse(toSendVideosPath[0]);
-                        //Put the video in the VideoView
                         obtainedVideos[0]=true;
+                        //Put the video in the VideoView
                         videoViewsVideos[0].setVideoURI(uriVideos[0]);
                         videoViewsVideos[0].setMediaController(new MediaController(this));
                         videoViewsVideos[0].requestFocus();
                         break;
                     case 1:
-                        //Get the ImageView
+                        //set the video view visibile
                         videoViewsVideos[1].setVisibility(View.VISIBLE);
-
-                        //Put the video in the VideoView
+                        //Get video's path
                         toSendVideosPath[1]=cursor.getString(1);
+                        //Get the uri of the video
                         uriVideos[1] = Uri.parse(cursor.getString(1));
                         obtainedVideos[1]=true;
+                        //Put the video in the VideoView
                         videoViewsVideos[1].setVideoURI(uriVideos[1]);
                         videoViewsVideos[1].setMediaController(new MediaController(this));
                         videoViewsVideos[1].requestFocus();
@@ -716,6 +725,7 @@ public class EmergencyActivity extends AppCompatActivity {
             else if (requestCode == C_GALLERY_IMAGE) {
                 //Find the path of the selected image.
                 Uri photoLocation = data.getData();
+                toSendPicturesPath[3]=photoLocation.getPath();
 
                 //Open this a stream of data/bytes
                 try {
@@ -750,6 +760,7 @@ public class EmergencyActivity extends AppCompatActivity {
             } else if (requestCode == C_GALLERY_VIDEO) {
                 //Find the path of the selected image.
                 uriVideos[3] = data.getData();
+                toSendVideosPath[3]=uriVideos[3].getPath();
                 videoViewsVideos[3].setVisibility(View.VISIBLE);
                 videoViewsVideos[3].setVideoURI(uriVideos[3]);
                 videoViewsVideos[3].setMediaController(new MediaController(this));
@@ -884,8 +895,7 @@ public class EmergencyActivity extends AppCompatActivity {
                 //Make invisible the selection
                 imageViewsDeleteSelected[index].setVisibility(View.GONE);
                 imageViewsPicturesSelected[index].setVisibility(View.GONE);
-
-                //TODO: drop image before sending it
+                deletedImages[index]=true;
             }
         }
         //If the index is from 4 to 7, its a tag for videos
@@ -896,43 +906,59 @@ public class EmergencyActivity extends AppCompatActivity {
                 //Make invisible the selection
                 imageViewsDeleteSelected[index+4].setVisibility(View.GONE);
                 videoViewsVideosSelected[index].setVisibility(View.GONE);
-
-                //TODO: drop image before sending it
+                deletedVideos[index]=true;
             }
         }
 
 
     }
 
-
-    public void onClickSendByMail(View v){
+    /*
+    * Desc:  function to, after the confirmation, send the email with the info
+    * */
+    public void sendInfoByMail(){
         //Get the string values for the message, the gps addres and the gps longitude&latitude
         toSendMessage=(String)tvMessagePopUp1.getText();
         toSendGPSStreet=(String) tViewGPS.getText();
         toSendGPSCoord=(String) tViewGPSCoord.getText();
-        Log.d("ALR","imprimo array");
-        Log.d("ALR","0 "+toSendPicturesPath[0]);
-        Log.d("ALR","1 "+toSendPicturesPath[1]);
-        Log.d("ALR","2 "+toSendPicturesPath[2]);
-        Log.d("ALR","3 "+toSendPicturesPath[3]);
+
+        //Auxiliar string array for not sending selected videos
+        String [] toSendVideosPathAux= new String []{"","","",""};
+        //Check if any element of the array is selected to delete (wont be sended)
+        for(int i=0;i<4;i++){
+            if(deletedVideos[i]){
+                //If is deleted, do nothing
+            }
+            else
+            {
+                //If is not deleted, copy the path value
+                toSendVideosPathAux[i]= toSendVideosPath[i];
+            }
+        }
+
+        //Auxiliar string array for not sending selected images
+        String [] toSendPicturesPathAux= new String []{"","","",""};
+        //Check if any element of the array is selected to delete (wont be sended)
+        for(int i=0;i<4;i++){
+            if(deletedImages[i]){
+                //If is deleted, do nothing
+            }
+            else
+            {
+                //If is not deleted, copy the path value
+                toSendPicturesPathAux[i]= toSendPicturesPath[i];
+            }
+        }
+
         //Iniciate the mail sender service
         MailSenderService sMSS = new MailSenderService();
 
         //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
-        sMSS.sendMessage(toSendMessage,toSendPicturesPath,toSendVideosPath,toSendGPSCoord,toSendGPSStreet);
+        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
 
-        /*try {
-            Log.d("SendMail", "antesdenviar");
-            GMailSender sender = new GMailSender("ereporteruc3m@gmail.com", "ereporterwuc3m");
-            sender.sendMail("This is Subject",
-                    "This is Body",
-                    "aloarter@gmail.com",
-                    "albrathojaverde@gmail.com");
-            Log.d("SendMail", "despuesdedenviar");
-        } catch (Exception e) {
-            Log.d("SendMail", "falloemail");
-            Log.e("SendMail", e.getMessage(), e);
-        }*/
+        //Re initializate deletedArrays
+        deletedImages=new boolean[4];
+        deletedVideos=new boolean[4];
 
     }
 }
