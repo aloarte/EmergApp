@@ -40,6 +40,7 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Calendar;
 
@@ -706,6 +707,7 @@ public class EmergencyActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         //Check if everything procesed successfully
         if (resultCode == Activity.RESULT_OK) {
             //onActivityResult for taking a photo
@@ -713,19 +715,58 @@ public class EmergencyActivity extends AppCompatActivity {
                 //Obtains the image. Parse with a bundle and a bitmap
                 Bundle bundl = data.getExtras();
                 bitMapPictures[2] = (Bitmap) bundl.get("data");
+
                 //Set the new image (bitmapped) to the imageView
                 imageViewsPictures[2].setVisibility(View.VISIBLE);
                 imageViewsPictures[2].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[2], 120, 120, false));
-                //imageViewsPictures[2].setImageBitmap(bitMapPictures[2]);
+                imageViewsPictures[2].setImageBitmap(bitMapPictures[2]);
 
                 //Set if the image in the position 3 is obtained
                 obtainedImages[2]=true;
+            }
+            else if (requestCode == C_VIDEO) {
+                uriVideos[2] = data.getData();
+                videoViewsVideos[2].setVisibility(View.VISIBLE);
+                videoViewsVideos[2].setVideoURI(uriVideos[2]);
+                videoViewsVideos[2].setMediaController(new MediaController(this));
+                videoViewsVideos[2].requestFocus();
+                obtainedVideos[2] = true;
+            }
+            else if (requestCode == C_GALLERY_VIDEO) {
+
+                Uri videoLocation = data.getData();
+                String[] filePathColumn = {MediaStore.Video.Media.DATA};
+                Cursor cursor = getContentResolver().query(
+                        videoLocation, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String filePath = cursor.getString(columnIndex);
+                cursor.close();
+                toSendVideosPath[3]=filePath;
+
+                //Find the path of the selected image.
+                uriVideos[3] = data.getData();
+                videoViewsVideos[3].setVisibility(View.VISIBLE);
+                videoViewsVideos[3].setVideoURI(uriVideos[3]);
+                videoViewsVideos[3].setMediaController(new MediaController(this));
+                videoViewsVideos[3].requestFocus();
+                obtainedVideos[3]=true;
+
             }
             //onActivityResult for picking and image from gallery
             else if (requestCode == C_GALLERY_IMAGE) {
                 //Find the path of the selected image.
                 Uri photoLocation = data.getData();
-                toSendPicturesPath[3]=photoLocation.getPath();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(
+                        photoLocation, filePathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String filePath = cursor.getString(columnIndex);
+                cursor.close();
+                toSendPicturesPath[3]=filePath;
 
                 //Open this a stream of data/bytes
                 try {
@@ -747,30 +788,12 @@ public class EmergencyActivity extends AppCompatActivity {
                     Toast.makeText(this, getString(R.string.FileNotFound), Toast.LENGTH_LONG).show();
 
                 }
-            } else if (requestCode == C_VIDEO) {
-                uriVideos[2] = data.getData();
-                videoViewsVideos[2].setVisibility(View.VISIBLE);
-                videoViewsVideos[2].setVideoURI(uriVideos[2]);
-                videoViewsVideos[2].setMediaController(new MediaController(this));
-                videoViewsVideos[2].requestFocus();
-                obtainedVideos[2]=true;
-
-
-
-            } else if (requestCode == C_GALLERY_VIDEO) {
-                //Find the path of the selected image.
-                uriVideos[3] = data.getData();
-                toSendVideosPath[3]=uriVideos[3].getPath();
-                videoViewsVideos[3].setVisibility(View.VISIBLE);
-                videoViewsVideos[3].setVideoURI(uriVideos[3]);
-                videoViewsVideos[3].setMediaController(new MediaController(this));
-                videoViewsVideos[3].requestFocus();
-                obtainedVideos[3]=true;
-
             }
-        }
 
+        }
     }
+
+
 
 
     //---------------------ON CLICK BUTTON METHODS---------------
@@ -821,9 +844,10 @@ public class EmergencyActivity extends AppCompatActivity {
     * */
     public void onClickTakePhoto(View v) {
         //Create the intent to open the camera capture
-        Intent intentCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //Start the activity (C_PHOTO is the number that identifies this intent)
         startActivityForResult(intentCamera, C_PHOTO);
+
     }
 
     /*
