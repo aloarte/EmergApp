@@ -29,5 +29,12 @@
     <string name="no_network">Please turn on your network connection</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="SendMessageToast">Sending message...</string>
+    <string name="MessageSendedToast">Message sended</string>
+    <string name="MessageFailedToast">Message couldnt be sended</string>
+
+
+
+
 
 </resources>

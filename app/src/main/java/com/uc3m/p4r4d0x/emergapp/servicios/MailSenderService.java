@@ -1,13 +1,17 @@
 package com.uc3m.p4r4d0x.emergapp.servicios;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uc3m.p4r4d0x.emergapp.GMailSender;
+import com.uc3m.p4r4d0x.emergapp.R;
 
 /**
  * Created by Alvaro Loarte Rodriguez on 17/05/16..
@@ -17,13 +21,19 @@ import com.uc3m.p4r4d0x.emergapp.GMailSender;
  */
 
 public class MailSenderService extends Service {
+    private Context sContext;
 
+    public MailSenderService(Context c) {
+        this.sContext = c;
+    }
 
 
     @Override
     public void onCreate() {
+
         super.onCreate();
     }
+
 
     /*
     * desc: This method performs in an asyncr mode a call to GMailSender.sendMail method.
@@ -38,22 +48,25 @@ public class MailSenderService extends Service {
 
                 @Override
                 protected void onPreExecute()
-                {
-                    Log.d("ALR", "onPreExecute()");
-                }
+                {}
 
                 @Override
                 protected Void doInBackground(Void... params)
                 {
+                    //Create a new GMailSender with the sender address and its password
                     GMailSender sender = new GMailSender("ereporteruc3m@gmail.com", "3r3p0rt3ruc3m");
                     //GMailSender sender = new GMailSender("eReporter@outlook.com", "3r3p0rt3ruc3m");
 
                     try {
-                        sender.sendMail("This is Subject","This is Body","aloarter@gmail.com", "albrathojaverde@gmail.com",
-                                toSendMessage,toSendPicturesLocation,toSendvideosLocation,toSendGPSCoord,toSendGPSStreet);
-                        Log.d("ALR", "despues de enviar");
+                        //Send the mail, giving all the parameters to the method
+                        sender.sendMail("This is Subject", "This is Body", "aloarter@gmail.com", "albrathojaverde@gmail.com",
+                                toSendMessage, toSendPicturesLocation, toSendvideosLocation, toSendGPSCoord, toSendGPSStreet);
+
+
+
                     } catch (Exception e) {
-                        Log.d("ALR","Catch "+e+" de enviar");
+
+
                         e.printStackTrace();
                     }
                     return null;
@@ -61,9 +74,7 @@ public class MailSenderService extends Service {
 
                 @Override
                 protected void onPostExecute(Void res)
-                {
-                    Log.d("ALR", "onPostExecute()");
-                }
+                {}
             }.execute();
 
 

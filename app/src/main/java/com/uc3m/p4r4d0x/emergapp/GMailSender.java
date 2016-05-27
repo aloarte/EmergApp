@@ -5,6 +5,7 @@ package com.uc3m.p4r4d0x.emergapp;
  */
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -60,7 +61,7 @@ public class GMailSender extends javax.mail.Authenticator{
         return new PasswordAuthentication(user, password);
     }
 
-    public synchronized void sendMail(String subject, String body, String sender, String recipients,
+    public synchronized boolean sendMail(String subject, String body, String sender, String recipients,
                                       String toSendMessage, String[] toSendPicturesLocation,
                                       String[] toSendvideosLocation,String toSendGPSCoord,
                                       String toSendGPSStreet) throws Exception {
@@ -100,20 +101,19 @@ public class GMailSender extends javax.mail.Authenticator{
             // Set the attached images
             for(int i=0;i<4;i++){
                 //If the image path was empty, skip it
-                Log.d("ALR"," valor: "+ toSendPicturesLocation[i]);
                 if(toSendPicturesLocation[i].compareTo("")!=0) {
-                    Log.d("ALR", "toSendPictureLocation["+i+"] is going to be sended");
+                    //Create a mime part
                     messageBodyPart = new MimeBodyPart();
+                    //Get the path of the image
                     String filename = toSendPicturesLocation[i];
+                    //Open the file in a DataSource
                     DataSource source = new FileDataSource(filename);
+                    //Set the data source
                     messageBodyPart.setDataHandler(new DataHandler(source));
+                    //Set its file name
                     messageBodyPart.setFileName(filename);
+                    //Add it to the main message
                     multipart.addBodyPart(messageBodyPart);
-                    //Compose the message with the attached files
-
-                    Log.d("ALR", "toSendPictureLocation[" + i + "] finished sended");
-
-
                 }
             }
 
@@ -122,15 +122,19 @@ public class GMailSender extends javax.mail.Authenticator{
             for(int i=0;i<4;i++){
                 //If the image path was empty, skip it
                 if(toSendvideosLocation[i].compareTo("")!=0) {
-                    Log.d("ALR", "toSendvideosLocation["+i+"] is going to be sended");
+                    //Create a mime part
                     messageBodyPart = new MimeBodyPart();
+                    //Get the path of the image
                     String filename = toSendvideosLocation[i];
+                    //Open the file in a DataSource
                     DataSource source = new FileDataSource(filename);
+                    //Set the data source
                     messageBodyPart.setDataHandler(new DataHandler(source));
+                    //Set its file name
                     messageBodyPart.setFileName(filename);
+                    //Add it to the main message
                     multipart.addBodyPart(messageBodyPart);
 
-                    Log.d("ALR", "toSendvideosLocation[" + i + "] finished sended");
                 }
             }
 
@@ -138,14 +142,15 @@ public class GMailSender extends javax.mail.Authenticator{
             message.setContent(multipart);
 
 
-            Log.d("ALR", "Voy a enviar mensaje");
             // Send message
             Transport.send(message);
-            Log.d("ALR", "mensaje enviado");
+            return true;
+
 
 
         } catch (Exception e) {
             Log.d("ALR", "Excepcion: "+e);
+            return false;
         }
 
 

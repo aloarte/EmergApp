@@ -42,7 +42,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import static java.lang.Long.*;
 
@@ -710,11 +712,12 @@ public class EmergencyActivity extends AppCompatActivity {
 
         //Check if everything procesed successfully
         if (resultCode == Activity.RESULT_OK) {
+
             //onActivityResult for taking a photo
             if (requestCode == C_PHOTO) {
                 //Obtains the image. Parse with a bundle and a bitmap
-                Bundle bundl = data.getExtras();
-                bitMapPictures[2] = (Bitmap) bundl.get("data");
+
+                bitMapPictures[2] = BitmapFactory.decodeFile(toSendPicturesPath[2]);
 
                 //Set the new image (bitmapped) to the imageView
                 imageViewsPictures[2].setVisibility(View.VISIBLE);
@@ -724,6 +727,7 @@ public class EmergencyActivity extends AppCompatActivity {
                 //Set if the image in the position 3 is obtained
                 obtainedImages[2]=true;
             }
+            //onActivityResult for taking a video
             else if (requestCode == C_VIDEO) {
                 uriVideos[2] = data.getData();
                 videoViewsVideos[2].setVisibility(View.VISIBLE);
@@ -732,23 +736,37 @@ public class EmergencyActivity extends AppCompatActivity {
                 videoViewsVideos[2].requestFocus();
                 obtainedVideos[2] = true;
             }
+            //onActivityResult for taking a video from gallery
             else if (requestCode == C_GALLERY_VIDEO) {
 
+                //Get the uri
                 Uri videoLocation = data.getData();
+                //Get the pattern to make a query for retrieving an image
                 String[] filePathColumn = {MediaStore.Video.Media.DATA};
+                //Make the query based on the previous URI obtained by the previous intent
                 Cursor cursor = getContentResolver().query(
                         videoLocation, filePathColumn, null, null, null);
+                //get the element
                 cursor.moveToFirst();
 
+                //Get the index where the path is
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                //Obtain the path using the cursor
                 String filePath = cursor.getString(columnIndex);
+                //close cursor
                 cursor.close();
+
+                //Save path into string array to send the video
                 toSendVideosPath[3]=filePath;
 
+                //Put the video on the screen
                 //Find the path of the selected image.
                 uriVideos[3] = data.getData();
+                //Set visibility on
                 videoViewsVideos[3].setVisibility(View.VISIBLE);
+                //set the uri
                 videoViewsVideos[3].setVideoURI(uriVideos[3]);
+                //set the video
                 videoViewsVideos[3].setMediaController(new MediaController(this));
                 videoViewsVideos[3].requestFocus();
                 obtainedVideos[3]=true;
@@ -757,17 +775,27 @@ public class EmergencyActivity extends AppCompatActivity {
             //onActivityResult for picking and image from gallery
             else if (requestCode == C_GALLERY_IMAGE) {
                 //Find the path of the selected image.
+                //Get the uri
                 Uri photoLocation = data.getData();
+                //Get the pattern to make a query for retrieving an image
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                //Make the query based on the previous URI obtained by the previous intent
                 Cursor cursor = getContentResolver().query(
                         photoLocation, filePathColumn, null, null, null);
+                //get the element
                 cursor.moveToFirst();
 
+                //Get the index where the path is
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                //Obtain the path using the cursor
                 String filePath = cursor.getString(columnIndex);
+                //close cursor
                 cursor.close();
+
+                //Save path into string array to send the picture
                 toSendPicturesPath[3]=filePath;
 
+                //Put the image on the screen
                 //Open this a stream of data/bytes
                 try {
                     InputStream openInputStream = getContentResolver().openInputStream(photoLocation);
@@ -843,9 +871,29 @@ public class EmergencyActivity extends AppCompatActivity {
     *       This method gets an image by making a photo
     * */
     public void onClickTakePhoto(View v) {
+
         //Create the intent to open the camera capture
-        Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //Start the activity (C_PHOTO is the number that identifies this intent)
+        Intent intentCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+        //Get the timestamp that will be used to name the file
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        //Get the complete path for the folder MyImages where the photo will be saved
+        File imagesFolder = new File(Environment.getExternalStorageDirectory(), "MyImages");
+        //Create directory if doesnt exist
+        imagesFolder.mkdirs();
+
+        //Get the path for the photo, constructed with the timestamp
+        File image = new File(imagesFolder, "QR_" + timeStamp + ".png");
+
+        //Save the path in the string array for sending the video
+        toSendPicturesPath[2]=image.getPath();
+
+        //get the uri
+        Uri uriSavedImage = Uri.fromFile(image);
+
+        //Put extra on intent and start the activity (C_PHOTO is the number that identifies this intent)
+        intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
         startActivityForResult(intentCamera, C_PHOTO);
 
     }
@@ -855,9 +903,29 @@ public class EmergencyActivity extends AppCompatActivity {
     *       This method gets a video by making a video from the phone
     * */
     public void onClickTakeVideo(View v) {
+
         //Create the intent to open the camera capture
-        Intent intentVideo = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        //Start the activity (C_VIDEO is the number that identifies this intent)
+        Intent intentVideo = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+
+        //Get the timestamp that will be used to name the file
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        //Get the complete path for the folder MyVideos where the video will be saved
+        File videosFolder = new File(Environment.getExternalStorageDirectory(), "MyVideos");
+        //Create directory if doesnt exist
+        videosFolder.mkdirs();
+
+        //Get the path for the video, constructed with the timestamp
+        File video = new File(videosFolder, "QR_" + timeStamp + ".3gp");
+
+        //Save the path in the string array for sending the video
+        toSendVideosPath[2]=video.getPath();
+
+        //Get the uri
+        Uri uriSavedVideo = Uri.fromFile(video);
+
+        //Put extra on intent and start the activity (C_VIDEO is the number that identifies this intent)
+        intentVideo.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedVideo);
         startActivityForResult(intentVideo, C_VIDEO);
     }
 
@@ -890,11 +958,6 @@ public class EmergencyActivity extends AppCompatActivity {
     public void onClickSendInfo(View v){
         //Add points and 1 level to the user
         changeUserStats();
-
-
-
-
-
         /*
         * Send info to the web service // check changing to another activity        * */
 
@@ -942,9 +1005,9 @@ public class EmergencyActivity extends AppCompatActivity {
     * */
     public void sendInfoByMail(){
         //Get the string values for the message, the gps addres and the gps longitude&latitude
-        toSendMessage=(String)tvMessagePopUp1.getText();
-        toSendGPSStreet=(String) tViewGPS.getText();
-        toSendGPSCoord=(String) tViewGPSCoord.getText();
+        toSendMessage= tvMessagePopUp1.getText().toString();
+        toSendGPSStreet= tViewGPS.getText().toString();
+        toSendGPSCoord= tViewGPSCoord.getText().toString();
 
         //Auxiliar string array for not sending selected videos
         String [] toSendVideosPathAux= new String []{"","","",""};
@@ -975,7 +1038,7 @@ public class EmergencyActivity extends AppCompatActivity {
         }
 
         //Iniciate the mail sender service
-        MailSenderService sMSS = new MailSenderService();
+        MailSenderService sMSS = new MailSenderService(getApplicationContext());
 
         //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
         sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
