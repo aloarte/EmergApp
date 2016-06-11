@@ -24,15 +24,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
 import com.uc3m.p4r4d0x.emergapp.servicios.MailSenderService;
 
@@ -48,55 +57,86 @@ import java.util.Date;
 
 import static java.lang.Long.*;
 
-public class EmergencyActivity extends AppCompatActivity {
-
-    //ImageViews for buttons
-    ImageView ivTakePhoto, ivTakeVideo, ivGallery;
-    //Arrays with VideoViews and ImageViews for videos and pictures
-    VideoView[] videoViewsVideos = new VideoView [4];
-    ImageView[] imageViewsPictures = new ImageView [4];
-    //Arrays with VideoViews and ImageViews for the selected pictures (pop up screen)
-    VideoView[] videoViewsVideosSelected = new VideoView [4];
-    ImageView[] imageViewsPicturesSelected = new ImageView [4];
-    //Arrays with ImageViews for the X icons to delete selected images
-    ImageView[] imageViewsDeleteSelected = new ImageView[8];
-    //Text views to get the GPS data and display the emergency message
-    TextView tViewGPS,tViewGPSCoord, tvMessagePopUp1;
-
-    //Arrays with info if the pictures are selected and obtained
-    boolean[] obtainedImages = new boolean[4];
-    boolean[] obtainedVideos = new boolean[4];
-    boolean[] deletedImages = new boolean[4];
-    boolean[] deletedVideos = new boolean[4];
-
-    //Strings used to stock all the info that will be sended
-    String [] toSendPicturesPath= new String[]{"","","",""};
-    String [] toSendVideosPath= new String[]{"","","",""};
-    String toSendGPSCoord="";
-    String toSendGPSStreet="";
-    String toSendMessage;
-
-    //Info to use shared preferences to have a session
-    final String MyPREFERENCES="userPreferences";
-    SharedPreferences sharedpreferences;
-
-    //Bit map array used for print images
-    Bitmap [] bitMapPictures= new Bitmap[4];
-    //Uri array used to display videos
-    Uri [] uriVideos= new Uri [4];
+public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     //Define constants to identify intents
-    final static int C_PHOTO = 1;
-    final static int C_VIDEO = 2;
+    final static int C_PHOTO         = 1;
+    final static int C_VIDEO         = 2;
     final static int C_GALLERY_IMAGE = 11;
     final static int C_GALLERY_VIDEO = 12;
 
     //Define constants to identify which previous message has been chosen
-    final int C_YES_YES = 1, C_YES_NO = 2, C_NO_YES = 3, C_NO_NO = 4;
+    final int C_YES_YES = 1
+            , C_YES_NO  = 2
+            , C_NO_YES  = 3
+            , C_NO_NO   = 4;
 
-    //Elements to display a googlemap view
-    GoogleMap googleMap;
-    MapView mapView;
+    /*
+    * Variables to hold and control all the logic related with the images and videos
+    * from taking them from phone to sending through a message
+    * */
+    //------Views---------
+    //Arrays with VideoViews and ImageViews for videos and pictures
+    VideoView[] videoViewsVideos           = new VideoView[4];
+    ImageView[] imageViewsPictures         = new ImageView[4];
+
+    //Arrays with VideoViews and ImageViews for the selected pictures (pop up screen before-sending)
+    VideoView[] videoViewsVideosSelected   = new VideoView[4];
+    ImageView[] imageViewsPicturesSelected = new ImageView[4];
+
+    //Arrays with ImageViews for the X icons to delete selected images
+    ImageView[] imageViewsDeleteSelected   = new ImageView[8];
+
+    //-----Control arrays -----
+    //Arrays with info if the pictures are selected and obtained
+    boolean[] obtainedImages               = new boolean[4];
+    boolean[] obtainedVideos               = new boolean[4];
+    //Arrays with info if the pictures is selected to delete in sending
+    boolean[] deletedImages                = new boolean[4];
+    boolean[] deletedVideos                = new boolean[4];
+
+    //-----Auxiliar arrays -----
+    //Bit map array used for print images
+    Bitmap[] bitMapPictures                = new Bitmap[4];
+    //Uri array used to display videos
+    Uri[] uriVideos                        = new Uri[4];
+
+    //----Auxiliar strings used to send the info
+    //Strings used to stock all the info that will be sended
+    String[] toSendPicturesPath            = new String[]{"", "", "", ""};
+    String[] toSendVideosPath              = new String[]{"", "", "", ""};
+    String toSendGPSCoord                  = "";
+    String toSendGPSStreet                 = "";
+    String toSendMessage                   = "";
+
+
+    /*
+    * Variables related with the elements used on the screen like buttons
+    * */
+    //Text views to get the GPS data and display the emergency message
+    TextView tViewGPS, tViewGPSCoord, tvMessagePopUp1;
+
+    //ImageViews for buttons
+    ImageView ivTakePhoto, ivTakeVideo, ivGallery;
+
+    //For the screen movements when the info is sended
+    TextView tvRMPoints,tvRMOK,tvRMNotOK;
+    RelativeLayout rlSendMessage;
+
+
+
+    //ResultReceiver for sending when the message is sended
+    protected ResultReceiverSentReady mReceiver;
+
+    /*Google maps variables*/
+    //Frame layout to show and hide map
+    FrameLayout flMap;
+    //map fragment containing the google map
+    MapFragment mapFragment;
+
+    //Info to use shared preferences to have a session
+    final String MyPREFERENCES = "userPreferences";
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,39 +177,15 @@ public class EmergencyActivity extends AppCompatActivity {
         //Get the text view
         tvMessagePopUp1 = (TextView) findViewById(R.id.tvInfoMessage);
 
-        //initialize map view
-        mapView = (MapView) findViewById(R.id.google_MAPVIEW);
-        mapView.onCreate(savedInstanceState);
-        googleMap = mapView.getMap();
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        googleMap.setMyLocationEnabled(true);
-        mapView.setVisibility(View.INVISIBLE);
-        /*
-        LatLng sydney = new LatLng(-33.867, 151.206);
-        Log.d("ALR", "8");
 
+        flMap = (FrameLayout) findViewById(R.id.mapLL);
+        rlSendMessage = (RelativeLayout) findViewById(R.id.sendMessageRL);
+        tvRMPoints = (TextView) findViewById(R.id.tvSMPoints);
+        tvRMOK = (TextView) findViewById(R.id.tvSMOKMessage);
+        tvRMNotOK = (TextView) findViewById(R.id.tvSMNotOKMessage);
 
-        Log.d("ALR", "9");
-        googleMap.setMyLocationEnabled(true);
-        Log.d("ALR", "10");
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
-        Log.d("ALR", "11");
-        googleMap.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
-                .position(sydney));
-        Log.d("ALR", "12");*/
-
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.google_MAPVIEW);
+        mapFragment.getMapAsync(this);
         //Get the first image
         putFirstImages();
         //Get the first videos
@@ -291,32 +307,60 @@ public class EmergencyActivity extends AppCompatActivity {
 
     }
 
-    /*
-     *Aplication life cicle methods overrided to include mapView life cicle
-     */
     @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
+    public void onMapReady(GoogleMap map) {
+        /*try {
+            Thread.sleep(8000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        */
+        Log.d("ALRALR","m1");
+        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        float lat,longit;
+        String latString,longString;
+        String[] parts;
+        Log.d("ALRALR","m2");
+        toSendGPSCoord= tViewGPSCoord.getText().toString();
+        if(toSendGPSCoord.compareTo("") == 0){
+            //No se obtuvo la coordenada gps
+
+            Log.d("ALRALR","m3a");
+        }
+        else
+        {
+            Log.d("ALRALR","m3b");
+            Log.d("ALRALR",": "+toSendGPSCoord);
+            parts = toSendGPSCoord.split(",");
+            Log.d("ALRALR","C1: "+parts[0]+ " C2: "+parts[1]);
+
+            latString = parts[0];
+            longString = parts[1];
+            lat=Float.parseFloat(latString);
+            longit=Float.parseFloat(longString);
+
+            Log.d("ALRALR","C1: "+lat+ " C2: "+longit);
+            LatLng currentLatLng = new LatLng(lat, longit);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                return;
+            }
+            map.setMyLocationEnabled(true);
+            map.addMarker(new MarkerOptions()
+                    .title("Current Location")
+                    .snippet("Location obtained by GPS")
+                    .position(currentLatLng));
+        }
+
+
+
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
     //---------------------INNER METHODS---------------
-
     /*
- * Desc: This method retrieve the info from the popups activities and writes in
- *       the textview the appropiate message
- * */
+     * Desc: This method retrieve the info from the popups activities and writes in
+     *       the textview the appropiate message
+     * */
     public void loadMessage() {
 
         //Retrieve the information from the previos activity
@@ -351,9 +395,10 @@ public class EmergencyActivity extends AppCompatActivity {
     * Desc: Calls GPS Service and prints in the TextView the result
     * */
     public void getGPSposition() {
+
         //Get the TextView to show the address value
-        tViewGPS = (TextView) findViewById(R.id.tvGPS);
-        tViewGPSCoord= (TextView) findViewById(R.id.tvGPSCoord);
+        tViewGPS      = (TextView) findViewById(R.id.tvGPS);
+        tViewGPSCoord = (TextView) findViewById(R.id.tvGPSCoord);
 
         //create service passing two TextViews as a param
         GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS, this.tViewGPSCoord);
@@ -375,6 +420,9 @@ public class EmergencyActivity extends AppCompatActivity {
     *       Put photos on their correspondant image views
     * */
     public void putFirstImages() {
+
+        File imageFile1,imageFile2;
+
         //Gets the columns from the Images table to make a query media to our ContentResolver
         String[] projection = new String[]{
                 MediaStore.Images.ImageColumns._ID,
@@ -383,6 +431,7 @@ public class EmergencyActivity extends AppCompatActivity {
                 MediaStore.Images.ImageColumns.DATE_TAKEN,
                 MediaStore.Images.ImageColumns.MINI_THUMB_MAGIC
         };
+
         /*Get content of all photos in the phone in the table MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         * getting 'projection' columns
         * WHERE BUCKET_DISPLAY_NAME = "Camera" (all photos taken in the album camera)
@@ -395,15 +444,8 @@ public class EmergencyActivity extends AppCompatActivity {
                         MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME + " LIKE ? ", new String[]{"Camera"},
                         MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
 
-       /* final Cursor cursor = getContentResolver()
-                .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        projection,
-                        MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME + " LIKE ? AND "+MediaStore.Images.ImageColumns.DATE_TAKEN+" < ?", new String[]{"Camera"},
-                        MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
-        */
         // Put the 2 photos in the image view
-        //We iterate to get the first, second and third element from our cursor with all the images from camera ordered by date
-        //cursor.moveToFirst();
+        //Iterate to get the first, second and third element from our cursor with all the images from camera ordered by date
         for (int i = 0; i < 2; i++) {
             //in each iteration we get the next element on cursor
             if (i == 0) {
@@ -418,8 +460,6 @@ public class EmergencyActivity extends AppCompatActivity {
             }
             //Check if picture is valid ( was taken recently )
             if (isMediaRecent(cursor.getString(3))) {
-                //Picture is valid
-
 
                 //Switch which ImageView have to fill
                 switch (i) {
@@ -429,13 +469,13 @@ public class EmergencyActivity extends AppCompatActivity {
                         //Get the image location from the cursor element
                         toSendPicturesPath[0] = cursor.getString(1);
                         //Build File with the location
-                        File imageFile1 = new File(toSendPicturesPath[0]);
+                        imageFile1            = new File(toSendPicturesPath[0]);
                         if (imageFile1.exists()) {
                             //Build a bit map and set this bit map into the image view
                             bitMapPictures[0] = BitmapFactory.decodeFile(toSendPicturesPath[0]);
                             imageViewsPictures[0].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[0], 120, 120, false));
                             //Set if the image in the position 1 is obtained
-                            obtainedImages[0]=true;
+                            obtainedImages[0] = true;
                         }
                         break;
                     case 1:
@@ -445,7 +485,7 @@ public class EmergencyActivity extends AppCompatActivity {
                         //Get the image location from the cursor element
                         toSendPicturesPath[1] = cursor.getString(1);
                         //Build File with the location
-                        File imageFile2 = new File(toSendPicturesPath[1]);
+                            imageFile2        = new File(toSendPicturesPath[1]);
                         if (imageFile2.exists()) {
                             //Build a bit map and set this bit map into the image view
                             bitMapPictures[1] = BitmapFactory.decodeFile(toSendPicturesPath[1]);
@@ -458,9 +498,6 @@ public class EmergencyActivity extends AppCompatActivity {
                     default:
                         break;
                 }
-
-            } else {
-                //Picture is not valid
 
             }
         }
@@ -514,10 +551,10 @@ public class EmergencyActivity extends AppCompatActivity {
                         //set the video view visibile
                         videoViewsVideos[0].setVisibility(View.VISIBLE);
                         //Get video's path
-                        toSendVideosPath[0]=cursor.getString(1);
+                        toSendVideosPath[0] =cursor.getString(1);
                         //Get the uri of the video
-                        uriVideos[0] = Uri.parse(toSendVideosPath[0]);
-                        obtainedVideos[0]=true;
+                        uriVideos[0]        = Uri.parse(toSendVideosPath[0]);
+                        obtainedVideos[0]   = true;
                         //Put the video in the VideoView
                         videoViewsVideos[0].setVideoURI(uriVideos[0]);
                         videoViewsVideos[0].setMediaController(new MediaController(this));
@@ -527,10 +564,10 @@ public class EmergencyActivity extends AppCompatActivity {
                         //set the video view visibile
                         videoViewsVideos[1].setVisibility(View.VISIBLE);
                         //Get video's path
-                        toSendVideosPath[1]=cursor.getString(1);
+                        toSendVideosPath[1] = cursor.getString(1);
                         //Get the uri of the video
-                        uriVideos[1] = Uri.parse(cursor.getString(1));
-                        obtainedVideos[1]=true;
+                        uriVideos[1]        = Uri.parse(cursor.getString(1));
+                        obtainedVideos[1]   = true;
                         //Put the video in the VideoView
                         videoViewsVideos[1].setVideoURI(uriVideos[1]);
                         videoViewsVideos[1].setMediaController(new MediaController(this));
@@ -539,10 +576,6 @@ public class EmergencyActivity extends AppCompatActivity {
                     default:
                         break;
                 }
-
-            } else {
-                //video is not valid
-
             }
         }
     }
@@ -557,45 +590,45 @@ public class EmergencyActivity extends AppCompatActivity {
 
     public boolean isMediaRecent(String mediaDate) {
 
-        boolean isValid = false;
+        boolean isValid         = false;
 
         //Create and instanciate a Calendar object
-        Calendar pictureCal = Calendar.getInstance(); // Picture Calendar
+        Calendar pictureCal     = Calendar.getInstance(); // Picture Calendar
         pictureCal.setTimeInMillis(parseLong(mediaDate)); //Create by parsing picture date
         //Get the month and add a 0 if necessary
-        String pictureStrMonth = "" + pictureCal.get(Calendar.MONTH);
+        String pictureStrMonth  = "" + pictureCal.get(Calendar.MONTH);
         if (pictureStrMonth.length() == 1) pictureStrMonth = "0" + pictureStrMonth;
         //Get the day and add a 0 if necessary
         String pictureStrDay = "" + pictureCal.get(Calendar.DAY_OF_MONTH);
         if (pictureStrDay.length() == 1) pictureStrDay = "0" + pictureStrDay;
         //Build a string with the date values (YYYYMMDD)
-        String pictureStrDate = "" + (pictureCal.get(Calendar.YEAR) - 1900) +
+        String pictureStrDate   = "" + (pictureCal.get(Calendar.YEAR) - 1900) +
                 "" + pictureStrMonth +
                 "" + pictureStrDay;
 
 
         //Create and instanciate a Calendar object
-        Calendar currentCal = Calendar.getInstance(); //Current Calendar
+        Calendar currentCal     = Calendar.getInstance(); //Current Calendar
         //Get the month and add a 0 if necessary
-        String currentStrMonth = "" + currentCal.get(Calendar.MONTH);
+        String currentStrMonth  = "" + currentCal.get(Calendar.MONTH);
         if (currentStrMonth.length() == 1) currentStrMonth = "0" + currentStrMonth;
         //Get the day and add a 0 if necessary
-        String currentStrDay = "" + currentCal.get(Calendar.DAY_OF_MONTH);
+        String currentStrDay    = "" + currentCal.get(Calendar.DAY_OF_MONTH);
         if (currentStrDay.length() == 1) currentStrDay = "0" + currentStrDay;
         //Build a string with the date values (YYYYMMDD)
-        String currentStrDate = "" + (currentCal.get(Calendar.YEAR) - 1900) +
+        String currentStrDate   = "" + (currentCal.get(Calendar.YEAR) - 1900) +
                 "" + currentStrMonth +
                 "" + currentStrDay;
 
 
         //Get hours and minutes in int values
-        int pictureMin = pictureCal.get(Calendar.MINUTE);
-        int pictureHour = pictureCal.get(Calendar.HOUR_OF_DAY);
-        int currentMin = currentCal.get(Calendar.MINUTE);
-        int currentHour = currentCal.get(Calendar.HOUR_OF_DAY);
+        int pictureMin          = pictureCal.get(Calendar.MINUTE);
+        int pictureHour         = pictureCal.get(Calendar.HOUR_OF_DAY);
+        int currentMin          = currentCal.get(Calendar.MINUTE);
+        int currentHour         = currentCal.get(Calendar.HOUR_OF_DAY);
         //Express time in a integer (HHMM)
-        int pictureTime = pictureHour * 100 + pictureMin;
-        int currentTime = currentHour * 100 + currentMin;
+        int pictureTime         = pictureHour * 100 + pictureMin;
+        int currentTime         = currentHour * 100 + currentMin;
 
         //Check if the dates matches in the same day
         if (parseLong(pictureStrDate) != parseLong(currentStrDate)) {
@@ -606,14 +639,12 @@ public class EmergencyActivity extends AppCompatActivity {
             //Check if the time is lesser than 30 minutes
             if (((currentTime - pictureTime) >= 0) && ((currentTime - pictureTime) <= 30)) {
                 //Time is lower than half hour
-                isValid = true;
+                isValid         = true;
             } else {
                 //Time is greater than half hour
-                isValid = false;
+                isValid         = false;
             }
-
         }
-
         return isValid;
     }
 
@@ -623,8 +654,8 @@ public class EmergencyActivity extends AppCompatActivity {
     * */
     public void loadToolbar(){
         //Get sharedpreferences item and the username asociated
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        String username = sharedpreferences.getString("username", "default");
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
 
         //Check the username
         if(username.compareTo("default")==0){
@@ -632,23 +663,21 @@ public class EmergencyActivity extends AppCompatActivity {
         }
         else{
             //Put username in the toolbar text view
-            TextView tvToolbarUser=(TextView) findViewById(R.id.tvToolbarUser);
+            TextView tvToolbarUser         = (TextView) findViewById(R.id.tvToolbarUser);
             tvToolbarUser.setText(username);
 
         }
-
-        DBManager managerDB = new DBManager(this);
-
+        DBManager managerDB                = new DBManager(this);
         //Select the user
-        Cursor resultQuery= managerDB.selectUser(username);
+        Cursor resultQuery                 = managerDB.selectUser(username);
         //If the user exists
         if(resultQuery.moveToFirst()==true){
             //Get the password by searching first the column index
-            int level = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL));
-            int points = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS));
-            TextView tvToolbarLevelNumber=(TextView) findViewById(R.id.tvToolbarLevelNumber);
+            int level                      = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL));
+            int points                     = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS));
+            TextView tvToolbarLevelNumber  = (TextView) findViewById(R.id.tvToolbarLevelNumber);
             tvToolbarLevelNumber.setText(""+level);
-            TextView tvToolbarPointsNumber=(TextView) findViewById(R.id.tvToolbarPointsNumber);
+            TextView tvToolbarPointsNumber = (TextView) findViewById(R.id.tvToolbarPointsNumber);
             tvToolbarPointsNumber.setText(""+points);
 
         }
@@ -934,8 +963,16 @@ public class EmergencyActivity extends AppCompatActivity {
     * Desc: on click function to set the map view visible
     * */
     public void onClickChangeLocation(View v) {
-        mapView.setVisibility(View.VISIBLE);
+        flMap.setVisibility(View.VISIBLE);
     }
+
+    /*
+   * Desc: on click function to set the map view invisible
+   * */
+    public void onClickCloseMap(View v) {
+        flMap.setVisibility(View.INVISIBLE);
+    }
+
 
     /*
     * Desc: on click function to logout from the aplication
@@ -1037,8 +1074,9 @@ public class EmergencyActivity extends AppCompatActivity {
             }
         }
 
+        mReceiver = new ResultReceiverSentReady(new android.os.Handler(),rlSendMessage,tvRMPoints,tvRMOK,tvRMNotOK);
         //Iniciate the mail sender service
-        MailSenderService sMSS = new MailSenderService(getApplicationContext());
+        MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiver);
 
         //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
         sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
@@ -1046,6 +1084,8 @@ public class EmergencyActivity extends AppCompatActivity {
         //Re initializate deletedArrays
         deletedImages=new boolean[4];
         deletedVideos=new boolean[4];
+
+        rlSendMessage.setVisibility(View.VISIBLE);
 
     }
 }

@@ -30,9 +30,11 @@
     <string name="title_activity_maps">Map</string>
 
     <string name="SendMessageToast">Sending message...</string>
-    <string name="MessageSendedToast">Message sended</string>
-    <string name="MessageFailedToast">Message couldnt be sended</string>
-
+    <string name="MessageSended">Message sended</string>
+    <string name="MessageFailed">Message couldnt be sended</string>
+    <string name="title_activity_wait_for_sending">We are sending your report</string>
+    <string name="wait_for_sending">We are sending your report</string>
+    <string name="sWaitPoints">...</string>
 
 
 

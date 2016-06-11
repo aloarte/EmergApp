@@ -24,7 +24,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <!--android:name="com.google.android.maps.v2.API_KEY"-->
+        <!-- android:name="com.google.android.maps.v2.API_KEY" -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCiZyNl-qN8jU5iqbI1dTce7ZGUz-Lfrl0" />
@@ -62,14 +62,21 @@
 
 
         <!-- GPS service -->
-        <service android:name=".servicios.GPSService"></service>
+        <service android:name=".servicios.GPSService" />
         <!-- FetchAddress service -->
-        <service android:name=".servicios.FetchAddressService"></service>
+        <service android:name=".servicios.FetchAddressService" />
 
         <activity android:name=".EmMessage1" />
         <activity android:name=".EmMessage2" />
-
-
+        <activity
+            android:name=".WaitForSending"
+            android:label="@string/title_activity_wait_for_sending"
+            android:parentActivityName=".EmergencyActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uc3m.p4r4d0x.emergapp.EmergencyActivity" />
+        </activity>
     </application>
 
 </manifest>

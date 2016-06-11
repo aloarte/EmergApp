@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        Debug {
-            keyAlias 'p4r4d0x'
+        config {
+            keyAlias 'MyAndroidKey'
             keyPassword '1234QWE'
-            storeFile file('/home/p4r4d0x/AndroidStudioProjects/Emergapp/keystores/keyEmergappMap.keystore')
+            storeFile file('/home/users/keystores/android.jks')
             storePassword '1234QWE'
         }
     }
@@ -22,9 +22,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         debug {
-            signingConfig signingConfigs.Debug
+            signingConfig signingConfigs.config
         }
     }
 }
@@ -40,3 +41,4 @@ dependencies {
     compile files('/home/p4r4d0x/AndroidStudioProjects/Emergapp/libs/mail.jar')
     compile files('libs/activation.jar')
 }
+

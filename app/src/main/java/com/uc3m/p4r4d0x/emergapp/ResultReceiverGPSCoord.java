@@ -11,10 +11,10 @@ import android.widget.TextView;
  * Desc: Object that receive the result from the FetchAddress service and prints the result on TextViews
  */
 
-public class MyResultReceiver extends ResultReceiver {
+public class ResultReceiverGPSCoord extends ResultReceiver {
         private Receiver mReceiver=null;
         private String address="";
-        private String gpsCoord="(0,0)";
+        private String gpsCoord="0,0";
         private String errorMessage="";
         private TextView GPSAddressView;
         private TextView GPSCoordView;
@@ -23,7 +23,7 @@ public class MyResultReceiver extends ResultReceiver {
     * Param: Handler and the TextViews for printing the address and the latitude and longitude
     * Desc: Main Constructor
     * */
-    public MyResultReceiver(android.os.Handler handler, TextView addrView,TextView GPSView) {
+    public ResultReceiverGPSCoord(android.os.Handler handler, TextView addrView, TextView GPSView) {
         super(handler);
         GPSAddressView=addrView;
         GPSCoordView=GPSView;

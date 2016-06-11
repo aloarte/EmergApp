@@ -8,11 +8,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.uc3m.p4r4d0x.emergapp.Constants;
-import com.uc3m.p4r4d0x.emergapp.MyResultReceiver;
+import com.uc3m.p4r4d0x.emergapp.ResultReceiverGPSCoord;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class GPSService extends Service implements LocationListener {
     TextView paramViewAddress;
 
 
-    protected MyResultReceiver mReceiver;
+    protected ResultReceiverGPSCoord mReceiver;
 
     //Default constructor (Neccesary for the AndroidManifest.xml)
     public GPSService() {
@@ -274,13 +273,13 @@ public class GPSService extends Service implements LocationListener {
     }
 
     /*
-    * Desc: Start FetchAddress service, passing a MyResultReceiver object to
+    * Desc: Start FetchAddress service, passing a ResultReceiverGPSCoord object to
     *       get the result value and the Location obtained by this service
     * */
     public void startFetchAddressService() {
 
-        //Iniciate MyResultReceiver object
-        mReceiver = new MyResultReceiver(new android.os.Handler(), paramViewAddress,paramViewCoord);
+        //Iniciate ResultReceiverGPSCoord object
+        mReceiver = new ResultReceiverGPSCoord(new android.os.Handler(), paramViewAddress,paramViewCoord);
 
         //Create the intent to start the FetchAddressService
         Intent intent = new Intent(sContext, FetchAddressService.class);
