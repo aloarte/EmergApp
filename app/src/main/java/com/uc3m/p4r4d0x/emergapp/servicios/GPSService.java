@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.TextView;
 
-import com.uc3m.p4r4d0x.emergapp.Constants;
-import com.uc3m.p4r4d0x.emergapp.ResultReceiverGPSCoord;
+import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
+import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverGPSCoord;
 
 import java.util.List;
 

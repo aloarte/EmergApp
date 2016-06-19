@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.text.TextUtils;
 import android.util.Log;
-import com.uc3m.p4r4d0x.emergapp.Constants;
+import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
 import com.uc3m.p4r4d0x.emergapp.R;
 
 import java.io.IOException;
@@ -133,7 +133,7 @@ public class FetchAddressService extends IntentService {
         //Put the result message or the address on a Bundle
         Bundle bundle = new Bundle();
         bundle.putString(Constants.RESULT_DATA_KEY, message);
-        bundle.putString(Constants.RESULT_DATA_KEY2,"("+latitude+","+longitude+")");
+        bundle.putString(Constants.RESULT_DATA_KEY2,""+latitude+","+longitude+"");
 
         //Send the values
         mSender.send(resultCode, bundle);

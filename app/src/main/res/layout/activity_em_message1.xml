@@ -106,8 +106,24 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="99dp"
-        android:layout_weight="0.21" >
+        android:layout_weight="0.21">
 
+
+        <TextView
+            android:layout_width="278dp"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/tvGPSEM1"
+            android:gravity="center"
+            android:layout_weight="0.41"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/tvGPSCoordEM1"
+            android:visibility="gone"
+            />
     </LinearLayout>
 
     <LinearLayout

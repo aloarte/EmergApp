@@ -1,9 +1,12 @@
-package com.uc3m.p4r4d0x.emergapp;
+package com.uc3m.p4r4d0x.emergapp.receivers;
 
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
+import com.uc3m.p4r4d0x.emergapp.R;
 
 
 /**

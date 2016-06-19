@@ -1,4 +1,4 @@
-package com.uc3m.p4r4d0x.emergapp;
+package com.uc3m.p4r4d0x.emergapp.helpers;
 
 /**
  * Created by p4r4d0x on 26/03/16.

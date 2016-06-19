@@ -11,45 +11,36 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBManager;
+import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
 import com.uc3m.p4r4d0x.emergapp.servicios.MailSenderService;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -148,6 +139,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         loadToolbar();
 
+        //Get the GPS position
+        getGPSposition();
 
         //Get All the image vies
         //ImageViews for taking photos or images from gallery
@@ -191,8 +184,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         //Get the first videos
         putFirstVideos();
 
-        //Get the GPS position
-        getGPSposition();
+
         //Load the emergency message
         loadMessage();
         //Get the default message with the answer in the previous boxes
@@ -309,43 +301,42 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     @Override
     public void onMapReady(GoogleMap map) {
-        /*try {
-            Thread.sleep(8000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        */
-        Log.d("ALRALR","m1");
-        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
         float lat,longit;
-        String latString,longString;
         String[] parts;
-        Log.d("ALRALR","m2");
+
+        //Get the gps position into strings
+        getGPSposition();
+
+        //Set the map type
+        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        //Get the string
         toSendGPSCoord= tViewGPSCoord.getText().toString();
-        if(toSendGPSCoord.compareTo("") == 0){
-            //No se obtuvo la coordenada gps
 
-            Log.d("ALRALR","m3a");
-        }
-        else
-        {
-            Log.d("ALRALR","m3b");
-            Log.d("ALRALR",": "+toSendGPSCoord);
+        //Check if is empty (not obtained)
+        if(toSendGPSCoord.compareTo("") != 0){
+
+            //Split the string into 2 parts, separated by the comma
             parts = toSendGPSCoord.split(",");
-            Log.d("ALRALR","C1: "+parts[0]+ " C2: "+parts[1]);
 
-            latString = parts[0];
-            longString = parts[1];
-            lat=Float.parseFloat(latString);
-            longit=Float.parseFloat(longString);
+            //Parse into float both strings
+            lat=Float.parseFloat(parts[0]);
+            longit=Float.parseFloat(parts[1]);
 
-            Log.d("ALRALR","C1: "+lat+ " C2: "+longit);
+            //Create a LatLng object with the GPS position
             LatLng currentLatLng = new LatLng(lat, longit);
+
+            //Check permissions
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 return;
             }
+
+            //Set my location enabled
             map.setMyLocationEnabled(true);
+
+            //Load a marker with the position
             map.addMarker(new MarkerOptions()
                     .title("Current Location")
                     .snippet("Location obtained by GPS")
@@ -392,28 +383,31 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     /*
-    * Desc: Calls GPS Service and prints in the TextView the result
-    * */
+     * Desc: This method retrieve the GPS position from the previous intent (extras)
+     * and set into the text views and strings
+     * */
     public void getGPSposition() {
 
-        //Get the TextView to show the address value
+        //Get the text views
         tViewGPS      = (TextView) findViewById(R.id.tvGPS);
         tViewGPSCoord = (TextView) findViewById(R.id.tvGPSCoord);
 
-        //create service passing two TextViews as a param
-        GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS, this.tViewGPSCoord);
+        //Retrieve the information from the previous activity
+        Bundle extras = getIntent().getExtras();
 
-        //Try to get the location from GPS or network
-        if (sGPS.getLocation()) {
-            //If was successful call startFetchAddressService, who will obtain the address bassed on the location obtained
-            sGPS.startFetchAddressService();
+        //Check if there is any problem
+        if (extras != null) {
+            //Get the string values
+            String valueGPSAddress = extras.getString("GPSA");
+            String valueGPSCoord = extras.getString("GPSC");
 
-        } else {
-            //If the location couldnt get obtained
-            tViewGPS.setText(R.string.address_not_obtained);
+            //Put into text views
+            tViewGPS.setText(valueGPSAddress);
+            tViewGPSCoord.setText(valueGPSCoord);
+
         }
-
     }
+
 
     /*
     * Desc: Select all camera images from the phone and take the 2 first photos.

@@ -9,13 +9,10 @@ import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.uc3m.p4r4d0x.emergapp.Constants;
-import com.uc3m.p4r4d0x.emergapp.GMailSender;
-import com.uc3m.p4r4d0x.emergapp.R;
-import com.uc3m.p4r4d0x.emergapp.ResultReceiverSentReady;
+import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
+import com.uc3m.p4r4d0x.emergapp.helpers.GMailSender;
+import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
 
 /**
  * Created by Alvaro Loarte Rodriguez on 17/05/16..

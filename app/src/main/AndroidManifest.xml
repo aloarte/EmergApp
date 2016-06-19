@@ -68,15 +68,6 @@
 
         <activity android:name=".EmMessage1" />
         <activity android:name=".EmMessage2" />
-        <activity
-            android:name=".WaitForSending"
-            android:label="@string/title_activity_wait_for_sending"
-            android:parentActivityName=".EmergencyActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.uc3m.p4r4d0x.emergapp.EmergencyActivity" />
-        </activity>
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 public class EmMessage2 extends AppCompatActivity {
@@ -14,6 +15,7 @@ public class EmMessage2 extends AppCompatActivity {
     final int C_PREV_YES=1,C_PREV_NO=2,C_PREV_NOVALUE=0;
     final int C_YES_YES=1,C_YES_NO=2, C_NO_YES=3, C_NO_NO=4;
 
+    String   sGPSAddr, sGPSCoord;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,13 +23,13 @@ public class EmMessage2 extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
 
-        //Get the result from the previous pop up activity
+        //Get the GPS position and the message info from the previous activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             valueFromPopup1 = extras.getInt("popUp1");
+            sGPSAddr        = extras.getString("GPSA");
+            sGPSCoord       = extras.getString("GPSC");
         }
-
-
 
     }
 
@@ -56,6 +58,9 @@ public class EmMessage2 extends AppCompatActivity {
         //Create a new intent and save the info on it
         Intent i = new Intent(getApplicationContext(), EmergencyActivity.class);
         i.putExtra("popUp2",value);
+        i.putExtra("GPSC",sGPSCoord);
+        i.putExtra("GPSA",sGPSAddr);
+
         //Launch next activity
         startActivity(i);
 
@@ -86,8 +91,14 @@ public class EmMessage2 extends AppCompatActivity {
         //Create a new intent and save the info on it
         Intent i = new Intent(getApplicationContext(), EmergencyActivity.class);
         i.putExtra("popUp2",value);
+        i.putExtra("GPSC",sGPSCoord);
+        i.putExtra("GPSA",sGPSAddr);
         //Launch next activity
         startActivity(i);
 
     }
+
+
+
+
 }

@@ -103,7 +103,10 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="99dp"
-        android:layout_weight="0.21" />
+        android:layout_weight="0.21">
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:orientation="horizontal"

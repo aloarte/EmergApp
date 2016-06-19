@@ -1,9 +1,13 @@
-package com.uc3m.p4r4d0x.emergapp; /**
- * Created by p4r4d0x on 19/02/16.
+package com.uc3m.p4r4d0x.emergapp.helpers.database;
+
+/**
+ *
+ * Created by Alvaro Loarte Rodríguez on 19/02/16.
  */
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 public class DBHelper extends SQLiteOpenHelper{
 
         private static final String DB_NAME ="users.sqlite";

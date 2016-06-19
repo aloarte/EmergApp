@@ -11,19 +11,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d7bc5ae-4284-448e-a74e-4dcbff2be9b5" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/MyResultReceiver.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/keystores/keyEmergappMap.keystore" afterPath="$PROJECT_DIR$/keystores/keyEmergappMap.keystore" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/DBHelper.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/DBManager.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/WaitForSending.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_wait_for_sending.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/res/layout/content_wait_for_sending.xml" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/Constants.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/Constants.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/GMailSender.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/GMailSender.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/JSSEProvider.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/JSSEProvider.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ResultReceiverGPSCoord.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/receivers/ResultReceiverGPSCoord.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ResultReceiverSentReady.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/receivers/ResultReceiverSentReady.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage1.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage1.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage2.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage2.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/FetchAddressService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/FetchAddressService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/GPSService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/GPSService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/LoginActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/MailSenderService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/MailSenderService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/content_emergency.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/content_emergency.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" afterPath="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/proguard-rules.pro" afterPath="$PROJECT_DIR$/app/proguard-rules.pro" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/SignIn.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/SignIn.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_em_message1.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_em_message1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_em_message2.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_em_message2.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Emergapp.iws" />
@@ -65,83 +73,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="EmergencyActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java">
+      <file leaf-file-name="ResultReceiverGPSCoord.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/receivers/ResultReceiverGPSCoord.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.29801324">
-              <caret line="319" column="25" selection-start-line="319" selection-start-column="25" selection-end-line="319" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.55282557">
+              <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#putFirstImages#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#putFirstVideos#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#isMediaRecent#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#loadToolbar#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#changeUserStats#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#onActivityResult#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#onClickGalleryVideos#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#onClickTakePhoto#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#onClickTakeVideo#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#onClickLogout#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#onClickSendInfo#0;class#EmergencyActivity#0" expanded="false" />
-                <element signature="method#onClickDeleteSelectedPicture#0;class#EmergencyActivity#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="content_emergency.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_emergency.xml">
-          <provider selected="true" editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="369" column="4" selection-start-line="369" selection-start-column="4" selection-end-line="369" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_emergency.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_emergency.xml">
-          <provider selected="true" editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="59" column="34" selection-start-line="59" selection-start-column="32" selection-end-line="59" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ResultReceiverGPSCoord.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ResultReceiverGPSCoord.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="25" column="34" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GPSService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/GPSService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="39" column="14" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FetchAddressService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/FetchAddressService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="110" column="45" selection-start-line="110" selection-start-column="43" selection-end-line="110" selection-end-column="45" />
-              <folding>
-                <element signature="method#deliverResultToReceiver#0;class#FetchAddressService#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -2032,9 +1970,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/emergapp.xml" />
-        <option value="$PROJECT_DIR$/app/build/intermediates/manifests/full/debug/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/DBHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/Rectangle.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/rect.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/rectangle.xml" />
@@ -2054,17 +1989,12 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/SignIn.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/DBHelper.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage2.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage1.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/DBManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_em_message2.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_em_message1.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_emergency.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/content_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/JSSEProvider.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/SendMessage.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/Constants.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/FetchAddressService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/MyResultReceiver.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/sel_images.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
@@ -2080,9 +2010,17 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/MailSenderService.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ResultReceiverSentReady.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ResultReceiverGPSCoord.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/content_emergency.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_em_message2.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_em_message1.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ResultReceiverGPSCoord.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/FetchAddressService.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage2.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage1.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/database/DBHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/database/DBManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/receivers/ResultReceiverGPSCoord.java" />
       </list>
     </option>
   </component>
@@ -2101,9 +2039,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="59" />
-    <option name="y" value="24" />
+    <option name="y" value="-4" />
     <option name="width" value="1307" />
-    <option name="height" value="744" />
+    <option name="height" value="772" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -2128,76 +2066,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -2416,13 +2285,82 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="servicios" />
+              <option name="myItemId" value="receivers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="manifests" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
@@ -2659,7 +2597,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="59" y="24" width="1307" height="744" extended-state="6" />
+    <frame x="59" y="-4" width="1307" height="772" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.48453608" order="6" side_tool="false" content_ui="tabs" />
@@ -2670,7 +2608,8 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46215782" sideWeight="0.5400476" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.68358445" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.46537843" sideWeight="0.8588422" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2962963" sideWeight="0.8588422" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.4781919" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17069243" sideWeight="0.60586834" order="7" side_tool="false" content_ui="tabs" />
@@ -2678,10 +2617,11 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.52334946" sideWeight="0.5400476" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21332276" sideWeight="0.4916067" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3370341" sideWeight="0.4916067" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.589372" sideWeight="0.44567803" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1665345" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1665345" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19323671" sideWeight="0.6526566" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2691,8 +2631,6 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" x="159" y="152" width="1107" height="544" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.589372" sideWeight="0.44567803" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2741,7 +2679,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="103" />
+      <option name="time" value="105" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2754,20 +2692,6 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/logout.png">
       <provider selected="true" editor-type-id="images">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09413854">
-          <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21314387">
-          <caret line="21" column="8" selection-start-line="21" selection-start-column="8" selection-end-line="21" selection-end-column="37" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Escritorio/android-sdk-linux/sources/android-23/android/database/sqlite/SQLiteClosable.java">
@@ -2784,29 +2708,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/DBHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="53" selection-start-line="9" selection-start-column="53" selection-end-line="9" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/DBManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="100" column="9" selection-start-line="100" selection-start-column="9" selection-end-line="100" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/user_input.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding />
         </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.png">
@@ -2830,14 +2740,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="5" column="39" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
           <folding />
         </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/letraslogo.png">
@@ -2845,37 +2755,15 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_em_message2.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_em_message1.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_login.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
           <folding />
         </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
@@ -2885,14 +2773,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/JSSEProvider.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/JSSEProvider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="8" column="48" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/Constants.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.42775667">
           <caret line="15" column="47" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="47" />
@@ -2900,14 +2788,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/sel_images.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="236" column="21" selection-start-line="236" selection-start-column="21" selection-end-line="236" selection-end-column="21" />
           <folding />
         </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Escritorio/android-sdk-linux/sources/android-23/android/net/Uri.java">
@@ -3009,17 +2897,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/GMailSender.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/GMailSender.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.639594">
           <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/WaitForSending.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -3027,30 +2908,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_wait_for_sending.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_wait_for_sending.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#506#539#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3074,12 +2931,12 @@
         <state vertical-scroll-proportion="0.32485324">
           <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ResultReceiverSentReady.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/receivers/ResultReceiverSentReady.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
@@ -3089,72 +2946,139 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/GPSService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="14" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/FetchAddressService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="110" column="45" selection-start-line="110" selection-start-column="43" selection-end-line="110" selection-end-column="45" />
-          <folding>
-            <element signature="method#deliverResultToReceiver#0;class#FetchAddressService#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ResultReceiverGPSCoord.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="34" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_emergency.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="59" column="34" selection-start-line="59" selection-start-column="32" selection-end-line="59" selection-end-column="34" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_emergency.xml">
       <provider selected="true" editor-type-id="android-designer">
         <state />
       </provider>
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="369" column="4" selection-start-line="369" selection-start-column="4" selection-end-line="369" selection-end-column="4" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_em_message2.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5375">
+          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+          <folding>
+            <element signature="e#255#288#0" expanded="true" />
+            <element signature="e#313#348#0" expanded="true" />
+            <element signature="e#374#409#0" expanded="true" />
+            <element signature="e#433#466#0" expanded="true" />
+            <element signature="e#2046#2071#0" expanded="true" />
+            <element signature="e#2552#2576#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_emergency.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.2210884">
+          <caret line="231" column="43" selection-start-line="231" selection-start-column="33" selection-end-line="231" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/FetchAddressService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.0">
+          <caret line="135" column="74" selection-start-line="135" selection-start-column="74" selection-end-line="135" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_em_message1.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8826291">
+          <caret line="139" column="19" selection-start-line="139" selection-start-column="19" selection-end-line="139" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/servicios/GPSService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.3004694">
+          <caret line="250" column="35" selection-start-line="250" selection-start-column="35" selection-end-line="250" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29801324">
-          <caret line="319" column="25" selection-start-line="319" selection-start-column="25" selection-end-line="319" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="414" column="8" selection-start-line="414" selection-start-column="8" selection-end-line="414" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#onCreate#0;class#EmergencyActivity#0" expanded="false" />
+            <element signature="method#loadMessage#0;class#EmergencyActivity#0" expanded="false" />
+            <element signature="method#getGPSposition#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#putFirstImages#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#putFirstVideos#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#isMediaRecent#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#loadToolbar#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#changeUserStats#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#onActivityResult#0;class#EmergencyActivity#0" expanded="false" />
+            <element signature="e#37839#37871#0" expanded="true" />
             <element signature="method#onClickGalleryVideos#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#onClickTakePhoto#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#onClickTakeVideo#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#onClickLogout#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#onClickSendInfo#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#onClickDeleteSelectedPicture#0;class#EmergencyActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="107" column="38" selection-start-line="107" selection-start-column="38" selection-end-line="107" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/database/DBHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="2" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/database/DBManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1986755">
+          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmMessage2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.2266667">
+          <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/receivers/ResultReceiverGPSCoord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.55282557">
+          <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

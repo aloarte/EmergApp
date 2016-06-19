@@ -1,16 +1,13 @@
-package com.uc3m.p4r4d0x.emergapp;
+package com.uc3m.p4r4d0x.emergapp.helpers.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.widget.Toast;
 
 /**
- * Created by p4r4d0x on 19/02/16.
+ * Created by Alvaro Loarte Rodríguez on 19/02/16.
+ *
  */
 
 public class DBManager {
