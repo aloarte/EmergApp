@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="#009688"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             >
             <LinearLayout
@@ -118,7 +118,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:orientation="horizontal"
                     android:layout_width="176dp"
                     android:layout_height="match_parent"
@@ -133,7 +133,11 @@
                         android:paddingRight="10dp"
                         android:gravity="right"
                         android:textIsSelectable="false"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:layout_alignLeft="@+id/ivToolbarLogout"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/ivToolbarLogout"
+                        android:layout_toStartOf="@+id/ivToolbarLogout" />
 
                     <ImageView
                         android:id="@+id/ivToolbarLogout"
@@ -145,8 +149,8 @@
                         android:paddingRight="10dp"
                         android:gravity="right"
 
-                        />
-                </LinearLayout>
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
 
 
         </LinearLayout>

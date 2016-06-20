@@ -10,7 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.uc3m.p4r4d0x.emergapp.SignIn"
-    tools:showIn="@layout/activity_sign_in">
+    tools:showIn="@layout/activity_sign_in"
+    android:background="#f9fafa">
 
     <EditText
         android:layout_width="wrap_content"

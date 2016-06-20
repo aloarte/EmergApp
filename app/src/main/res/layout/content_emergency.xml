@@ -20,7 +20,8 @@
 
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#f9fafa">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -28,7 +29,9 @@
             android:layout_height="wrap_content"
             android:weightSum="1"
             style="@android:style/ButtonBar"
-            android:background="#510876a1">
+            android:background="#f9fafa"
+            android:baselineAligned="true"
+            android:id="@+id/llPhotos">
             <ImageView
                 android:layout_width="66dp"
                 android:layout_height="72dp"
@@ -107,7 +110,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="1"
-            android:background="#510876a1" >
+            android:background="#f9fafa"
+            android:id="@+id/llVideos">
 
             <ImageView
                 android:layout_width="66dp"
@@ -203,11 +207,23 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#000000"
+            android:orientation="horizontal"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/SepLine1" />
+
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="109dp"
             android:weightSum="1"
-            android:background="#dddddd">
+            android:background="#f9fafa"
+            android:id="@+id/llPosition">
 
             <TextView
                 android:layout_width="278dp"
@@ -236,11 +252,23 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#000000"
+            android:orientation="horizontal"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/SepLine2" />
+
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="109dp"
             android:weightSum="1"
-            android:background="#dddddd">
+            android:background="#f9fafa"
+            android:id="@+id/llText">
 
             <TextView
                 android:layout_width="264dp"
@@ -261,13 +289,26 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#000000"
+            android:orientation="horizontal"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/SepLine3" />
+
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:weightSum="1"
             android:layout_gravity="center"
-            android:background="#dddddd"
-            android:visibility="visible">
+            android:background="#f9fafa"
+            android:visibility="visible"
+            android:baselineAligned="true"
+            android:id="@+id/llSend">
 
             <TextView
                 android:layout_width="229dp"
@@ -321,7 +362,7 @@
         android:layout_height="match_parent"
         android:visibility="invisible"
         android:id="@+id/sendMessageRL"
-        android:background="#d2d1d1">
+        android:background="#c3f8f9">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
