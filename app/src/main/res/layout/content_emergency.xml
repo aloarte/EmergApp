@@ -30,18 +30,19 @@
             android:weightSum="1"
             style="@android:style/ButtonBar"
             android:background="#f9fafa"
-            android:baselineAligned="true"
+            android:baselineAligned="false"
             android:id="@+id/llPhotos">
             <ImageView
-                android:layout_width="66dp"
-                android:layout_height="72dp"
+                android:layout_width="59dp"
+                android:layout_height="64dp"
                 android:src="@mipmap/camera_128"
                 android:id="@+id/ivCapturePhoto"
                 android:onClick="onClickTakePhoto"
                 android:layout_margin="10dp"
                 android:adjustViewBounds="true"
-                android:longClickable="true"
-                android:nestedScrollingEnabled="false" />
+                android:longClickable="false"
+                android:nestedScrollingEnabled="false"
+                android:layout_gravity="top|center_vertical" />
 
             <ImageView
                 android:layout_width="48dp"
@@ -114,16 +115,17 @@
             android:id="@+id/llVideos">
 
             <ImageView
-                android:layout_width="66dp"
-                android:layout_height="72dp"
+                android:layout_width="60dp"
+                android:layout_height="68dp"
                 android:src="@mipmap/video"
                 android:id="@+id/ivCaptureVideo"
                 android:onClick="onClickTakeVideo"
                 android:layout_margin="10dp"
                 android:adjustViewBounds="true"
-                android:longClickable="true"
+                android:longClickable="false"
                 android:nestedScrollingEnabled="false"
-                android:clickable="false" />
+                android:clickable="false"
+                android:layout_gravity="top|center_vertical" />
 
             <ImageView
                 android:layout_width="48dp"
@@ -220,27 +222,22 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="109dp"
+            android:layout_height="95dp"
             android:weightSum="1"
             android:background="#f9fafa"
-            android:id="@+id/llPosition">
+            android:id="@+id/llPosition"
+            android:layout_gravity="left"
+            android:layout_marginBottom="5dp">
 
             <TextView
-                android:layout_width="278dp"
+                android:layout_width="264dp"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/tvGPS"
                 android:text="Loading position..."
                 android:gravity="center"
-                android:layout_weight="0.41" />
-
-            <ImageView
-                android:layout_width="77dp"
-                android:layout_height="66dp"
-                android:id="@+id/ivChangePosition"
-                android:src="@mipmap/map"
-                android:layout_gravity="center"
-                android:onClick="onClickChangeLocation" />
+                android:layout_weight="0.63"
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -249,6 +246,14 @@
                 android:text="0,0"
                 android:visibility="invisible"
                 />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="68dp"
+                android:id="@+id/ivChangePosition"
+                android:src="@mipmap/map"
+                android:layout_gravity="center|right"
+                android:onClick="onClickChangeLocation" />
         </LinearLayout>
 
         <LinearLayout
@@ -265,10 +270,11 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="109dp"
+            android:layout_height="95dp"
             android:weightSum="1"
             android:background="#f9fafa"
-            android:id="@+id/llText">
+            android:id="@+id/llText"
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:layout_width="264dp"
@@ -277,11 +283,13 @@
                 android:id="@+id/tvInfoMessage"
                 android:text="Message info here"
                 android:gravity="center"
-                android:layout_weight="0.72" />
+                android:layout_weight="0.72"
+                android:textSize="20dp"
+                android:textIsSelectable="false" />
 
             <ImageView
-                android:layout_width="77dp"
-                android:layout_height="66dp"
+                android:layout_width="60dp"
+                android:layout_height="68dp"
                 android:id="@+id/ivChangeMessage"
                 android:src="@mipmap/message"
                 android:layout_gravity="center"
@@ -297,7 +305,8 @@
             android:layout_marginRight="50dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:id="@+id/SepLine3" />
+            android:id="@+id/SepLine3"
+            android:layout_gravity="top" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -311,25 +320,26 @@
             android:id="@+id/llSend">
 
             <TextView
-                android:layout_width="229dp"
-                android:layout_height="match_parent"
+                android:layout_width="264dp"
+                android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/sendMessage"
                 android:id="@+id/tvSendMessage"
                 android:gravity="center|center_horizontal"
-                android:layout_weight="1" />
+                android:layout_weight="0.67"
+                android:layout_gravity="bottom"
+                android:textSize="20dp"
+                android:textIsSelectable="true" />
 
             <ImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="60dp"
+                android:layout_height="68dp"
                 android:src="@mipmap/mail"
                 android:id="@+id/ivSendMessage"
-                android:layout_margin="10dp"
                 android:adjustViewBounds="true"
                 android:longClickable="true"
                 android:nestedScrollingEnabled="false"
-                android:layout_gravity="left|center"
-                android:layout_weight="1"
+                android:layout_gravity="center|right"
                 android:onClick="onClickSendInfo" />
         </LinearLayout>
     </LinearLayout>
@@ -362,7 +372,7 @@
         android:layout_height="match_parent"
         android:visibility="invisible"
         android:id="@+id/sendMessageRL"
-        android:background="#c3f8f9">
+        android:background="#f9fafa">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -375,38 +385,16 @@
             android:singleLine="false"
             android:visibility="visible" />
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/sWaitPoints"
-            android:id="@+id/tvSMPoints"
+            android:id="@+id/ivLoading"
+            android:src="@mipmap/loading"
             android:layout_below="@+id/tvSMInfo"
             android:layout_alignLeft="@+id/tvSMInfo"
             android:layout_alignStart="@+id/tvSMInfo"
-            android:visibility="visible" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/MessageSended"
-            android:id="@+id/tvSMOKMessage"
-            android:layout_below="@+id/tvSMInfo"
-            android:layout_alignLeft="@+id/tvSMInfo"
-            android:layout_alignStart="@+id/tvSMInfo"
-            android:visibility="gone" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/MessageFailed"
-            android:id="@+id/tvSMNotOKMessage"
-            android:layout_below="@+id/tvSMInfo"
-            android:layout_alignLeft="@+id/tvSMInfo"
-            android:layout_alignStart="@+id/tvSMInfo"
-            android:visibility="gone" />
+            android:layout_alignRight="@+id/tvSMInfo"
+            android:layout_alignEnd="@+id/tvSMInfo" />
 
     </RelativeLayout>
 

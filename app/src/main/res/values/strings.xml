@@ -11,7 +11,7 @@
     <string name="selImage">Select image.</string>
     <string name="FileNotFound">Unable to open image</string>
     <string name="GpsNotAct">Please turn on your GPS.</string>
-    <string name="sendMessage">If you are ready send your message</string>
+    <string name="sendMessage">If you are ready \nsend your message</string>
     <string name="HumDamContent">Click if you or somebody else have damages</string>
     <string name="HumDamQuestion">Are there human damages?</string>
     <string name="SelfDamQuestion">Do you need help?</string>

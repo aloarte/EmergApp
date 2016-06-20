@@ -20,6 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -34,6 +36,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBManager;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
@@ -48,7 +51,7 @@ import java.util.Date;
 
 import static java.lang.Long.*;
 
-public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleMap.OnMarkerDragListener {
 
     //Define constants to identify intents
     final static int C_PHOTO         = 1;
@@ -111,9 +114,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     ImageView ivTakePhoto, ivTakeVideo, ivGallery;
 
     //For the screen movements when the info is sended
-    TextView tvRMPoints,tvRMOK,tvRMNotOK;
+
     RelativeLayout rlSendMessage;
 
+
+    ImageView ivLoadingRotate;
 
 
     //ResultReceiver for sending when the message is sended
@@ -129,6 +134,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     final String MyPREFERENCES = "userPreferences";
     SharedPreferences sharedpreferences;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +142,12 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        ivLoadingRotate = (ImageView) findViewById(R.id.ivLoading);
+
+
+
+
 
         loadToolbar();
 
@@ -173,9 +185,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         flMap = (FrameLayout) findViewById(R.id.mapLL);
         rlSendMessage = (RelativeLayout) findViewById(R.id.sendMessageRL);
-        tvRMPoints = (TextView) findViewById(R.id.tvSMPoints);
-        tvRMOK = (TextView) findViewById(R.id.tvSMOKMessage);
-        tvRMNotOK = (TextView) findViewById(R.id.tvSMNotOKMessage);
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.google_MAPVIEW);
         mapFragment.getMapAsync(this);
@@ -340,7 +349,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             map.addMarker(new MarkerOptions()
                     .title("Current Location")
                     .snippet("Location obtained by GPS")
-                    .position(currentLatLng));
+                    .position(currentLatLng)
+                    .draggable(true));
         }
 
 
@@ -1068,7 +1078,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
-        mReceiver = new ResultReceiverSentReady(new android.os.Handler(),rlSendMessage,tvRMPoints,tvRMOK,tvRMNotOK);
+        mReceiver = new ResultReceiverSentReady(new android.os.Handler(),rlSendMessage,ivLoadingRotate,getApplicationContext(),R.animator.girar);
+
         //Iniciate the mail sender service
         MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiver);
 
@@ -1080,6 +1091,21 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         deletedVideos=new boolean[4];
 
         rlSendMessage.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
 
     }
 }
