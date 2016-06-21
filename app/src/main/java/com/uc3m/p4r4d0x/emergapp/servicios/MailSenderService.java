@@ -64,18 +64,16 @@ public class MailSenderService extends Service {
 
                     try {
                         //Send the mail, giving all the parameters to the method
-                        sender.sendMail("This is Subject", "This is Body", "aloarter@gmail.com", "albrathojaverde@gmail.com",
+                        sender.sendMail("Emergency Report!", "The info sended is the next: \n", "aloarter@gmail.com", "albrathojaverde@gmail.com",
                                 toSendMessage, toSendPicturesLocation, toSendvideosLocation, toSendGPSCoord, toSendGPSStreet);
 
 
-                        Log.d("ALRALR", "MSS mensaje enviado");
                         errorCode=1;
                         statusMessage="Message sended";
                         deliverResultToReceiver(errorCode, statusMessage);
 
 
                     } catch (Exception e) {
-                        Log.d("ALRALR", "MSS mensaje falla");
                         errorCode=2;
                         statusMessage="Fail in sending";
                         deliverResultToReceiver(errorCode, statusMessage);

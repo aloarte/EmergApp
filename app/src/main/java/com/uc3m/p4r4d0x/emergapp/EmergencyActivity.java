@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +19,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -38,8 +40,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBManager;
+import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverGPSCoord;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
+import com.uc3m.p4r4d0x.emergapp.servicios.FetchAddressService;
 import com.uc3m.p4r4d0x.emergapp.servicios.MailSenderService;
 
 import java.io.File;
@@ -114,15 +119,14 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     ImageView ivTakePhoto, ivTakeVideo, ivGallery;
 
     //For the screen movements when the info is sended
-
     RelativeLayout rlSendMessage;
-
-
     ImageView ivLoadingRotate;
 
-
     //ResultReceiver for sending when the message is sended
-    protected ResultReceiverSentReady mReceiver;
+    protected ResultReceiverSentReady mReceiverReady;
+    //ResultReceiver for renew the gps position
+    protected ResultReceiverGPSCoord mReceiverGPS;
+
 
     /*Google maps variables*/
     //Frame layout to show and hide map
@@ -135,6 +139,15 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     SharedPreferences sharedpreferences;
 
 
+    //-------------------------------------------------------//
+    //---------------------OVERRIDED METHODS-----------------//
+    //-------------------------------------------------------//
+
+    /*
+   * Desc: method overrided from AppCompatActivity
+   *       this method is called when activity starts
+   *       Initialize all the neccessary parts of the main screen
+   * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,16 +156,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        ivLoadingRotate = (ImageView) findViewById(R.id.ivLoading);
-
-
-
-
-
+        //Load the toolbar
         loadToolbar();
-
-        //Get the GPS position
-        getGPSposition();
 
         //Get All the image vies
         //ImageViews for taking photos or images from gallery
@@ -179,23 +184,30 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         imageViewsPictures[2].setVisibility(View.GONE);
         imageViewsPictures[3].setVisibility(View.GONE);
 
-        //Get the text view
+        //Get the text view for the emerg message
         tvMessagePopUp1 = (TextView) findViewById(R.id.tvInfoMessage);
 
+        //Get the image view for the animated loading image
+        ivLoadingRotate = (ImageView) findViewById(R.id.ivLoading);
 
+        //Get the FrameLayout and RelativeLayout to hide map layer and send layer
         flMap = (FrameLayout) findViewById(R.id.mapLL);
         rlSendMessage = (RelativeLayout) findViewById(R.id.sendMessageRL);
 
+        //Get the map
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.google_MAPVIEW);
         mapFragment.getMapAsync(this);
-        //Get the first image
+
+        //Get the first images
         putFirstImages();
         //Get the first videos
         putFirstVideos();
-
-
+        //Get the GPS position
+        getGPSposition();
         //Load the emergency message
         loadMessage();
+
+        //ON CLICK LISTENER for the alert dialog screen to modify the message
         //Get the default message with the answer in the previous boxes
         tvMessagePopUp1.getText();
         //Set an onclick to rewrite info in the message
@@ -221,6 +233,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
+
+        //ON CLICK LISTENER for the alert dialog screen for sending the message
         ImageView ivSendInfo = (ImageView) findViewById(R.id.ivSendMessage);
         ivSendInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -308,6 +322,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+    /*
+    * Desc: method overrided from OnMapReadyCallback
+    *       this method is called when the map is ready
+    *       Prepare the map configuration and set a marker where the current location is
+    * */
     @Override
     public void onMapReady(GoogleMap map) {
 
@@ -342,6 +361,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 return;
             }
 
+            map.setOnMarkerDragListener(this);
             //Set my location enabled
             map.setMyLocationEnabled(true);
 
@@ -351,13 +371,183 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     .snippet("Location obtained by GPS")
                     .position(currentLatLng)
                     .draggable(true));
-        }
+
+
+}
 
 
 
     }
 
-    //---------------------INNER METHODS---------------
+    /*
+    * Desc: method overrided from GoogleMap.OnMarkerDragListener
+    *       this method get when the marker starts of being dragged
+    * */
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    /*
+    * Desc: method overrided from GoogleMap.OnMarkerDragListener
+    *       this method get when the marker is being dragged
+    * */
+    @Override
+    public void onMarkerDrag(Marker marker) {
+    }
+
+    /*
+    * Desc: method overrided from GoogleMap.OnMarkerDragListener
+    *       this method get when the marker end of being dragged
+    *       When the drag ends, this method get the marker and call
+     *      fetchAddressService to set a new location.
+    * */
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+
+        //Create a blank new Location
+        Location markerLocation=new Location("");
+
+        //Set into this location the latitude and longitude of the marker
+        markerLocation.setLatitude(marker.getPosition().latitude);
+        markerLocation.setLongitude(marker.getPosition().longitude);
+
+        //Start the fetchAddressService to get the address into the TextViews.
+        startFetchAddressService(tViewGPS, tViewGPSCoord, markerLocation);
+
+        //Toast that a new location is selected
+        Toast.makeText(getApplicationContext(), "Selected a new position", Toast.LENGTH_LONG).show();
+    }
+
+
+    /*
+    * desc: Method overrided from the phone activity. Is executed when any photo is taken or when
+    *       a image is selected from the gallery.
+    * par: requestCode: used to determinate which activity calls this method
+    *      resultCode: used to tell if the action was ok
+    *      data: data from the activity
+    * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Check if everything procesed successfully
+        if (resultCode == Activity.RESULT_OK) {
+
+            //onActivityResult for taking a photo
+            if (requestCode == C_PHOTO) {
+                //Obtains the image. Parse with a bundle and a bitmap
+
+                bitMapPictures[2] = BitmapFactory.decodeFile(toSendPicturesPath[2]);
+
+                //Set the new image (bitmapped) to the imageView
+                imageViewsPictures[2].setVisibility(View.VISIBLE);
+                imageViewsPictures[2].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[2], 120, 120, false));
+                imageViewsPictures[2].setImageBitmap(bitMapPictures[2]);
+
+                //Set if the image in the position 3 is obtained
+                obtainedImages[2]=true;
+            }
+            //onActivityResult for taking a video
+            else if (requestCode == C_VIDEO) {
+                uriVideos[2] = data.getData();
+                videoViewsVideos[2].setVisibility(View.VISIBLE);
+                videoViewsVideos[2].setVideoURI(uriVideos[2]);
+                videoViewsVideos[2].setMediaController(new MediaController(this));
+                videoViewsVideos[2].requestFocus();
+                obtainedVideos[2] = true;
+            }
+            //onActivityResult for taking a video from gallery
+            else if (requestCode == C_GALLERY_VIDEO) {
+
+                //Get the uri
+                Uri videoLocation = data.getData();
+                //Get the pattern to make a query for retrieving an image
+                String[] filePathColumn = {MediaStore.Video.Media.DATA};
+                //Make the query based on the previous URI obtained by the previous intent
+                Cursor cursor = getContentResolver().query(
+                        videoLocation, filePathColumn, null, null, null);
+                //get the element
+                cursor.moveToFirst();
+
+                //Get the index where the path is
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                //Obtain the path using the cursor
+                String filePath = cursor.getString(columnIndex);
+                //close cursor
+                cursor.close();
+
+                //Save path into string array to send the video
+                toSendVideosPath[3]=filePath;
+
+                //Put the video on the screen
+                //Find the path of the selected image.
+                uriVideos[3] = data.getData();
+                //Set visibility on
+                videoViewsVideos[3].setVisibility(View.VISIBLE);
+                //set the uri
+                videoViewsVideos[3].setVideoURI(uriVideos[3]);
+                //set the video
+                videoViewsVideos[3].setMediaController(new MediaController(this));
+                videoViewsVideos[3].requestFocus();
+                obtainedVideos[3]=true;
+
+            }
+            //onActivityResult for picking and image from gallery
+            else if (requestCode == C_GALLERY_IMAGE) {
+                //Find the path of the selected image.
+                //Get the uri
+                Uri photoLocation = data.getData();
+                //Get the pattern to make a query for retrieving an image
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                //Make the query based on the previous URI obtained by the previous intent
+                Cursor cursor = getContentResolver().query(
+                        photoLocation, filePathColumn, null, null, null);
+                //get the element
+                cursor.moveToFirst();
+
+                //Get the index where the path is
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                //Obtain the path using the cursor
+                String filePath = cursor.getString(columnIndex);
+                //close cursor
+                cursor.close();
+
+                //Save path into string array to send the picture
+                toSendPicturesPath[3]=filePath;
+
+                //Put the image on the screen
+                //Open this a stream of data/bytes
+                try {
+                    InputStream openInputStream = getContentResolver().openInputStream(photoLocation);
+                    //Take a stream of data and convert in to a bitmap
+                    bitMapPictures[3] = BitmapFactory.decodeStream(openInputStream);
+
+                    //Assign this image to our image view
+                    imageViewsPictures[3].setVisibility(View.VISIBLE);
+                    //imageViewsPictures[3].setImageBitmap(bitMapPictures[3]);
+                    imageViewsPictures[3].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[3], 120, 120, false));
+                    //Set if the image in the position 4 is obtained
+                    obtainedImages[3]=true;
+                }
+                //Catch an exception if the file doesnt exist
+                catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    //alert the user that something went wrong
+                    Toast.makeText(this, getString(R.string.FileNotFound), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+        }
+    }
+
+
+
+
+    //---------------------------------------------------//
+    //---------------------INNER METHODS-----------------//
+    //---------------------------------------------------//
     /*
      * Desc: This method retrieve the info from the popups activities and writes in
      *       the textview the appropiate message
@@ -730,135 +920,83 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
 
-    //---------------------OVERRIDED METHODS---------------
+    /*
+    * Desc:  function to, after the confirmation, send the email with the info
+    * */
+    public void sendInfoByMail(){
+        //Get the string values for the message, the gps addres and the gps longitude&latitude
+        toSendMessage= tvMessagePopUp1.getText().toString();
+        toSendGPSStreet= tViewGPS.getText().toString();
+        toSendGPSCoord= tViewGPSCoord.getText().toString();
+
+        //Auxiliar string array for not sending selected videos
+        String [] toSendVideosPathAux= new String []{"","","",""};
+        //Check if any element of the array is selected to delete (wont be sended)
+        for(int i=0;i<4;i++){
+            if(deletedVideos[i]){
+                //If is deleted, do nothing
+            }
+            else
+            {
+                //If is not deleted, copy the path value
+                toSendVideosPathAux[i]= toSendVideosPath[i];
+            }
+        }
+
+        //Auxiliar string array for not sending selected images
+        String [] toSendPicturesPathAux= new String []{"","","",""};
+        //Check if any element of the array is selected to delete (wont be sended)
+        for(int i=0;i<4;i++){
+            if(deletedImages[i]){
+                //If is deleted, do nothing
+            }
+            else
+            {
+                //If is not deleted, copy the path value
+                toSendPicturesPathAux[i]= toSendPicturesPath[i];
+            }
+        }
+
+        mReceiverReady = new ResultReceiverSentReady(new android.os.Handler(),rlSendMessage,ivLoadingRotate,getApplicationContext(),R.animator.girar);
+
+        //Iniciate the mail sender service
+        MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiverReady);
+
+        //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
+        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
+
+        //Re initializate deletedArrays
+        deletedImages=new boolean[4];
+        deletedVideos=new boolean[4];
+
+        rlSendMessage.setVisibility(View.VISIBLE);
+
+    }
 
     /*
-    * desc: Method overrided from the phone activity. Is executed when any photo is taken or when
-    *       a image is selected from the gallery.
-    * par: requestCode: used to determinate which activity calls this method
-    *      resultCode: used to tell if the action was ok
-    *      data: data from the activity
+    * Desc: Start FetchAddress service, passing a ResultReceiverGPSCoord object to
+    *       get the result value and the Location obtained by the change on the map marker
     * */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void startFetchAddressService(TextView paramViewAddress, TextView paramViewCoord, Location locationG) {
 
-        //Check if everything procesed successfully
-        if (resultCode == Activity.RESULT_OK) {
+        //Iniciate ResultReceiverGPSCoord object
+        mReceiverGPS = new ResultReceiverGPSCoord(new android.os.Handler(), paramViewAddress,paramViewCoord);
 
-            //onActivityResult for taking a photo
-            if (requestCode == C_PHOTO) {
-                //Obtains the image. Parse with a bundle and a bitmap
+        //Create the intent to start the FetchAddressService
+        Intent intent = new Intent(getApplicationContext(), FetchAddressService.class);
+        //Add the params for the service
+        intent.putExtra(Constants.RECEIVER, mReceiverGPS);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, locationG);
 
-                bitMapPictures[2] = BitmapFactory.decodeFile(toSendPicturesPath[2]);
-
-                //Set the new image (bitmapped) to the imageView
-                imageViewsPictures[2].setVisibility(View.VISIBLE);
-                imageViewsPictures[2].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[2], 120, 120, false));
-                imageViewsPictures[2].setImageBitmap(bitMapPictures[2]);
-
-                //Set if the image in the position 3 is obtained
-                obtainedImages[2]=true;
-            }
-            //onActivityResult for taking a video
-            else if (requestCode == C_VIDEO) {
-                uriVideos[2] = data.getData();
-                videoViewsVideos[2].setVisibility(View.VISIBLE);
-                videoViewsVideos[2].setVideoURI(uriVideos[2]);
-                videoViewsVideos[2].setMediaController(new MediaController(this));
-                videoViewsVideos[2].requestFocus();
-                obtainedVideos[2] = true;
-            }
-            //onActivityResult for taking a video from gallery
-            else if (requestCode == C_GALLERY_VIDEO) {
-
-                //Get the uri
-                Uri videoLocation = data.getData();
-                //Get the pattern to make a query for retrieving an image
-                String[] filePathColumn = {MediaStore.Video.Media.DATA};
-                //Make the query based on the previous URI obtained by the previous intent
-                Cursor cursor = getContentResolver().query(
-                        videoLocation, filePathColumn, null, null, null);
-                //get the element
-                cursor.moveToFirst();
-
-                //Get the index where the path is
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                //Obtain the path using the cursor
-                String filePath = cursor.getString(columnIndex);
-                //close cursor
-                cursor.close();
-
-                //Save path into string array to send the video
-                toSendVideosPath[3]=filePath;
-
-                //Put the video on the screen
-                //Find the path of the selected image.
-                uriVideos[3] = data.getData();
-                //Set visibility on
-                videoViewsVideos[3].setVisibility(View.VISIBLE);
-                //set the uri
-                videoViewsVideos[3].setVideoURI(uriVideos[3]);
-                //set the video
-                videoViewsVideos[3].setMediaController(new MediaController(this));
-                videoViewsVideos[3].requestFocus();
-                obtainedVideos[3]=true;
-
-            }
-            //onActivityResult for picking and image from gallery
-            else if (requestCode == C_GALLERY_IMAGE) {
-                //Find the path of the selected image.
-                //Get the uri
-                Uri photoLocation = data.getData();
-                //Get the pattern to make a query for retrieving an image
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                //Make the query based on the previous URI obtained by the previous intent
-                Cursor cursor = getContentResolver().query(
-                        photoLocation, filePathColumn, null, null, null);
-                //get the element
-                cursor.moveToFirst();
-
-                //Get the index where the path is
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                //Obtain the path using the cursor
-                String filePath = cursor.getString(columnIndex);
-                //close cursor
-                cursor.close();
-
-                //Save path into string array to send the picture
-                toSendPicturesPath[3]=filePath;
-
-                //Put the image on the screen
-                //Open this a stream of data/bytes
-                try {
-                    InputStream openInputStream = getContentResolver().openInputStream(photoLocation);
-                    //Take a stream of data and convert in to a bitmap
-                    bitMapPictures[3] = BitmapFactory.decodeStream(openInputStream);
-
-                    //Assign this image to our image view
-                    imageViewsPictures[3].setVisibility(View.VISIBLE);
-                    //imageViewsPictures[3].setImageBitmap(bitMapPictures[3]);
-                    imageViewsPictures[3].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[3], 120, 120, false));
-                    //Set if the image in the position 4 is obtained
-                    obtainedImages[3]=true;
-                }
-                //Catch an exception if the file doesnt exist
-                catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    //alert the user that something went wrong
-                    Toast.makeText(this, getString(R.string.FileNotFound), Toast.LENGTH_LONG).show();
-
-                }
-            }
-
-        }
+        //Start service
+        startService(intent);
     }
 
 
 
-
-    //---------------------ON CLICK BUTTON METHODS---------------
-
+    //-----------------------------------------------------------//
+    //---------------------ON CLICK BUTTON METHODS---------------//
+    //-----------------------------------------------------------//
     /*
     * Desc: Invoked when bSelectImageGallery is pressed
     *       This method gets an image from the phone gallery
@@ -1041,71 +1179,5 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-    /*
-    * Desc:  function to, after the confirmation, send the email with the info
-    * */
-    public void sendInfoByMail(){
-        //Get the string values for the message, the gps addres and the gps longitude&latitude
-        toSendMessage= tvMessagePopUp1.getText().toString();
-        toSendGPSStreet= tViewGPS.getText().toString();
-        toSendGPSCoord= tViewGPSCoord.getText().toString();
 
-        //Auxiliar string array for not sending selected videos
-        String [] toSendVideosPathAux= new String []{"","","",""};
-        //Check if any element of the array is selected to delete (wont be sended)
-        for(int i=0;i<4;i++){
-            if(deletedVideos[i]){
-                //If is deleted, do nothing
-            }
-            else
-            {
-                //If is not deleted, copy the path value
-                toSendVideosPathAux[i]= toSendVideosPath[i];
-            }
-        }
-
-        //Auxiliar string array for not sending selected images
-        String [] toSendPicturesPathAux= new String []{"","","",""};
-        //Check if any element of the array is selected to delete (wont be sended)
-        for(int i=0;i<4;i++){
-            if(deletedImages[i]){
-                //If is deleted, do nothing
-            }
-            else
-            {
-                //If is not deleted, copy the path value
-                toSendPicturesPathAux[i]= toSendPicturesPath[i];
-            }
-        }
-
-        mReceiver = new ResultReceiverSentReady(new android.os.Handler(),rlSendMessage,ivLoadingRotate,getApplicationContext(),R.animator.girar);
-
-        //Iniciate the mail sender service
-        MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiver);
-
-        //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
-        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
-
-        //Re initializate deletedArrays
-        deletedImages=new boolean[4];
-        deletedVideos=new boolean[4];
-
-        rlSendMessage.setVisibility(View.VISIBLE);
-
-    }
-
-    @Override
-    public void onMarkerDragStart(Marker marker) {
-
-    }
-
-    @Override
-    public void onMarkerDrag(Marker marker) {
-
-    }
-
-    @Override
-    public void onMarkerDragEnd(Marker marker) {
-
-    }
 }

@@ -57,6 +57,7 @@ public class FetchAddressService extends IntentService {
         //Create a Geocoder object
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
+
         // Get the location passed to this service through an extra.
         Location locationFromGPS = intent.getParcelableExtra(
                 Constants.LOCATION_DATA_EXTRA);
@@ -64,6 +65,7 @@ public class FetchAddressService extends IntentService {
         accuracy=(int)locationFromGPS.getAccuracy();
         // Get the ResultReceiver object passed to this service through an extra.
         mSender=intent.getParcelableExtra(Constants.RECEIVER);
+
 
         //Create a List of addresses
         List<Address> addresses = null;

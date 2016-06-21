@@ -40,10 +40,12 @@ public class ResultReceiverSentReady extends ResultReceiver {
         contextRR=context;
         ivRotate=ivparam;
 
-        Animation giro;
-        giro= AnimationUtils.loadAnimation(contextRR, idToRotate);
-        giro.reset();
-        ivRotate.startAnimation(giro);
+        //Create and load the animation
+        Animation rotateAnimation;
+        rotateAnimation= AnimationUtils.loadAnimation(contextRR, idToRotate);
+        //Reset and start it
+        rotateAnimation.reset();
+        ivRotate.startAnimation(rotateAnimation);
 
     }
 
@@ -68,15 +70,13 @@ public class ResultReceiverSentReady extends ResultReceiver {
         }
         else {
 
-            int duration=3000;
             // Get the address and the latitude and longitude from the resultData object
             resultMessage = resultData.getString(Constants.RESULT_DATA_KEY);
+
+            //Toast the result
             Toast.makeText(contextRR, resultMessage, Toast.LENGTH_LONG).show();
-            Log.d("ALRALR", "Result code: " + resultCode + " resultmessage: " + resultMessage);
 
-
-
-
+            //Hide the layer
             rlToHide.setVisibility(View.INVISIBLE);
 
         }
