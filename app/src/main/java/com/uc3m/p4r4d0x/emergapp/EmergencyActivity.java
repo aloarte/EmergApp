@@ -652,47 +652,50 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             else {
                 cursor.moveToNext();
             }
-            //Check if picture is valid ( was taken recently )
-            if (isMediaRecent(cursor.getString(3))) {
+            //Check if cursor is not empty
+            if(cursor!=null && cursor.getCount()>0){
+                //Check if picture is valid ( was taken recently )
+                if (isMediaRecent(cursor.getString(3))) {
 
-                //Switch which ImageView have to fill
-                switch (i) {
-                    case 0:
-                        //Get the ImageView
-                        imageViewsPictures[0].setVisibility(View.VISIBLE);
-                        //Get the image location from the cursor element
-                        toSendPicturesPath[0] = cursor.getString(1);
-                        //Build File with the location
-                        imageFile1            = new File(toSendPicturesPath[0]);
-                        if (imageFile1.exists()) {
-                            //Build a bit map and set this bit map into the image view
-                            bitMapPictures[0] = BitmapFactory.decodeFile(toSendPicturesPath[0]);
-                            imageViewsPictures[0].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[0], 120, 120, false));
-                            //Set if the image in the position 1 is obtained
-                            obtainedImages[0] = true;
-                        }
-                        break;
-                    case 1:
-                        //Get the ImageView visible
-                        imageViewsPictures[1].setVisibility(View.VISIBLE);
+                    //Switch which ImageView have to fill
+                    switch (i) {
+                        case 0:
+                            //Get the ImageView
+                            imageViewsPictures[0].setVisibility(View.VISIBLE);
+                            //Get the image location from the cursor element
+                            toSendPicturesPath[0] = cursor.getString(1);
+                            //Build File with the location
+                            imageFile1 = new File(toSendPicturesPath[0]);
+                            if (imageFile1.exists()) {
+                                //Build a bit map and set this bit map into the image view
+                                bitMapPictures[0] = BitmapFactory.decodeFile(toSendPicturesPath[0]);
+                                imageViewsPictures[0].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[0], 120, 120, false));
+                                //Set if the image in the position 1 is obtained
+                                obtainedImages[0] = true;
+                            }
+                            break;
+                        case 1:
+                            //Get the ImageView visible
+                            imageViewsPictures[1].setVisibility(View.VISIBLE);
 
-                        //Get the image location from the cursor element
-                        toSendPicturesPath[1] = cursor.getString(1);
-                        //Build File with the location
-                            imageFile2        = new File(toSendPicturesPath[1]);
-                        if (imageFile2.exists()) {
-                            //Build a bit map and set this bit map into the image view
-                            bitMapPictures[1] = BitmapFactory.decodeFile(toSendPicturesPath[1]);
-                            imageViewsPictures[1].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[1], 120, 120, false));
+                            //Get the image location from the cursor element
+                            toSendPicturesPath[1] = cursor.getString(1);
+                            //Build File with the location
+                            imageFile2 = new File(toSendPicturesPath[1]);
+                            if (imageFile2.exists()) {
+                                //Build a bit map and set this bit map into the image view
+                                bitMapPictures[1] = BitmapFactory.decodeFile(toSendPicturesPath[1]);
+                                imageViewsPictures[1].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[1], 120, 120, false));
 
-                            //Set if the image in the position 2 is obtained
-                            obtainedImages[1] = true;
-                        }
-                        break;
-                    default:
-                        break;
+                                //Set if the image in the position 2 is obtained
+                                obtainedImages[1] = true;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
                 }
-
             }
         }
     }
@@ -736,39 +739,42 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             else {
                 cursor.moveToNext();
             }
-            //Check if video is valid ( was taken recently )
-            if (isMediaRecent(cursor.getString(3))) {
-                //Video is valid
-                //Switch which VideoView have to fill
-                switch (i) {
-                    case 0:
-                        //set the video view visibile
-                        videoViewsVideos[0].setVisibility(View.VISIBLE);
-                        //Get video's path
-                        toSendVideosPath[0] =cursor.getString(1);
-                        //Get the uri of the video
-                        uriVideos[0]        = Uri.parse(toSendVideosPath[0]);
-                        obtainedVideos[0]   = true;
-                        //Put the video in the VideoView
-                        videoViewsVideos[0].setVideoURI(uriVideos[0]);
-                        videoViewsVideos[0].setMediaController(new MediaController(this));
-                        videoViewsVideos[0].requestFocus();
-                        break;
-                    case 1:
-                        //set the video view visibile
-                        videoViewsVideos[1].setVisibility(View.VISIBLE);
-                        //Get video's path
-                        toSendVideosPath[1] = cursor.getString(1);
-                        //Get the uri of the video
-                        uriVideos[1]        = Uri.parse(cursor.getString(1));
-                        obtainedVideos[1]   = true;
-                        //Put the video in the VideoView
-                        videoViewsVideos[1].setVideoURI(uriVideos[1]);
-                        videoViewsVideos[1].setMediaController(new MediaController(this));
-                        videoViewsVideos[1].requestFocus();
-                        break;
-                    default:
-                        break;
+            //Check if cursor is not empty
+            if(cursor!=null && cursor.getCount()>0) {
+                //Check if video is valid ( was taken recently )
+                if (isMediaRecent(cursor.getString(3))) {
+                    //Video is valid
+                    //Switch which VideoView have to fill
+                    switch (i) {
+                        case 0:
+                            //set the video view visibile
+                            videoViewsVideos[0].setVisibility(View.VISIBLE);
+                            //Get video's path
+                            toSendVideosPath[0] = cursor.getString(1);
+                            //Get the uri of the video
+                            uriVideos[0] = Uri.parse(toSendVideosPath[0]);
+                            obtainedVideos[0] = true;
+                            //Put the video in the VideoView
+                            videoViewsVideos[0].setVideoURI(uriVideos[0]);
+                            videoViewsVideos[0].setMediaController(new MediaController(this));
+                            videoViewsVideos[0].requestFocus();
+                            break;
+                        case 1:
+                            //set the video view visibile
+                            videoViewsVideos[1].setVisibility(View.VISIBLE);
+                            //Get video's path
+                            toSendVideosPath[1] = cursor.getString(1);
+                            //Get the uri of the video
+                            uriVideos[1] = Uri.parse(cursor.getString(1));
+                            obtainedVideos[1] = true;
+                            //Put the video in the VideoView
+                            videoViewsVideos[1].setVideoURI(uriVideos[1]);
+                            videoViewsVideos[1].setMediaController(new MediaController(this));
+                            videoViewsVideos[1].requestFocus();
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
