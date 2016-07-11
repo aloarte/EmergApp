@@ -44,7 +44,7 @@
                     android:tag="1"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
-                    android:onClick="onClickDeleteSelectedPicture" />
+                    android:onClick="onClickDeleteSelectedItem" />
 
             </LinearLayout>
 
@@ -73,7 +73,7 @@
                     android:tag="2"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
-                    android:onClick="onClickDeleteSelectedPicture" />
+                    android:onClick="onClickDeleteSelectedItem" />
             </LinearLayout>
 
             <LinearLayout
@@ -101,7 +101,7 @@
                     android:src="@mipmap/delete"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
-                    android:onClick="onClickDeleteSelectedPicture" />
+                    android:onClick="onClickDeleteSelectedItem" />
             </LinearLayout>
 
             <LinearLayout
@@ -129,7 +129,7 @@
                     android:src="@mipmap/delete"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
-                    android:onClick="onClickDeleteSelectedPicture" />
+                    android:onClick="onClickDeleteSelectedItem" />
             </LinearLayout>
 
         </LinearLayout>

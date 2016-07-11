@@ -1,6 +1,7 @@
 package com.uc3m.p4r4d0x.emergapp.receivers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
@@ -8,10 +9,12 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uc3m.p4r4d0x.emergapp.EmergencyActivity;
 import com.uc3m.p4r4d0x.emergapp.R;
 import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
 
@@ -23,7 +26,8 @@ import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
 
 public class ResultReceiverSentReady extends ResultReceiver {
         private Receiver mReceiver=null;
-        private RelativeLayout rlToHide;
+        private RelativeLayout rlSendingMessage,rlReloadInitialScreen;
+        private LinearLayout llAfterReport;
         private ImageView ivRotate;
         private Context contextRR;
         private String resultMessage="";
@@ -34,11 +38,13 @@ public class ResultReceiverSentReady extends ResultReceiver {
     * Param: Handler and the TextViews for printing the address and the latitude and longitude
     * Desc: Main Constructor
     * */
-    public ResultReceiverSentReady(android.os.Handler handler,RelativeLayout layoutToHide,ImageView ivparam,Context context,int idToRotate) {
+    public ResultReceiverSentReady(android.os.Handler handler,LinearLayout layoutAfterSend,RelativeLayout layoutSendingMessage,RelativeLayout layoutReloadScreen,ImageView ivparam,Context context,int idToRotate) {
         super(handler);
-        rlToHide              = layoutToHide;
-        contextRR=context;
-        ivRotate=ivparam;
+        rlSendingMessage      = layoutSendingMessage;
+        rlReloadInitialScreen = layoutReloadScreen;
+        llAfterReport         = layoutAfterSend;
+        contextRR             = context;
+        ivRotate              = ivparam;
 
         //Create and load the animation
         Animation rotateAnimation;
@@ -76,9 +82,17 @@ public class ResultReceiverSentReady extends ResultReceiver {
             //Toast the result
             Toast.makeText(contextRR, resultMessage, Toast.LENGTH_LONG).show();
 
-            //Hide the layer
-            rlToHide.setVisibility(View.INVISIBLE);
 
+
+            if(resultCode==2){
+                //Stay for a new send
+                //Hide the layer
+                llAfterReport.setVisibility(View.INVISIBLE);
+            }
+            else if (resultCode==1){
+                rlSendingMessage.setVisibility(View.INVISIBLE);
+                rlReloadInitialScreen.setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -28,15 +28,18 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.graphics.Bitmap;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -85,6 +88,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     //Arrays with ImageViews for the X icons to delete selected images
     ImageView[] imageViewsDeleteSelected   = new ImageView[8];
+    ImageView[] imageViewDeletePicture     = new ImageView[4];
+    ImageView[] imageViewDeleteVideo     = new ImageView[4];
 
     //-----Control arrays -----
     //Arrays with info if the pictures are selected and obtained
@@ -119,7 +124,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     ImageView ivTakePhoto, ivTakeVideo, ivGallery;
 
     //For the screen movements when the info is sended
-    RelativeLayout rlSendMessage;
+    RelativeLayout rlSendMessage, rlReloadScreen;
+    LinearLayout llAfterSendingMessage;
     ImageView ivLoadingRotate;
 
     //ResultReceiver for sending when the message is sended
@@ -133,6 +139,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     FrameLayout flMap;
     //map fragment containing the google map
     MapFragment mapFragment;
+    GoogleMap googleMapCP;
 
     //Info to use shared preferences to have a session
     final String MyPREFERENCES = "userPreferences";
@@ -158,45 +165,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         //Load the toolbar
         loadToolbar();
-
-        //Get All the image vies
-        //ImageViews for taking photos or images from gallery
-        ivTakePhoto = (ImageView) findViewById(R.id.ivCapturePhoto);
-        ivTakeVideo = (ImageView) findViewById(R.id.ivCaptureVideo);
-        ivGallery = (ImageView) findViewById(R.id.ivSelPictureGallery);
-        //VideoViews for video previews images
-        videoViewsVideos[0] = (VideoView) findViewById(R.id.ivVideo1);
-        videoViewsVideos[1] = (VideoView) findViewById(R.id.ivVideo2);
-        videoViewsVideos[2] = (VideoView) findViewById(R.id.ivVideo3);
-        videoViewsVideos[3] = (VideoView) findViewById(R.id.ivVideo4);
-        //ImageViews for images
-        imageViewsPictures[0] = (ImageView) findViewById(R.id.ivPicture1);
-        imageViewsPictures[1] = (ImageView) findViewById(R.id.ivPicture2);
-        imageViewsPictures[2] = (ImageView) findViewById(R.id.ivPicture3);
-        imageViewsPictures[3] = (ImageView) findViewById(R.id.ivPicture4);
-        //Make all dissapear innitially
-        videoViewsVideos[0].setVisibility(View.GONE);
-        videoViewsVideos[1].setVisibility(View.GONE);
-        videoViewsVideos[2].setVisibility(View.GONE);
-        videoViewsVideos[3].setVisibility(View.GONE);
-        imageViewsPictures[0].setVisibility(View.GONE);
-        imageViewsPictures[1].setVisibility(View.GONE);
-        imageViewsPictures[2].setVisibility(View.GONE);
-        imageViewsPictures[3].setVisibility(View.GONE);
-
-        //Get the text view for the emerg message
-        tvMessagePopUp1 = (TextView) findViewById(R.id.tvInfoMessage);
-
-        //Get the image view for the animated loading image
-        ivLoadingRotate = (ImageView) findViewById(R.id.ivLoading);
-
-        //Get the FrameLayout and RelativeLayout to hide map layer and send layer
-        flMap = (FrameLayout) findViewById(R.id.mapLL);
-        rlSendMessage = (RelativeLayout) findViewById(R.id.sendMessageRL);
-
-        //Get the map
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.google_MAPVIEW);
-        mapFragment.getMapAsync(this);
+        //Load the views
+        loadViews();
 
         //Get the first images
         putFirstImages();
@@ -330,6 +300,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap map) {
 
+        googleMapCP=map;
         float lat,longit;
         String[] parts;
 
@@ -373,7 +344,12 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     .draggable(true));
 
 
-}
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 13));
+
+
+
+
+        }
 
 
 
@@ -412,6 +388,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         markerLocation.setLatitude(marker.getPosition().latitude);
         markerLocation.setLongitude(marker.getPosition().longitude);
 
+        toSendGPSCoord=marker.getPosition().latitude+","+marker.getPosition().longitude;
+
         //Start the fetchAddressService to get the address into the TextViews.
         startFetchAddressService(tViewGPS, tViewGPSCoord, markerLocation);
 
@@ -442,6 +420,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
                 //Set the new image (bitmapped) to the imageView
                 imageViewsPictures[2].setVisibility(View.VISIBLE);
+                imageViewDeletePicture[2].setVisibility(View.VISIBLE);
                 imageViewsPictures[2].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[2], 120, 120, false));
                 imageViewsPictures[2].setImageBitmap(bitMapPictures[2]);
 
@@ -452,6 +431,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             else if (requestCode == C_VIDEO) {
                 uriVideos[2] = data.getData();
                 videoViewsVideos[2].setVisibility(View.VISIBLE);
+                imageViewDeleteVideo[2].setVisibility(View.VISIBLE);
                 videoViewsVideos[2].setVideoURI(uriVideos[2]);
                 videoViewsVideos[2].setMediaController(new MediaController(this));
                 videoViewsVideos[2].requestFocus();
@@ -485,6 +465,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 uriVideos[3] = data.getData();
                 //Set visibility on
                 videoViewsVideos[3].setVisibility(View.VISIBLE);
+                imageViewDeleteVideo[3].setVisibility(View.VISIBLE);
                 //set the uri
                 videoViewsVideos[3].setVideoURI(uriVideos[3]);
                 //set the video
@@ -525,7 +506,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
                     //Assign this image to our image view
                     imageViewsPictures[3].setVisibility(View.VISIBLE);
-                    //imageViewsPictures[3].setImageBitmap(bitMapPictures[3]);
+                    imageViewDeletePicture[3].setVisibility(View.VISIBLE);
                     imageViewsPictures[3].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[3], 120, 120, false));
                     //Set if the image in the position 4 is obtained
                     obtainedImages[3]=true;
@@ -662,6 +643,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         case 0:
                             //Get the ImageView
                             imageViewsPictures[0].setVisibility(View.VISIBLE);
+                            imageViewDeletePicture[0].setVisibility(View.VISIBLE);
                             //Get the image location from the cursor element
                             toSendPicturesPath[0] = cursor.getString(1);
                             //Build File with the location
@@ -677,7 +659,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         case 1:
                             //Get the ImageView visible
                             imageViewsPictures[1].setVisibility(View.VISIBLE);
-
+                            imageViewDeletePicture[1].setVisibility(View.VISIBLE);
                             //Get the image location from the cursor element
                             toSendPicturesPath[1] = cursor.getString(1);
                             //Build File with the location
@@ -749,6 +731,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         case 0:
                             //set the video view visibile
                             videoViewsVideos[0].setVisibility(View.VISIBLE);
+                            imageViewDeleteVideo[0].setVisibility(View.VISIBLE);
                             //Get video's path
                             toSendVideosPath[0] = cursor.getString(1);
                             //Get the uri of the video
@@ -762,6 +745,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         case 1:
                             //set the video view visibile
                             videoViewsVideos[1].setVisibility(View.VISIBLE);
+                            imageViewDeleteVideo[1].setVisibility(View.VISIBLE);
                             //Get video's path
                             toSendVideosPath[1] = cursor.getString(1);
                             //Get the uri of the video
@@ -884,6 +868,72 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     /*
+    * Desc: load all the views used in this activity
+    *
+    * */
+    public void loadViews(){
+        //Get All the image views
+        //ImageViews for taking photos or images from gallery
+        ivTakePhoto           = (ImageView) findViewById(R.id.ivCapturePhoto);
+        ivTakeVideo           = (ImageView) findViewById(R.id.ivCaptureVideo);
+        ivGallery             = (ImageView) findViewById(R.id.ivSelPictureGallery);
+        //VideoViews for video previews images
+        videoViewsVideos[0]   = (VideoView) findViewById(R.id.ivVideo1);
+        videoViewsVideos[1]   = (VideoView) findViewById(R.id.ivVideo2);
+        videoViewsVideos[2]   = (VideoView) findViewById(R.id.ivVideo3);
+        videoViewsVideos[3]   = (VideoView) findViewById(R.id.ivVideo4);
+        //ImageViews for images
+        imageViewsPictures[0] = (ImageView) findViewById(R.id.ivPicture1);
+        imageViewsPictures[1] = (ImageView) findViewById(R.id.ivPicture2);
+        imageViewsPictures[2] = (ImageView) findViewById(R.id.ivPicture3);
+        imageViewsPictures[3] = (ImageView) findViewById(R.id.ivPicture4);
+
+        //Make all dissapear innitially
+        videoViewsVideos[0].setVisibility(View.GONE);
+        videoViewsVideos[1].setVisibility(View.GONE);
+        videoViewsVideos[2].setVisibility(View.GONE);
+        videoViewsVideos[3].setVisibility(View.GONE);
+        imageViewsPictures[0].setVisibility(View.GONE);
+        imageViewsPictures[1].setVisibility(View.GONE);
+        imageViewsPictures[2].setVisibility(View.GONE);
+        imageViewsPictures[3].setVisibility(View.GONE);
+
+        //For the popup screen
+        imageViewDeletePicture[0] = (ImageView) findViewById(R.id.ivDeleteMainPicture1);
+        imageViewDeletePicture[1] = (ImageView) findViewById(R.id.ivDeleteMainPicture2);
+        imageViewDeletePicture[2] = (ImageView) findViewById(R.id.ivDeleteMainPicture3);
+        imageViewDeletePicture[3] = (ImageView) findViewById(R.id.ivDeleteMainPicture4);
+        imageViewDeleteVideo[0]   = (ImageView) findViewById(R.id.ivDeleteMainVideo1);
+        imageViewDeleteVideo[1]   = (ImageView) findViewById(R.id.ivDeleteMainVideo2);
+        imageViewDeleteVideo[2]   = (ImageView) findViewById(R.id.ivDeleteMainVideo3);
+        imageViewDeleteVideo[3]   = (ImageView) findViewById(R.id.ivDeleteMainVideo4);
+
+        imageViewDeletePicture[0].setVisibility(View.GONE);
+        imageViewDeletePicture[1].setVisibility(View.GONE);
+        imageViewDeletePicture[2].setVisibility(View.GONE);
+        imageViewDeletePicture[3].setVisibility(View.GONE);
+        imageViewDeleteVideo[0].setVisibility(View.GONE);
+        imageViewDeleteVideo[1].setVisibility(View.GONE);
+        imageViewDeleteVideo[2].setVisibility(View.GONE);
+        imageViewDeleteVideo[3].setVisibility(View.GONE);
+
+        //Get the text view for the emerg message
+        tvMessagePopUp1       = (TextView) findViewById(R.id.tvInfoMessage);
+
+        //Get the image view for the animated loading image
+        ivLoadingRotate       = (ImageView) findViewById(R.id.ivLoading);
+
+        //Get the FrameLayout and RelativeLayout to hide map layer and send layer
+        flMap                 = (FrameLayout) findViewById(R.id.mapLL);
+        rlSendMessage         = (RelativeLayout) findViewById(R.id.sendMessageRL);
+        rlReloadScreen        = (RelativeLayout) findViewById(R.id.reloadScreenRL);
+        llAfterSendingMessage = (LinearLayout) findViewById(R.id.afterSendingLL);
+
+        //Get the map
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.google_MAPVIEW);
+        mapFragment.getMapAsync(this);
+    }
+    /*
     * Desc: Upgrade into the database the points and level for the logged user
     * */
     public void changeUserStats(){
@@ -963,7 +1013,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
-        mReceiverReady = new ResultReceiverSentReady(new android.os.Handler(),rlSendMessage,ivLoadingRotate,getApplicationContext(),R.animator.girar);
+        mReceiverReady = new ResultReceiverSentReady(new android.os.Handler(),llAfterSendingMessage,rlSendMessage,rlReloadScreen,ivLoadingRotate,getApplicationContext(),R.animator.girar);
 
         //Iniciate the mail sender service
         MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiverReady);
@@ -975,7 +1025,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         deletedImages=new boolean[4];
         deletedVideos=new boolean[4];
 
-        rlSendMessage.setVisibility(View.VISIBLE);
+        llAfterSendingMessage.setVisibility(View.VISIBLE);
 
     }
 
@@ -1156,7 +1206,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     /*
     * Desc: on click function to remove an item right before sending all the info
     * */
-    public void onClickDeleteSelectedPicture(View v) {
+    public void onClickDeleteSelectedItem(View v) {
         //Get the tag from the imageview
         int tag = Integer.parseInt((String) v.getTag());
         int index= tag-1;
@@ -1185,5 +1235,65 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+    /*
+    * Desc: on click function to remove a picture
+    * */
+    public void onClickDeletePicture(View v) {
+        //Get the tag from the imageview
+        int tag = Integer.parseInt((String) v.getTag());
+        int index= tag-1;
 
+        //If this image was already obtained
+        if(obtainedImages[index]){
+            //Make invisible the selection
+            imageViewsPictures[index].setVisibility(View.GONE);
+            imageViewDeletePicture[index].setVisibility(View.GONE);
+            obtainedImages[index]=false;
+        }
+    }
+
+    /*
+    * Desc: on click function to remove a video
+    * */
+    public void onClickDeleteVideo(View v) {
+        //Get the tag from the imageview
+        int tag = Integer.parseInt((String) v.getTag());
+        int index= tag-1;
+
+        //If this image was already obtained
+        if(obtainedVideos[index]){
+            //Make invisible the selection
+            videoViewsVideos[index].setVisibility(View.GONE);
+            imageViewDeleteVideo[index].setVisibility(View.GONE);
+            obtainedVideos[index]=false;
+        }
+    }
+
+    /*
+   * Desc: on click function to reload a new report after sending one
+   * */
+    public void onClickReloadInitialScreen(View v){
+        //Create a new intent and save the info on it
+        Intent i = new Intent(getApplicationContext(), EmMessage1.class);
+        //Launch next activity
+        startActivity(i);
+
+    }
+
+    public void onClickCenterAtMarker(View v){
+
+        float lat,longit;
+        String[] parts;
+
+        //Split the string into 2 parts, separated by the comma
+        parts = toSendGPSCoord.split(",");
+
+        //Parse into float both strings
+        lat=Float.parseFloat(parts[0]);
+        longit=Float.parseFloat(parts[1]);
+
+        //Create a LatLng object with the GPS position
+        LatLng currentLatLng = new LatLng(lat, longit);
+        googleMapCP.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 13));
+    }
 }

@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         //If the login was correct
         if (checkLogIn()) {
             // If the loggin is successfoul, save the user as a logged user into a shared preferences
+
             String username=etUser.getText().toString();
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString("username", username);

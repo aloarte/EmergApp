@@ -35,8 +35,9 @@
     <string name="title_activity_wait_for_sending">We are sending your report</string>
     <string name="wait_for_sending">We are sending your report</string>
     <string name="sWaitPoints">...</string>
-
-
+    <string name="ReloadInitialScreen" />
+    <string name="ReloadScreen">Click to send another report</string>
+    <string name="MailReport">Mail to send reports</string>
 
 
 </resources>

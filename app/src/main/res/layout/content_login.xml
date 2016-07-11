@@ -89,6 +89,7 @@
             android:layout_toRightOf="@+id/textView"
             android:layout_alignRight="@+id/etPassword"
             android:layout_alignEnd="@+id/etPassword" />
+
     </LinearLayout>
 
     <LinearLayout

@@ -3,6 +3,7 @@ package com.uc3m.p4r4d0x.emergapp.servicios;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -24,6 +25,8 @@ import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
 public class MailSenderService extends Service {
     private Context sContext;
     protected ResultReceiver mSender;
+    final String MyPREFERENCES="userPreferences";
+    SharedPreferences sharedpreferences;
 
     public MailSenderService(Context c,ResultReceiverSentReady mReceiver) {
         mSender=mReceiver;
@@ -64,7 +67,7 @@ public class MailSenderService extends Service {
 
                     try {
                         //Send the mail, giving all the parameters to the method
-                        sender.sendMail("Emergency Report!", "The info sended is the next: \n", "aloarter@gmail.com", "albrathojaverde@gmail.com",
+                        sender.sendMail("Emergency Report!", "The info sended is the next: \n", "albrathojaverde@gmail.com", "albrathojaverde@gmail.com",
                                 toSendMessage, toSendPicturesLocation, toSendvideosLocation, toSendGPSCoord, toSendGPSStreet);
 
 
