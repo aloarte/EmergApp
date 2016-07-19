@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         else{
 
             //Create and launch next activity: EmMessage1
-            Intent myIntent = new Intent(getApplicationContext(), EmMessage1.class);
+            Intent myIntent = new Intent(getApplicationContext(), HomeScreenActivity.class);
             startActivity(myIntent);
         }
 
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             editor.commit();
 
             //Create and launch a new activity
-            Intent myIntent = new Intent(getApplicationContext(), EmMessage1.class);
+            Intent myIntent = new Intent(getApplicationContext(), HomeScreenActivity.class);
             startActivity(myIntent);
         }
         //Wrong login

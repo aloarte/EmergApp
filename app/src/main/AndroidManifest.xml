@@ -68,6 +68,41 @@
 
         <activity android:name=".EmMessage1" />
         <activity android:name=".EmMessage2" />
+        <activity
+            android:name=".HomeScreenActivity"
+            android:label="@string/title_activity_home_screen"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RankingActivity"
+            android:label="@string/title_activity_ranking"
+            android:parentActivityName=".HomeScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uc3m.p4r4d0x.emergapp.HomeScreenActivity" />
+        </activity>
+        <activity
+            android:name=".AchievementsActivity"
+            android:label="@string/title_activity_achievements"
+            android:parentActivityName=".HomeScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uc3m.p4r4d0x.emergapp.HomeScreenActivity" />
+        </activity>
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AccountConfigurationActivity"
+            android:label="@string/title_activity_account_configuration"
+            android:parentActivityName=".HomeScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uc3m.p4r4d0x.emergapp.HomeScreenActivity" />
+        </activity>
     </application>
 
 </manifest>

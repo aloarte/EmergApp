@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import com.uc3m.p4r4d0x.emergapp.R;
 
 /**
- * Created by p4r4d0x on 19/07/16.
+ * Created by Alvaro Loarte on 19/07/16.
+ * Desc: this class extends a fragment from a TabLayout of Ranking activity
+ *       Gets the second fragment (tab) of the TabLayout: XP Ranking
+ *
  */
 public class RankFragment2 extends Fragment {
     @Nullable

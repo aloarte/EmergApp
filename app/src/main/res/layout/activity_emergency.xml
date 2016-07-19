@@ -23,59 +23,94 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="1" >
+                android:weightSum="1"
+                android:baselineAligned="true">
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="43dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
                     android:weightSum="1">
 
                     <ImageView
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:id="@+id/ivLogoToolbar"
                         android:src="@mipmap/ic_launcher" />
+
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:orientation="horizontal"
+                    android:layout_width="135dp"
+                    android:layout_height="match_parent"
+                    android:weightSum="1"
+                    android:layout_gravity="left">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:weightSum="1" >
+
+                        <TextView
+                            android:id="@+id/tvToolbarUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Default User"
+                            android:textSize="14dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:gravity="right"
+                            android:textIsSelectable="false"
+                            android:textStyle="bold"
+                            android:layout_alignParentLeft="true" />
+
+                        <TextView
+                            android:layout_gravity="left"
+                            android:gravity="left"
+                            android:id="@+id/tvToolbarTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Seeker of Truth"
+                            android:textSize="12dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:textStyle="italic" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="126dp"
+                    android:layout_width="110dp"
                     android:layout_height="match_parent"
                     android:weightSum="1"
                     android:layout_weight="0.36">
 
                     <LinearLayout
                         android:orientation="vertical"
-                        android:layout_width="wrap_content"
+                        android:layout_width="110dp"
                         android:layout_height="match_parent"
                         android:weightSum="1">
 
                         <LinearLayout
                             android:orientation="horizontal"
-                            android:layout_width="87dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:weightSum="1" >
 
                             <TextView
-                                android:layout_gravity="left"
                                 android:gravity="left"
                                 android:id="@+id/tvToolbarLevel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Level  :"
-                                android:textSize="15dp"
+                                android:text="Default Level"
+                                android:textSize="14dp"
                                 android:paddingLeft="10dp"
                                 android:paddingRight="10dp"
-                                />
-                            <TextView
-                                android:gravity="left"
-                                android:id="@+id/tvToolbarLevelNumber"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textSize="15dp"
-                                android:layout_weight="1.77" />
+                                android:textStyle="bold" />
 
                         </LinearLayout>
 
@@ -88,72 +123,73 @@
                             <TextView
                                 android:layout_gravity="left"
                                 android:gravity="left"
-                                android:id="@+id/tvToolbarPoints"
+                                android:id="@+id/tvToolbarExperiencePoints"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Points:"
-                                android:textSize="15dp"
+                                android:text="XP"
+                                android:textSize="10dp"
                                 android:paddingLeft="10dp"
-                                android:paddingRight="10dp"
-                                />
+                                android:paddingRight="10dp" />
+
+                            <TextView
+                                android:gravity="left"
+                                android:id="@+id/tvToolbarCurrentXP"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="10dp" />
+
                             <TextView
                                 android:layout_gravity="left"
                                 android:gravity="left"
-                                android:id="@+id/tvToolbarPointsNumber"
-                                android:layout_width="30dp"
+                                android:id="@+id/tvToolBarSlash"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textSize="15dp" />
+                                android:text="/"
+                                android:textSize="10dp" />
+
+                            <TextView
+                                android:gravity="left"
+                                android:id="@+id/tvToolBarNextLevelXP"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="100"
+                                android:textSize="10dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:weightSum="1" >
+
+                            <TextView
+                                android:gravity="left"
+                                android:id="@+id/tvToolbarAchievementPoints"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="AP"
+                                android:textSize="10dp"
+                                android:layout_marginLeft="10dp" />
+
+                            <TextView
+                                android:gravity="left"
+                                android:id="@+id/tvToolbarCurrentAP"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="100"
+                                android:textSize="10dp"
+                                android:layout_marginLeft="10dp" />
+
                         </LinearLayout>
 
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/ivLogros"
-                        android:layout_width="28dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:src="@mipmap/logros"
-                        android:layout_weight="0.05" />
-
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:orientation="horizontal"
-                    android:layout_width="176dp"
-                    android:layout_height="match_parent"
-                    android:weightSum="1">
-                    <TextView
-                        android:id="@+id/tvToolbarUser"
-                        android:layout_width="wrap_content"
-                        android:layout_height="51dp"
-                        android:text="Default User"
-                        android:textSize="17dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:gravity="right"
-                        android:textIsSelectable="false"
-                        android:textStyle="bold"
-                        android:layout_alignLeft="@+id/ivToolbarLogout"
-                        android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/ivToolbarLogout"
-                        android:layout_toStartOf="@+id/ivToolbarLogout" />
 
-                    <ImageView
-                        android:id="@+id/ivToolbarLogout"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        android:src="@mipmap/logout"
-                        android:onClick="onClickLogout"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:gravity="right"
-
-                        android:layout_alignParentRight="true" />
-                </RelativeLayout>
-
-
-        </LinearLayout>
+            </LinearLayout>
 
 
 

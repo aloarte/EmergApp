@@ -21,6 +21,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -162,6 +165,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //Load the toolbar
         loadToolbar();
@@ -291,6 +296,43 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_emergency_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent myIntent;
+
+        switch (item.getItemId()) {
+            case R.id.action_close_session:
+                Toast.makeText(this, getText(R.string.action_close_session), Toast.LENGTH_SHORT).show();
+                performLogout();
+                return true;
+            case R.id.action_acount_configuration:
+                //myIntent= new Intent(getApplicationContext(), LoginActivity.class);
+                //startActivity(myIntent);
+                return true;
+            case R.id.action_profile:
+                //myIntent= new Intent(getApplicationContext(), LoginActivity.class);
+                //startActivity(myIntent);
+                return true;
+            case R.id.action_ranking:
+                //myIntent= new Intent(getApplicationContext(), LoginActivity.class);
+                //startActivity(myIntent);
+                return true;
+            case R.id.action_achievements:
+                //myIntent= new Intent(getApplicationContext(), LoginActivity.class);
+                //startActivity(myIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     /*
     * Desc: method overrided from OnMapReadyCallback
@@ -859,9 +901,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             //Get the password by searching first the column index
             int level                      = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL));
             int points                     = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS));
-            TextView tvToolbarLevelNumber  = (TextView) findViewById(R.id.tvToolbarLevelNumber);
-            tvToolbarLevelNumber.setText(""+level);
-            TextView tvToolbarPointsNumber = (TextView) findViewById(R.id.tvToolbarPointsNumber);
+
+            TextView tvToolbarPointsNumber = (TextView) findViewById(R.id.tvToolbarCurrentXP);
             tvToolbarPointsNumber.setText(""+points);
 
         }
@@ -1048,7 +1089,20 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         startService(intent);
     }
 
+    /*
+        * Desc: on click function to logout from the aplication
+        * */
+    public void performLogout(){
 
+        //Remove from the shared preferences the username
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.remove("username");
+        editor.commit();
+
+        //Create and launch login activity
+        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(myIntent);
+    }
 
     //-----------------------------------------------------------//
     //---------------------ON CLICK BUTTON METHODS---------------//
@@ -1171,22 +1225,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         flMap.setVisibility(View.INVISIBLE);
     }
 
-
-    /*
-    * Desc: on click function to logout from the aplication
-    * */
-    public void onClickLogout(View v){
-
-        //Remove from the shared preferences the username
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.remove("username");
-        editor.commit();
-
-        //Create and launch login activity
-        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(myIntent);
-    }
-
     /*
     * Desc: on click function to send the data to the web service, and load the gamify system
     * */
@@ -1274,7 +1312,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
    * */
     public void onClickReloadInitialScreen(View v){
         //Create a new intent and save the info on it
-        Intent i = new Intent(getApplicationContext(), EmMessage1.class);
+        Intent i = new Intent(getApplicationContext(), HomeScreenActivity.class);
         //Launch next activity
         startActivity(i);
 
@@ -1294,6 +1332,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         //Create a LatLng object with the GPS position
         LatLng currentLatLng = new LatLng(lat, longit);
-        googleMapCP.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 13));
+        googleMapCP.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 8));
     }
 }
