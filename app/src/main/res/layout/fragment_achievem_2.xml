@@ -3,11 +3,634 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/Expert"
-        android:layout_gravity="center_horizontal" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llExpertAchievement1" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llExpertAchievement1Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Community Helper"
+                        android:id="@+id/tvNameExpert1"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp"
+                        android:textSize="16dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llExpertAchievementInnerData1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="0/10"
+                            android:id="@+id/tvProgressExpert1"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llExpertAchievementPoints1"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="100 AP"
+                                android:id="@+id/tvAPExpert1"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="50 XP"
+                                android:id="@+id/tvXPExpert1"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedExpert1"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Complete 10 Expert achievements"
+                    android:id="@+id/tvDescExpert1"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llExpertAchievement2" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llExpertAchievement2Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Pictures Lover"
+                        android:id="@+id/tvNameExpert2"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp"
+                        android:textSize="17dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llExpertAchievementInnerData2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressExpert2"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical"
+                            android:text="0/10" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llExpertAchievementPoints2"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10 AP"
+                                android:id="@+id/tvAPExpert2"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10 XP"
+                                android:id="@+id/tvXPExpert2"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedExpert2"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Send 10 photos"
+                    android:id="@+id/tvDescExpert2"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llExpertAchievement3" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llExpertAchievement3Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Videos Lover"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp"
+                        android:textSize="17dp"
+                        android:id="@+id/tvNameExpertt3" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llExpertAchievementInnerData3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressExpert3"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical"
+                            android:text="0/10" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llExpertAchievementPoints3"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10 AP"
+                                android:id="@+id/tvAPExpert3"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10 XP"
+                                android:id="@+id/tvXPExpert3"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedExpert3"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Send 10 videos"
+                    android:id="@+id/tvDescExpert3"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llExpertAchievement4" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llExpertAchievement4Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Expert Reporter"
+                        android:id="@+id/tvNameExpert4"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp"
+                        android:textSize="17dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llExpertAchievementInnerData4">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressExpert4"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llExpertAchievementPoints4"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="25 AP"
+                                android:id="@+id/tvAPExpert4"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:id="@+id/tvXPExpert4"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedExpert4"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Reach &quot;Champion&quot; level"
+                    android:id="@+id/tvDescExpert4"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llExpertAchievement5" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llExpertAchievement5Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Hard Worker"
+                        android:id="@+id/tvNameExpert5"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp"
+                        android:textSize="17dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llExpertAchievementInnerData5">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressExpert5"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llExpertAchievementPoints5"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:id="@+id/tvAPExpert5"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:id="@+id/tvXPExpert5"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical"
+                                android:text="20 XP" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedExpert5"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Reach 300 AP"
+                    android:id="@+id/tvDescExpert5"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llExpertAchievement6" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llExpertAchievement6Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Top Reporter"
+                        android:id="@+id/tvNameExpert6"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp"
+                        android:textSize="17dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llExpertAchievementInnerData6">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressExpert6"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llExpertAchievementPoints6"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10 AP"
+                                android:id="@+id/tvAPExpert6"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:id="@+id/tvXPExpert6"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical"
+                                android:text="10 XP" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedExpert6"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Reach one of the top 3 positions on any ranking"
+                    android:id="@+id/tvDescExpert6"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llExpertAchievement7" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llExpertAchievement7Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Reporting Aniwhere"
+                        android:id="@+id/tvNameExpert7"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp"
+                        android:textSize="17dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llExpertAchievementInnerData7" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressExpert7"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llExpertAchievementPoints7"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="20 AP"
+                                android:id="@+id/tvAPExpert7"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:id="@+id/tvXPExpert7"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical"
+                                android:text="10 XP" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedExpert7"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Send a report from 3 different locations"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp"
+                    android:id="@+id/tvDescExpert7" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -3,11 +3,538 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Novel"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llNovelAchievement1" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llNovelAchievement1Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="First Steps"
+                        android:id="@+id/tvNameNovel1"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llNovelAchievementInnerData1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="0/5"
+                            android:id="@+id/tvProgressNovel1"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llNovelAchievementPoints1"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="50 AP"
+                                android:id="@+id/tvAPNovel1"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="50 XP"
+                                android:id="@+id/tvXPNovel1"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedNovel1"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Complete all novel achievements"
+                    android:id="@+id/tvDescNovel1"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llNovelAchievement2" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llNovelAchievement2Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Photo Editor"
+                        android:id="@+id/tvNameNovel2"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llNovelAchievementInnerData2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressNovel2"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llNovelAchievementPoints2"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="5 AP"
+                                android:id="@+id/tvAPNovel2"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="5 XP"
+                                android:id="@+id/tvXPNovel2"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedNovel2"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Attach any image and send a report"
+                    android:id="@+id/tvDescNovel2"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llNovelAchievement3" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llNovelAchievement3Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Video Editor"
+                        android:id="@+id/tvNameNovel3"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llNovelAchievementInnerData3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressNovel3"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llNovelAchievementPoints3"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="5 AP"
+                                android:id="@+id/tvAPNovel3"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="5 XP"
+                                android:id="@+id/tvXPNovel3"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedNovel3"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Attach any video and send a report"
+                    android:id="@+id/tvDescNovel3"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llNovelAchievement4" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llNovelAchievement4Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Message Editor"
+                        android:id="@+id/tvNameNovel4"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llNovelAchievementInnerData4">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressNovel4"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llNovelAchievementPoints4"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="5 AP"
+                                android:id="@+id/tvAPNovel4"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:id="@+id/tvXPNovel4"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedNovel4"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Edit the message and send a report"
+                    android:id="@+id/tvDescNovel4"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llNovelAchievement5" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llNovelAchievement5Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Ubication Editor"
+                        android:id="@+id/tvNameNovel5"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llNovelAchievementInnerData5">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressNovel5"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llNovelAchievementPoints5"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="5 AP"
+                                android:id="@+id/tvAPNovel5"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:id="@+id/tvXPNovel5"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedNovel5"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Send a report changing the position using the map"
+                    android:id="@+id/tvDescNovel5"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:id="@+id/llNovelAchievement6" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="140dp"
+                    android:layout_height="57dp"
+                    android:id="@+id/llNovelAchievement6Data"
+                    android:gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Reporter"
+                        android:id="@+id/tvNameNovel6"
+                        android:textIsSelectable="false"
+                        android:textStyle="bold"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="2dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llNovelAchievementInnerData6">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:id="@+id/tvProgressNovel6"
+                            android:textSize="12dp"
+                            android:gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/llNovelAchievementPoints6"
+                            android:gravity="right" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="5 AP"
+                                android:id="@+id/tvAPNovel6"
+                                android:textSize="12dp"
+                                android:gravity="center_vertical" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:id="@+id/tvXPNovel6"
+                                android:textSize="12dp"
+                                android:textStyle="normal"
+                                android:gravity="center_vertical" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:id="@+id/ivCompletedNovel6"
+                    android:src="@mipmap/notdoneicon"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:gravity="center"
+                    android:text="Send your first report"
+                    android:id="@+id/tvDescNovel6"
+                    android:textIsSelectable="false"
+                    android:textStyle="normal"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>
