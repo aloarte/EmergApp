@@ -93,7 +93,13 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".HomeScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.uc3m.p4r4d0x.emergapp.HomeScreenActivity" />
+        </activity>
+
         <activity
             android:name=".AccountConfigurationActivity"
             android:label="@string/title_activity_account_configuration"

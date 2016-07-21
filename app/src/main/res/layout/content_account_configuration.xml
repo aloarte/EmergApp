@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,18 +8,62 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.uc3m.p4r4d0x.emergapp.AccountConfigurationActivity"
-    tools:showIn="@layout/activity_account_configuration">
+    tools:showIn="@layout/activity_account_configuration"
+    android:weightSum="1">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="ACCOUNT CONFIGURATION"
-        android:id="@+id/RANKING"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_weight="0.67"
+        android:weightSum="1"
+        android:gravity="center"
+        android:id="@+id/llProfileAvatarImage">
 
-</RelativeLayout>
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/imageView2"
+            android:src="@mipmap/arrowleft" />
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:id="@+id/ivProfileAvatarImage"
+            android:src="@mipmap/ereport" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/imageView3"
+            android:src="@mipmap/arrowright" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/llProfileTitleSelector">
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerAccountConfiguration"
+            style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="153dp"
+            android:layout_height="wrap_content"
+            android:text="Change color"
+            android:id="@+id/bProfileSelectTitle"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClickChangeColor" />
+
+    </LinearLayout>
+
+</LinearLayout>

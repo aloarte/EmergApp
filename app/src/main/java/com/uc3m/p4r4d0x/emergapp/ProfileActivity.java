@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +24,9 @@ import com.uc3m.p4r4d0x.emergapp.helpers.database.DBManager;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    ProgressBar pbProfile;
+    int progressStatus=90;
+    Handler handler =new Handler();
     //Info to use shared preferences to have a session
     final String MyPREFERENCES = "userPreferences";
     SharedPreferences sharedpreferences;
@@ -33,14 +40,26 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarP);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        pbProfile = (ProgressBar) findViewById(R.id.pbProfile);
+
+        // Get the Drawable custom_progressbar
+        Drawable draw = getResources().getDrawable(R.drawable.customprogressbar);
+        // set the drawable as progress drawable
+        pbProfile.setProgressDrawable(draw);
+        pbProfile.setProgress(progressStatus);
+
+
         //Load the toolbar
         loadToolbar();
+        //Load the color
+        loadColor();
+
     }
 
     /*
@@ -125,6 +144,28 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     /*
+    * Desc: load the color on the toolbar and other elements
+    * */
+    public void loadColor(){
+
+        //Check if there is any user logged into the aplication checking shared preferences
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String primaryColor = sharedpreferences.getString("colorprimary", "default");
+        String secondaryColor = sharedpreferences.getString("colorsecondary", "default");
+        //if there is no color
+        if(primaryColor.compareTo("default")==0 || secondaryColor.compareTo("default")==0){
+            //Load default color
+        }
+        else{
+
+            //Load the new color
+            Toolbar t= (Toolbar) findViewById(R.id.toolbarP);
+            t.setBackgroundColor(Color.parseColor(primaryColor));
+
+        }
+    }
+
+    /*
     * Desc: performs a logout from the current logged user
     *
     * */
@@ -133,6 +174,8 @@ public class ProfileActivity extends AppCompatActivity {
         //Remove from the shared preferences the username
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.remove("username");
+        editor.remove("colorprimary");
+        editor.remove("colorsecondary");
         editor.commit();
 
         //Create and launch login activity

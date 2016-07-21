@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -162,7 +163,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -181,6 +182,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         getGPSposition();
         //Load the emergency message
         loadMessage();
+        //Load the color
+        loadColor();
 
         //ON CLICK LISTENER for the alert dialog screen to modify the message
         //Get the default message with the answer in the previous boxes
@@ -1097,11 +1100,35 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         //Remove from the shared preferences the username
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.remove("username");
+        editor.remove("colorprimary");
+        editor.remove("colorsecondary");
         editor.commit();
 
         //Create and launch login activity
         Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(myIntent);
+    }
+
+    /*
+    * Desc: load the color on the toolbar and other elements
+    * */
+    public void loadColor(){
+
+        //Check if there is any user logged into the aplication checking shared preferences
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String primaryColor = sharedpreferences.getString("colorprimary", "default");
+        String secondaryColor = sharedpreferences.getString("colorsecondary", "default");
+        //if there is no color
+        if(primaryColor.compareTo("default")==0 || secondaryColor.compareTo("default")==0){
+            //Load default color
+        }
+        else{
+
+            //Load the new color
+            Toolbar t= (Toolbar) findViewById(R.id.toolbarE);
+            t.setBackgroundColor(Color.parseColor(primaryColor));
+
+        }
     }
 
     //-----------------------------------------------------------//
@@ -1332,6 +1359,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         //Create a LatLng object with the GPS position
         LatLng currentLatLng = new LatLng(lat, longit);
-        googleMapCP.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 8));
+        googleMapCP.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16));
     }
 }

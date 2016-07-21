@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,13 +37,16 @@ public class HomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarH);
         setSupportActionBar(toolbar);
+
 
         //Get the GPS position
         getGPSposition();
-
+        //Load Toolbar
         loadToolbar();
+        //Load the color
+        loadColor();
     }
 
     /*
@@ -127,6 +131,28 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     /*
+    * Desc: load the color on the toolbar and other elements
+    * */
+    public void loadColor(){
+
+        //Check if there is any user logged into the aplication checking shared preferences
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String primaryColor = sharedpreferences.getString("colorprimary", "default");
+        String secondaryColor = sharedpreferences.getString("colorsecondary", "default");
+        //if there is no color
+        if(primaryColor.compareTo("default")==0 || secondaryColor.compareTo("default")==0){
+            //Load default color
+        }
+        else{
+
+            //Load the new color
+            Toolbar t= (Toolbar) findViewById(R.id.toolbarH);
+            t.setBackgroundColor(Color.parseColor(primaryColor));
+
+        }
+    }
+
+    /*
     * Desc: performs a logout from the current logged user
     *
     * */
@@ -135,6 +161,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         //Remove from the shared preferences the username
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.remove("username");
+        editor.remove("colorprimary");
+        editor.remove("colorsecondary");
         editor.commit();
 
         //Create and launch login activity
@@ -241,6 +269,23 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void onClickNavAchievementsProgress(View v){
         //Intent myIntent= new Intent(getApplicationContext(), AchievementProgressActivity.class);
         //startActivity(myIntent);
+    }
+
+    /*
+    * Desc: on click function to logout
+    * */
+    public void onClickPerformLogout(View V){
+
+        //Remove from the shared preferences the username
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.remove("username");
+        editor.remove("colorprimary");
+        editor.remove("colorsecondary");
+        editor.commit();
+
+        //Create and launch login activity
+        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(myIntent);
     }
 
 }

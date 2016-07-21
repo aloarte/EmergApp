@@ -5,13 +5,8 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_ranking"
-        android:title="@string/action_ranking"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_achievements"
-        android:title="@string/action_achievements"
+        android:id="@+id/action_profile"
+        android:title="@string/action_profile"
         app:showAsAction="never" />
 
     <item
@@ -20,8 +15,13 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_profile"
-        android:title="@string/action_profile"
+        android:id="@+id/action_ranking"
+        android:title="@string/action_ranking"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_achievements"
+        android:title="@string/action_achievements"
         app:showAsAction="never" />
 
     <item
