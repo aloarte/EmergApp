@@ -20,14 +20,11 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -43,12 +40,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
-import com.uc3m.p4r4d0x.emergapp.helpers.database.DBManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverGPSCoord;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
 import com.uc3m.p4r4d0x.emergapp.servicios.FetchAddressService;
@@ -600,9 +596,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 case C_NO_NO:
                     tvMessagePopUp1.setText("There are no human damages and I dont need help");
                     break;
-                //default case: if fails anything
+
                 default:
-                    tvMessagePopUp1.setText("FAIL");
+                    tvMessagePopUp1.setText("Write an emergency message here");
                     break;
             }
         }
@@ -896,17 +892,52 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             tvToolbarUser.setText(username);
 
         }
-        DBManager managerDB                = new DBManager(this);
+        DBUserManager managerDB                = new DBUserManager(this);
         //Select the user
         Cursor resultQuery                 = managerDB.selectUser(username);
         //If the user exists
         if(resultQuery.moveToFirst()==true){
             //Get the password by searching first the column index
-            int level                      = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL));
-            int points                     = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS));
+            String level                      = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL));
+            int APpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS));
+            int XPpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS));
 
-            TextView tvToolbarPointsNumber = (TextView) findViewById(R.id.tvToolbarCurrentXP);
-            tvToolbarPointsNumber.setText(""+points);
+            TextView tvToolbarLevel = (TextView) findViewById(R.id.tvToolbarLevel);
+            tvToolbarLevel.setText(level);
+
+            TextView tvToolbarAP = (TextView) findViewById(R.id.tvToolbarCurrentAP);
+            tvToolbarAP.setText(""+APpoints);
+
+            TextView tvToolbarXPMax = (TextView) findViewById(R.id.tvToolBarNextLevelXP);
+            TextView tvToolbarXP = (TextView) findViewById(R.id.tvToolbarCurrentXP);
+
+            switch(level){
+                case "Traveler":
+                    tvToolbarXPMax.setText(""+50);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Veteran":
+                    tvToolbarXPMax.setText(""+100);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Champion":
+                    tvToolbarXPMax.setText(""+300);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Hero":
+                    tvToolbarXPMax.setText(""+500);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Legend":
+                    tvToolbarXPMax.setText(""+999);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                default:
+                    break;
+
+            }
+
+
 
         }
     }
@@ -977,14 +1008,15 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.google_MAPVIEW);
         mapFragment.getMapAsync(this);
     }
+
     /*
     * Desc: Upgrade into the database the points and level for the logged user
-    * */
+    *
     public void changeUserStats(){
         String username = sharedpreferences.getString("username", "default");
 
         long devuelto1=0,devuelto2;
-        DBManager managerDB = new DBManager(this);
+        DBUserManager managerDB = new DBUserManager(this);
 
         //Select the user
         Cursor resultQuery= managerDB.selectUser(username);
@@ -994,12 +1026,12 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             //Get the password by searching first the column index
 
             devuelto1 = managerDB.upgrade(
-                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_NAME)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_PASSWORD)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_EMAIL)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_DATE)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL)) + 1,
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS)));
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_NAME)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_PASSWORD)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_EMAIL)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_DATE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.FN_LEVEL)) + 1,
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.FN_POINTS)));
         }
 
         resultQuery= managerDB.selectUser(username);
@@ -1007,17 +1039,19 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         //If the user exists
         if(resultQuery.moveToFirst()==true) {
             devuelto2 = managerDB.upgrade(
-                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_NAME)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_PASSWORD)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_EMAIL)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_DATE)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS)) + 8);
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_NAME)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_PASSWORD)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_EMAIL)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_DATE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.FN_LEVEL)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.FN_POINTS)) + 8);
         }
 
 
         loadToolbar();
     }
+
+*/
 
 
     /*
@@ -1257,7 +1291,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     * */
     public void onClickSendInfo(View v){
         //Add points and 1 level to the user
-        changeUserStats();
+       // changeUserStats();
         /*
         * Send info to the web service // check changing to another activity        * */
 

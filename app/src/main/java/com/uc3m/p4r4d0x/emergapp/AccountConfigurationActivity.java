@@ -5,12 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,12 +14,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.uc3m.p4r4d0x.emergapp.helpers.database.DBManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAchievementsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAvatarsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBTitlesManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
 import java.util.ArrayList;
 
@@ -36,14 +34,17 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
     Spinner colorOptionsSpinner;
     String colorSelected="";
+    int colorSelectedInt=0;
 
-    String [][] colors = new String[][] {{"Grey"   ,"#bdbdbd","#e0e0e0"},
-                                         {"Yellow" ,"#ffa000","#ffc107"},
-                                         {"Pink"   ,"#e91e63","#f8bbd0"},
-                                         {"Green"  ,"#43a047","#4caf50"},
-                                         {"Blue"   ,"#303f9f","#3f51b5"},
-                                         {"Red"    ,"#d32f2f","#ffcdd2"},
-                                         {"Default","#009688","#26a69a"}};
+    String [][] colors = new String[][] {
+                                            {"Default","#009688","#26a69a"},
+                                            {"Red"    ,"#d32f2f","#ffcdd2"},
+                                            {"Blue"   ,"#303f9f","#3f51b5"},
+                                            {"Green"  ,"#43a047","#4caf50"},
+                                            {"Yellow" ,"#ffa000","#ffc107"},
+                                            {"Pink"   ,"#e91e63","#f8bbd0"},
+                                            {"Grey"   ,"#bdbdbd","#e0e0e0"}
+    };
 
     /*
     * Desc: method overrided from AppCompatActivity
@@ -145,6 +146,122 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+    /*
+    * Desc: on click method to change for the button to change the app color style
+    *
+    * */
+    public void onClickChangeColor(View v){
+        Log.d("ALR","Button pressed. Color: "+ colorSelected);
+
+        //if the color is not chosen , skip
+        if(colorSelected.compareTo("")!=0){
+            String[] colorsToSet=getColorsCodes(colorSelected);
+
+
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("colorprimary", colorsToSet[0]);
+            editor.putString("colorsecondary",colorsToSet[1]);
+            editor.commit();
+
+            //insert on the database that color
+            insertColorOnDDBB(colorSelectedInt);
+
+            loadColor();
+        }
+
+
+    }
+
+    /*
+    * Desc: auxiliar function to retrieve the hex codes for each color
+    *
+    * */
+    public String[] getColorsCodes(String color){
+        String[] colorsToReturn = new String []{"",""};
+
+        //Search for the requested color on the array
+        for(int i=0; i<colors.length;i++){
+            //When matches, fill the return string with the codes
+            if(color.compareTo(colors[i][0])==0){
+                colorsToReturn[0]=colors[i][1];
+                colorsToReturn[1]=colors[i][2];
+                colorSelectedInt=i;
+                break;
+            }
+        }
+
+        if(colorsToReturn[0].compareTo("")==0 || colorsToReturn[1].compareTo("")==0){
+            colorsToReturn[0]="#009688";
+            colorsToReturn[1]="#26a69a";
+        }
+        return colorsToReturn;
+
+    }
+
+    /*
+    * Desc: insert the color ID to the DDBB of the current user
+    *
+    * */
+    public void insertColorOnDDBB(int color){
+        String username = sharedpreferences.getString("username", "default");
+        Long result=99L;
+        if(username.compareTo("default")!=0){
+            DBUserManager managerDB = new DBUserManager(this);
+            result=managerDB.upgradeUserColor(username, color);
+
+            DBTitlesManager titleDB = new DBTitlesManager(this);
+            DBAchievementsManager achievementsDB=new DBAchievementsManager(this);
+            DBAvatarsManager avatarsDB= new DBAvatarsManager(this);
+
+            int r1,r2,r3;
+            Cursor resultQuery= titleDB.selecttitle("tBegginer",username);
+            String titleid,Suser,s1;
+            //If the title exists
+            if(resultQuery.moveToFirst()==true) {
+
+                //Get the id to make the update
+                titleid = resultQuery.getString(resultQuery.getColumnIndex(DBTitlesManager.TT_NAME_ID));
+                Suser = resultQuery.getString(resultQuery.getColumnIndex(DBTitlesManager.TT_USER_NAME));
+                Log.d("ALR","TITULO " + titleid+" seleccionado, usuario: " +Suser);
+            }
+
+
+            resultQuery= achievementsDB.selectAchievement("aExpertMeta", username);
+            //If the title exists
+            if(resultQuery.moveToFirst()==true) {
+
+                //Get the id to make the update
+                titleid = resultQuery.getString(resultQuery.getColumnIndex(DBAchievementsManager.TA_NAME_ID));
+                s1      = resultQuery.getString(resultQuery.getColumnIndex(DBAchievementsManager.TA_NAME_ACHIEVEMENT));
+                r1      = resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS));
+                r2      = resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_REWARD_AP));
+                r3      = resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_REWARD_XP));
+                Suser = resultQuery.getString(resultQuery.getColumnIndex(DBAchievementsManager.TA_USER_NAME));
+                Log.d("ALR","LOGRO " + titleid+" seleccionado, usuario: " +Suser + " DATA:"+s1+","+r1+","+r2+","+r3);
+            }
+
+
+
+            resultQuery= titleDB.selecttitle("avInitial",username);
+            //If the title exists
+            if(resultQuery.moveToFirst()==true) {
+
+                //Get the id to make the update
+                titleid = resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_NAME_ID));
+                s1 =    resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_SOURCE));
+                Suser = resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_USER_NAME));
+                Log.d("ALR","AVATAR " + titleid+" seleccionado, usuario: " +Suser+" Source: "+s1);
+            }
+
+
+
+
+        }
+    }
+
     /*
     * Desc: load the user content into the toolbar
     *
@@ -164,17 +281,52 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             tvToolbarUser.setText(username);
 
         }
-        DBManager managerDB                = new DBManager(this);
+        DBUserManager managerDB                = new DBUserManager(this);
         //Select the user
         Cursor resultQuery                 = managerDB.selectUser(username);
         //If the user exists
         if(resultQuery.moveToFirst()==true){
             //Get the password by searching first the column index
-            int level                      = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL));
-            int points                     = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS));
+            String level                      = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL));
+            int APpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS));
+            int XPpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS));
 
-            TextView tvToolbarPointsNumber = (TextView) findViewById(R.id.tvToolbarCurrentXP);
-            tvToolbarPointsNumber.setText(""+points);
+            TextView tvToolbarLevel = (TextView) findViewById(R.id.tvToolbarLevel);
+            tvToolbarLevel.setText(level);
+
+            TextView tvToolbarAP = (TextView) findViewById(R.id.tvToolbarCurrentAP);
+            tvToolbarAP.setText("" + APpoints);
+
+            TextView tvToolbarXPMax = (TextView) findViewById(R.id.tvToolBarNextLevelXP);
+            TextView tvToolbarXP = (TextView) findViewById(R.id.tvToolbarCurrentXP);
+
+            switch(level){
+                case "Traveler":
+                    tvToolbarXPMax.setText(""+50);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Veteran":
+                    tvToolbarXPMax.setText(""+100);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Champion":
+                    tvToolbarXPMax.setText(""+300);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Hero":
+                    tvToolbarXPMax.setText(""+500);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Legend":
+                    tvToolbarXPMax.setText(""+999);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                default:
+                    break;
+
+            }
+
+
 
         }
     }
@@ -197,59 +349,22 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         startActivity(myIntent);
     }
 
-
-    public String[] getColorsCodes(String color){
-        String[] colorsToReturn = new String []{"",""};
-
-        //Search for the requested color on the array
-        for(int i=0; i<colors.length;i++){
-            //When matches, fill the return string with the codes
-            if(color.compareTo(colors[i][0])==0){
-                colorsToReturn[0]=colors[i][1];
-                colorsToReturn[1]=colors[i][2];
-            }
-        }
-
-        if(colorsToReturn[0].compareTo("")==0 || colorsToReturn[1].compareTo("")==0){
-            colorsToReturn[0]="#009688";
-            colorsToReturn[1]="#26a69a";
-        }
-        return colorsToReturn;
-
-    }
-
-    public void onClickChangeColor(View v){
-        Log.d("ALR","Button pressed. Color: "+ colorSelected);
-        //if the color is not chosen , skip
-        if(colorSelected.compareTo("")!=0){
-            String[] colorsToSet=getColorsCodes(colorSelected);
-
-
-            SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putString("colorprimary", colorsToSet[0]);
-            editor.putString("colorsecondary",colorsToSet[1]);
-            editor.commit();
-
-            loadColor();
-        }
-
-
-    }
-
+    /*
+    * Desc: load the color selected by the user
+    *
+    * */
     public void loadColor(){
 
         //Check if there is any user logged into the aplication checking shared preferences
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        //Get the colors codes
         String primaryColor = sharedpreferences.getString("colorprimary", "default");
         String secondaryColor = sharedpreferences.getString("colorsecondary", "default");
-        Log.d("ALR","loadColor. Primary: "+ primaryColor+ " Secondary: "+secondaryColor);
         //if there is no color
         if(primaryColor.compareTo("default")==0 || secondaryColor.compareTo("default")==0){
             //Load default color
-            Log.d("ALR","default");
         }
         else{
-
             //Load the new color
             Toolbar t= (Toolbar) findViewById(R.id.toolbarAC);
             t.setBackgroundColor(Color.parseColor(primaryColor));

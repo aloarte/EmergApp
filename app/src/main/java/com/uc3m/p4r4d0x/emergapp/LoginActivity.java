@@ -10,14 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.uc3m.p4r4d0x.emergapp.helpers.database.DBManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -28,15 +26,29 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     TextView tvFailLogin;
     int retriesLogin = 3;
+    Context context;
+
+    String [][] colors = new String[][]{
+                                        {"Default","#009688","#26a69a"},
+                                        {"Red"    ,"#d32f2f","#ffcdd2"},
+                                        {"Blue"   ,"#303f9f","#3f51b5"},
+                                        {"Green"  ,"#43a047","#4caf50"},
+                                        {"Yellow" ,"#ffa000","#ffc107"},
+                                        {"Pink"   ,"#e91e63","#f8bbd0"},
+                                        {"Grey"   ,"#bdbdbd","#e0e0e0"}
+            };
+
+    int colorSelected=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarL);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        context= getApplicationContext();
         //Get the buttons
         bLogin=(Button)findViewById(R.id.bSSignIn);
         bNewAc=(Button)findViewById(R.id.bLSignIn);
@@ -58,9 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         else{
 
-            //Create and launch next activity: EmMessage1
-            Intent myIntent = new Intent(getApplicationContext(), HomeScreenActivity.class);
-            startActivity(myIntent);
+            changeToHomeActivity();
         }
 
 
@@ -78,11 +88,51 @@ public class LoginActivity extends AppCompatActivity {
             String username=etUser.getText().toString();
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString("username", username);
+
+            //Using a switch, put the colors into the shared preferences based on the color selected by user in the bbdd
+            switch(colorSelected){
+                //DefaultColor
+                case 0:
+                    editor.putString("colorprimary", colors[0][1]);
+                    editor.putString("colorsecondary",colors[0][2]);
+                    break;
+                //Red
+                case 1:
+                    editor.putString("colorprimary", colors[1][1]);
+                    editor.putString("colorsecondary",colors[1][2]);
+                    break;
+                //Blue
+                case 2:
+                    editor.putString("colorprimary", colors[2][1]);
+                    editor.putString("colorsecondary",colors[2][2]);
+                    break;
+                //Green
+                case 3:
+                    editor.putString("colorprimary", colors[3][1]);
+                    editor.putString("colorsecondary",colors[3][2]);
+                    break;
+                //Yellow
+                case 4:
+                    editor.putString("colorprimary", colors[4][1]);
+                    editor.putString("colorsecondary",colors[4][2]);
+                    break;
+                //Pink
+                case 5:
+                    editor.putString("colorprimary", colors[5][1]);
+                    editor.putString("colorsecondary",colors[5][2]);
+                    break;
+                //Grey
+                case 6:
+                    editor.putString("colorprimary", colors[6][1]);
+                    editor.putString("colorsecondary",colors[6][2]);
+                    break;
+                default:
+                    break;
+            }
+            changeToHomeActivity();
             editor.commit();
 
-            //Create and launch a new activity
-            Intent myIntent = new Intent(getApplicationContext(), HomeScreenActivity.class);
-            startActivity(myIntent);
+
         }
         //Wrong login
         else {
@@ -95,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
             if (retriesLogin == 0) {
                bLogin.setEnabled(false);
             }
+
         }
     }
 
@@ -109,29 +160,11 @@ public class LoginActivity extends AppCompatActivity {
          startActivity(myIntent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
+    /*
+     * Desc: check the loggin process using the data from the DDBB and the data setted in the Text views
+     * Ret:  A boolean true if the login was correct
+     *
+     */
     public boolean checkLogIn(){
         //Auxiliar strings
         String userS,passwordS,passwordSBBD;
@@ -140,14 +173,17 @@ public class LoginActivity extends AppCompatActivity {
         //Control boolean
         boolean logged=true;
         //Database manager
-        DBManager managerDB = new DBManager(this);
+        DBUserManager managerDB = new DBUserManager(this);
 
         //Select the user
         Cursor resultQuery= managerDB.selectUser(userS);
         //If the user exists
         if(resultQuery.moveToFirst()==true){
+            //Set the color selected by the user (or default = 0)
+            colorSelected = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR));
+
             //Get the password by searching first the column index
-            passwordSBBD = resultQuery.getString(resultQuery.getColumnIndex(DBManager.FN_PASSWORD));
+            passwordSBBD = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD));
             //if the password match
             if(passwordS.compareTo(passwordSBBD)==0){
                 Toast.makeText(getApplicationContext(), "Login correct", Toast.LENGTH_SHORT).show();
@@ -167,4 +203,14 @@ public class LoginActivity extends AppCompatActivity {
         return logged;
     }
 
+    /*
+     * Desc: Perform the launch of a new intent to navegate to HomeScreen activity
+     *
+     */
+    public void changeToHomeActivity(){
+        //Create and launch a new activity
+        Intent myIntent = new Intent(context, HomeScreenActivity.class);
+        startActivity(myIntent);
+
+    }
 }

@@ -10,8 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper{
 
-        private static final String DB_NAME ="users.sqlite";
-        private static final int DB_SCHEME_VERSION =2;
+        private static final String DB_NAME ="eReporterDDBB.sqlite";
+        private static final int DB_SCHEME_VERSION =11;
 
         public DBHelper(Context context) {
             super(context, DB_NAME, null, DB_SCHEME_VERSION);
@@ -19,15 +19,37 @@ public class DBHelper extends SQLiteOpenHelper{
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(DBManager.CREATE_TABLE);
+            db.execSQL(DBUserManager.CREATE_TABLE);
+            db.execSQL(DBTitlesManager.CREATE_TABLE);
+            db.execSQL(DBAchievementsManager.CREATE_TABLE);
+            db.execSQL(DBAvatarsManager.CREATE_TABLE);
+            db.execSQL(DBQuestsManager.CREATE_TABLE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL("DROP TABLE IF EXISTS users; ");
-            db.execSQL(DBManager.CREATE_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS titles; ");
+            db.execSQL("DROP TABLE IF EXISTS achievements; ");
+            db.execSQL("DROP TABLE IF EXISTS avatars; ");
+            db.execSQL("DROP TABLE IF EXISTS quests; ");
+            db.execSQL(DBUserManager.CREATE_TABLE);
+            db.execSQL(DBTitlesManager.CREATE_TABLE);
+            db.execSQL(DBAchievementsManager.CREATE_TABLE);
+            db.execSQL(DBAvatarsManager.CREATE_TABLE);
+            db.execSQL(DBQuestsManager.CREATE_TABLE);
+        }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if(!db.isReadOnly()){
+            //Enable foreign keys
+            db.execSQL("PRAGMA foreign_keys=ON;");
+
         }
     }
+}
 
 
 

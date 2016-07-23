@@ -12,7 +12,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.uc3m.p4r4d0x.emergapp.ProfileActivity"
     tools:showIn="@layout/activity_profile"
-    android:weightSum="1">
+    android:weightSum="1"
+    >
 
     <LinearLayout
         android:orientation="horizontal"

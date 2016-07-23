@@ -1,15 +1,20 @@
 package com.uc3m.p4r4d0x.emergapp;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.uc3m.p4r4d0x.emergapp.helpers.database.DBManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAchievementsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAvatarsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBTitlesManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
 public class SignIn extends AppCompatActivity {
 
@@ -71,12 +76,13 @@ public class SignIn extends AppCompatActivity {
     /*
     * Desc: Try to insert a new user in the database checking
     *       all the regular issues.
-    * Param: DBManager object
+    * Param: DBUserManager object
     * Ret value: true or false
     * */
     public boolean insertNewUser(){
-        DBManager managerDB = new DBManager(this);
+        DBUserManager managerDB = new DBUserManager(this);
         boolean userInsert=true;
+        boolean dataUserInserted=false;
         boolean insertUserResult=false;
         //Check if all fields are filled
         if(allFieldsFilled()) {
@@ -90,7 +96,19 @@ public class SignIn extends AppCompatActivity {
                             etMail.getText().toString(), etDate.getText().toString()
                     );
                     if(insertUserResult){
-                        Toast.makeText(getApplicationContext(), "Account created.", Toast.LENGTH_SHORT).show();
+                                            //Create the titles for the new user
+                        dataUserInserted =  insertUserTitles(etUser.getText().toString())&
+                                            //Create the achievements for the new user
+                                            insertUserAchievements(etUser.getText().toString())&
+                                            //Create the avatars for the new user
+                                            insertUserAvatars(etUser.getText().toString());
+                        if(dataUserInserted){
+                            Toast.makeText(getApplicationContext(), "Account created.", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "An error has ocurred, data account failed.", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "An error has ocurred, account is not created.", Toast.LENGTH_SHORT).show();
@@ -119,6 +137,52 @@ public class SignIn extends AppCompatActivity {
 
         }
         return userInsert;
+    }
+
+    public boolean insertUserTitles(String username){
+        DBTitlesManager titleDB = new DBTitlesManager(this);
+        return  titleDB.inserttitle("tBegginer", username) &
+                titleDB.inserttitle("tChampion", username) &
+                titleDB.inserttitle("tTop", username) &
+                titleDB.inserttitle("tSeeker", username);
+
+    }
+    public boolean insertUserAchievements(String username){
+        DBAchievementsManager achievementsDB = new DBAchievementsManager(this);
+        boolean achievementsNovel, achievementsExpert, achievementsSecret;
+        achievementsNovel=  achievementsDB.insertAchievement("aNovelMeta","First Steps"                             ,50 ,50 ,username) &
+                            achievementsDB.insertAchievement("aNovel1"   ,"Photo Editor"                            ,5  ,5  ,username) &
+                            achievementsDB.insertAchievement("aNovel2"   ,"Video Editor"                            ,5  ,5  ,username) &
+                            achievementsDB.insertAchievement("aNovel3"   ,"Message Editor"                          ,5  ,0  ,username) &
+                            achievementsDB.insertAchievement("aNovel4"   ,"Ubication Editor"                        ,5  ,0  ,username) &
+                            achievementsDB.insertAchievement("aNovel5"   ,"Reporter"                                ,5  ,0  ,username) ;
+
+        achievementsExpert= achievementsDB.insertAchievement("aExpertMeta","Community Helper"                       ,100,50 ,username) &
+                            achievementsDB.insertAchievement("aExpert1"   ,"Pictures Lover"                         ,10 ,10 ,username) &
+                            achievementsDB.insertAchievement("aExpert2"   ,"Videos Lover"                           ,10 ,10 ,username) &
+                            achievementsDB.insertAchievement("aExpert3"   ,"Expert Reporter"                        ,25 ,0  ,username) &
+                            achievementsDB.insertAchievement("aExpert4"   ,"Hard Worker"                            ,0  ,20 ,username) &
+                            achievementsDB.insertAchievement("aExpert5"   ,"Hard Worker"                            ,10 ,10 ,username) &
+                            achievementsDB.insertAchievement("aExpert6"   ,"Reporting Anywhere"                     ,20 ,10 ,username) ;
+
+        achievementsSecret= achievementsDB.insertAchievement("aSecretMeta","Seeker of Truth"                        ,200,50 ,username) &
+                            achievementsDB.insertAchievement("aSecret1"   ,"I give my best"                         ,10 ,0  ,username) &
+                            achievementsDB.insertAchievement("aSecret2"   ,"An image is worth more than 1000 words" ,10 ,0  ,username) &
+                            achievementsDB.insertAchievement("aSecret3"   ,"As fast as I can"                       ,10 ,0  ,username) &
+                            achievementsDB.insertAchievement("aSecret4"   ,"Personal image is allways the first"    ,10 ,0  ,username) &
+                            achievementsDB.insertAchievement("aSecret5"   ,"First my neighborhood"                  ,10 ,0  ,username);
+
+
+        return achievementsNovel & achievementsExpert & achievementsSecret;
+    }
+
+    public boolean insertUserAvatars(String username){
+        DBAvatarsManager avatarDB = new  DBAvatarsManager(this);
+        return  avatarDB.insertAvatar("avInitialAvatar","sourceinitialavatar",1, username) &
+                avatarDB.insertAvatar("avAvatar1"      ,"sourceavatar1"      ,0, username) &
+                avatarDB.insertAvatar("avAvatar2"      ,"sourceavatar2"      ,0, username) &
+                avatarDB.insertAvatar("avAvatar3"      ,"sourceavatar3"      ,0, username);
+
     }
 
 

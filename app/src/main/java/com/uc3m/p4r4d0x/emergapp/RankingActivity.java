@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.uc3m.p4r4d0x.emergapp.fragments.RankFragment1;
 import com.uc3m.p4r4d0x.emergapp.fragments.RankFragment2;
-import com.uc3m.p4r4d0x.emergapp.helpers.database.DBManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
 public class RankingActivity extends AppCompatActivity {
 
@@ -172,31 +172,67 @@ public class RankingActivity extends AppCompatActivity {
     * Desc: load the user content into the toolbar
     *
     * */
-    public void loadToolbar() {
+    public void loadToolbar(){
         //Get sharedpreferences item and the username asociated
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        String username = sharedpreferences.getString("username", "default");
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
 
         //Check the username
-        if (username.compareTo("default") == 0) {
+        if(username.compareTo("default")==0){
             //If is empty (error) do nothing
-        } else {
+        }
+        else{
             //Put username in the toolbar text view
-            TextView tvToolbarUser = (TextView) findViewById(R.id.tvToolbarUser);
+            TextView tvToolbarUser         = (TextView) findViewById(R.id.tvToolbarUser);
             tvToolbarUser.setText(username);
 
         }
-        DBManager managerDB = new DBManager(this);
+        DBUserManager managerDB                = new DBUserManager(this);
         //Select the user
-        Cursor resultQuery = managerDB.selectUser(username);
+        Cursor resultQuery                 = managerDB.selectUser(username);
         //If the user exists
-        if (resultQuery.moveToFirst() == true) {
+        if(resultQuery.moveToFirst()==true){
             //Get the password by searching first the column index
-            int level = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL));
-            int points = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS));
+            String level                      = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL));
+            int APpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS));
+            int XPpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS));
 
-            TextView tvToolbarPointsNumber = (TextView) findViewById(R.id.tvToolbarCurrentXP);
-            tvToolbarPointsNumber.setText("" + points);
+            TextView tvToolbarLevel = (TextView) findViewById(R.id.tvToolbarLevel);
+            tvToolbarLevel.setText(level);
+
+            TextView tvToolbarAP = (TextView) findViewById(R.id.tvToolbarCurrentAP);
+            tvToolbarAP.setText(""+APpoints);
+
+            TextView tvToolbarXPMax = (TextView) findViewById(R.id.tvToolBarNextLevelXP);
+            TextView tvToolbarXP = (TextView) findViewById(R.id.tvToolbarCurrentXP);
+
+            switch(level){
+                case "Traveler":
+                    tvToolbarXPMax.setText(""+50);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Veteran":
+                    tvToolbarXPMax.setText(""+100);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Champion":
+                    tvToolbarXPMax.setText(""+300);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Hero":
+                    tvToolbarXPMax.setText(""+500);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                case "Legend":
+                    tvToolbarXPMax.setText(""+999);
+                    tvToolbarXP.setText(""+XPpoints);
+                    break;
+                default:
+                    break;
+
+            }
+
+
 
         }
     }
