@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper{
 
         private static final String DB_NAME ="eReporterDDBB.sqlite";
-        private static final int DB_SCHEME_VERSION =11;
+        private static final int DB_SCHEME_VERSION =12;
 
         public DBHelper(Context context) {
             super(context, DB_NAME, null, DB_SCHEME_VERSION);

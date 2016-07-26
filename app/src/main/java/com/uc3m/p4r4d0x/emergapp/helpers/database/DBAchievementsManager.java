@@ -34,7 +34,7 @@ public class DBAchievementsManager {
             + TA_REWARD_XP           + " integer not null,"
             + TA_PROGRESS            + " integer not null,"
             + TA_COMPLETED           + " integer not null,"
-            + TA_USER_NAME           + " integer not null,"
+            + TA_USER_NAME           + " text not null,"
             + " FOREIGN KEY (" + TA_USER_NAME + ") REFERENCES "+ DBUserManager.TABLE_NAME + "(" + DBUserManager.TU_NAME + ") ON DELETE CASCADE );";
 
     //DBHelper & SQLIteDatabase objects

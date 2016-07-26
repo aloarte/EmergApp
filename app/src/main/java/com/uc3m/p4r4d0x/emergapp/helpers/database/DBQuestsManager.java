@@ -31,14 +31,14 @@ public class DBQuestsManager {
 
     //Sql sentence for building the table Users
     public static final String CREATE_TABLE = "create table "+TABLE_NAME+" ("
-            //+ TQ_ID             + " integer primary key autoincrement,"
-            + TQ_NAME_ID              + " text primary key not null,"
+            + TQ_ID             + " integer primary key autoincrement,"
+            + TQ_NAME_ID              + " text not null,"
             + TQ_NAME                 + " text not null,"
             + TQ_DESCRIPTION          + " text not null,"
             + TQ_INTERNAL_DESCRIPTION + " text not null,"
             + TQ_LEVEL                + " text not null,"
             + TQ_AP_REWARD            + " integer not null,"
-            + TQ_XP_REWARD            + " integer not null,";
+            + TQ_XP_REWARD            + " integer not null);";
 
 
     //DBHelper & SQLIteDatabase objects

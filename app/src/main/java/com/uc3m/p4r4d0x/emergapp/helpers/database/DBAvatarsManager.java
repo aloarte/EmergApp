@@ -27,7 +27,7 @@ public class DBAvatarsManager {
             + TAV_NAME_ID       + " text not null,"
             + TAV_SOURCE       + " text not null,"
             + TAV_UNLOCKED      + " integer not null,"
-            + TAV_USER_NAME     + " integer not null,"
+            + TAV_USER_NAME     + " text not null,"
             + " FOREIGN KEY (" + TAV_USER_NAME + ") REFERENCES "+ DBUserManager.TABLE_NAME + "(" + DBUserManager.TU_NAME + ") ON DELETE CASCADE );";
 
     //DBHelper & SQLIteDatabase objects

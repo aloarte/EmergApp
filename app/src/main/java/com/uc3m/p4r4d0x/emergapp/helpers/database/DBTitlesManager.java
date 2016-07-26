@@ -25,7 +25,7 @@ public class DBTitlesManager {
             + TT_ID            + " integer primary key autoincrement,"
             + TT_NAME_ID       + " text not null,"
             + TT_OBTAINED      + " integer not null,"
-            + TT_USER_NAME     + " integer not null,"
+            + TT_USER_NAME     + " text not null,"
             + " FOREIGN KEY (" + TT_USER_NAME + ") REFERENCES "+ DBUserManager.TABLE_NAME + "(" + DBUserManager.TU_NAME + ") ON DELETE CASCADE );";
 
     //DBHelper & SQLIteDatabase objects
@@ -82,6 +82,19 @@ public class DBTitlesManager {
         return db.rawQuery("SELECT * from " + TABLE_NAME + " where " + TT_NAME_ID   + "=\"" + titleId + "\""
                                                          +  "and "    + TT_USER_NAME + "=\"" + userName + "\";" , null);
     }
+
+    /*
+    * Desc: Select from the database an title
+    * Param: the title id and the user name
+    * Ret: Cursor object with the information
+    * */
+    public Cursor selectUserTitles(String userName){
+        return db.rawQuery(
+                "SELECT * from " + TABLE_NAME + " where " +  TT_USER_NAME + "=\"" + userName + "\";"
+                , null);
+    }
+
+
 
     /*
      * Desc: Upgrade one title in the database

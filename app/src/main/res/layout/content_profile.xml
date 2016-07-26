@@ -25,8 +25,8 @@
         android:id="@+id/llProfileAvatarImage">
 
         <ImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:id="@+id/ivProfileAvatarImage"
             android:src="@mipmap/ereport" />
     </LinearLayout>
@@ -59,12 +59,42 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Albrath Hojaverde"
+                android:text="Default User"
                 android:id="@+id/tvProfileNickname"
                 android:gravity="center"
                 android:layout_weight="0.72"
                 android:textStyle="bold"
                 android:layout_gravity="bottom" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/llProfileTitle" >
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Title"
+                android:id="@+id/tvProfileSTitle"
+                android:gravity="center"
+                android:layout_weight="0.28" />
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Default Title"
+                android:id="@+id/tvProfileTitle"
+                android:gravity="center"
+                android:layout_weight="0.72"
+                android:textStyle="bold|italic"
+                android:layout_gravity="bottom"
+                android:textSize="14dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -88,7 +118,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Champion"
+                android:text="Default Level"
                 android:id="@+id/tvProfileRank"
                 android:gravity="center"
                 android:layout_weight="0.72"
@@ -233,42 +263,47 @@
 
         <RadioGroup
             android:layout_width="170dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/rgTitles">
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dont show any title"
+                android:text="Dont display any title"
                 android:id="@+id/rbNoTitle"
                 android:checked="false" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="&quot;Begginer&quot;"
+                android:text="Begginer"
                 android:id="@+id/rbBegginerTitle"
-                android:checked="false" />
+                android:checked="false"
+                android:textStyle="bold|italic" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="&quot;Champion&quot;"
+                android:text="Champion"
                 android:id="@+id/rbChampionTitle"
-                android:checked="false" />
+                android:checked="false"
+                android:textStyle="bold|italic" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="&quot;Top Reporter&quot;"
+                android:text="Top Reporter"
                 android:id="@+id/rbTopReporterTitle"
-                android:checked="false" />
+                android:checked="false"
+                android:textStyle="bold|italic" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="&quot;Seeker of Truth&quot;"
+                android:text="Seeker of Truth"
                 android:id="@+id/rbSeekerOfTruthTitle"
-                android:checked="false" />
+                android:checked="false"
+                android:textStyle="bold|italic" />
         </RadioGroup>
 
         <Button
@@ -277,7 +312,8 @@
             android:layout_height="wrap_content"
             android:text="Select Title"
             android:id="@+id/bProfileSelectTitle"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClickSelectTitle" />
 
     </LinearLayout>
 

@@ -296,12 +296,23 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+    /*
+    * Desc: method overrided from AppCompatActivity
+    *       this method is called when activity starts
+    *       Prepare the toolbar menu
+    * */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_emergency_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    /*
+    * Desc: method overrided from AppCompatActivity
+    *       this method is called when activity starts
+    *       Prepare the elements on the toolbar menu
+    * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent myIntent;
@@ -312,20 +323,20 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 performLogout();
                 return true;
             case R.id.action_acount_configuration:
-                //myIntent= new Intent(getApplicationContext(), LoginActivity.class);
-                //startActivity(myIntent);
+                myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+                startActivity(myIntent);
                 return true;
             case R.id.action_profile:
-                //myIntent= new Intent(getApplicationContext(), LoginActivity.class);
-                //startActivity(myIntent);
+                myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(myIntent);
                 return true;
             case R.id.action_ranking:
-                //myIntent= new Intent(getApplicationContext(), LoginActivity.class);
-                //startActivity(myIntent);
+                myIntent= new Intent(getApplicationContext(), RankingActivity.class);
+                startActivity(myIntent);
                 return true;
             case R.id.action_achievements:
-                //myIntent= new Intent(getApplicationContext(), LoginActivity.class);
-                //startActivity(myIntent);
+                myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
+                startActivity(myIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

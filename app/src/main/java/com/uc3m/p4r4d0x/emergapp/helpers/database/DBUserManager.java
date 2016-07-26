@@ -159,7 +159,7 @@ public class DBUserManager {
 
     }
 
-    public long upgradeUserLevelAndTitle(String username,String rank,String title){
+    public long upgradeUserTitle(String username,String title){
         long retValue=-1;
         Cursor resultQuery= selectUser(username);
 
@@ -170,7 +170,7 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_EMAIL)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_DATE)),
-                    rank,
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)),
                     title,
@@ -181,8 +181,29 @@ public class DBUserManager {
             );
         }
         return retValue;
+    }
+    public long upgradeUserLevel(String username,String rank) {
+        long retValue = -1;
+        Cursor resultQuery = selectUser(username);
 
-
+        //If the user exists
+        if (resultQuery.moveToFirst() == true) {
+            retValue = upgradeUser(
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_EMAIL)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_DATE)),
+                    rank,
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR))
+            );
+        }
+        return retValue;
     }
 
     public long upgradeUserAPXPpoints(String username,int appoints,int xppoints){
