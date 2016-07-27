@@ -7,14 +7,17 @@ package com.uc3m.p4r4d0x.emergapp.helpers.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper{
 
         private static final String DB_NAME ="eReporterDDBB.sqlite";
-        private static final int DB_SCHEME_VERSION =12;
+        private static final int DB_SCHEME_VERSION =20;
+        public Context cntx;
 
         public DBHelper(Context context) {
             super(context, DB_NAME, null, DB_SCHEME_VERSION);
+            cntx=context;
         }
 
         @Override
@@ -24,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper{
             db.execSQL(DBAchievementsManager.CREATE_TABLE);
             db.execSQL(DBAvatarsManager.CREATE_TABLE);
             db.execSQL(DBQuestsManager.CREATE_TABLE);
+
         }
 
         @Override
@@ -38,6 +42,8 @@ public class DBHelper extends SQLiteOpenHelper{
             db.execSQL(DBAchievementsManager.CREATE_TABLE);
             db.execSQL(DBAvatarsManager.CREATE_TABLE);
             db.execSQL(DBQuestsManager.CREATE_TABLE);
+
+
         }
 
     @Override
@@ -49,6 +55,8 @@ public class DBHelper extends SQLiteOpenHelper{
 
         }
     }
+
+
 }
 
 

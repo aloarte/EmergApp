@@ -13,15 +13,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.uc3m.p4r4d0x.emergapp.fragments.RankFragment1;
 import com.uc3m.p4r4d0x.emergapp.fragments.RankFragment2;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBTitlesManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
 public class RankingActivity extends AppCompatActivity {
@@ -42,17 +46,32 @@ public class RankingActivity extends AppCompatActivity {
             super(supportFragmentManager);
         }
 
+
         @Override
         public Fragment getItem(int position) {
+
+            RankFragment1 rankFragment1;
+            RankFragment2 rankFragment2;
+            Fragment retFragment;
             //For each position create the correspond fragment, created by a fragment class
             switch (position) {
                 case 0:
-                    return new RankFragment1();
+                    rankFragment1= new RankFragment1();
+                    //Load the info into the fragment to set the rank data
+                    loadUsersInXPRanking(rankFragment1);
+                    //Get the fragment to return it
+                    retFragment=rankFragment1;
+                    break;
                 case 1:
-                    return new RankFragment2();
+                    rankFragment2= new RankFragment2();
+                    loadUsersInAPRanking(rankFragment2);
+                    retFragment=rankFragment2;
+                    break;
                 default:
-                    return null;
+                    retFragment= null;
+                break;
             }
+            return retFragment;
         }
 
         //Return the size of the array
@@ -66,6 +85,7 @@ public class RankingActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return fragmentsNames[position];
         }
+
     }
 
     /*
@@ -98,7 +118,7 @@ public class RankingActivity extends AppCompatActivity {
         tabLayoutRanking.setupWithViewPager(viewPagerRanking);
 
         //Override onTabSelected methods to let the tab respond with the viewPager
-        tabLayoutRanking.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+        tabLayoutRanking.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPagerRanking.setCurrentItem(tab.getPosition());
@@ -115,9 +135,9 @@ public class RankingActivity extends AppCompatActivity {
             }
         });
 
+
         //Load the color
         loadColor();
-
     }
 
     /*
@@ -211,7 +231,7 @@ public class RankingActivity extends AppCompatActivity {
                     tvToolbarXP.setText(""+XPpoints);
                     break;
                 case "Veteran":
-                    tvToolbarXPMax.setText(""+100);
+                    tvToolbarXPMax.setText(""+150);
                     tvToolbarXP.setText(""+XPpoints);
                     break;
                 case "Champion":
@@ -231,8 +251,10 @@ public class RankingActivity extends AppCompatActivity {
 
             }
 
-
-
+            int avatar = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR));
+            ImageView fragmentImageView = (ImageView) findViewById(R.id.ivLogoToolbar);
+            //Set text to it
+            fragmentImageView.setImageResource(avatar);
         }
     }
 
@@ -258,6 +280,79 @@ public class RankingActivity extends AppCompatActivity {
 
         }
     }
+
+    /*
+    * Desc: get the data from the DDBB to fill propperly the rank textViews
+    * param: the rank fragment class to set on it the data
+    * */
+    public void loadUsersInXPRanking(RankFragment1 rankFragment){
+
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+      //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else {
+            int obtainedAux=0;
+            //String array to save all data recovered from the DDBB
+            String [][] data = new String [5][4];
+            //Open the DDBB manager
+            DBUserManager managerDBUsers = new DBUserManager(this);
+            //Select the users ordered by XP points
+            Cursor resultQuery = managerDBUsers.selectUsersOrderedByXP();
+            //iterate each user to save data into the array
+            int i=0;
+            for(resultQuery.moveToFirst();
+                i<5|| !resultQuery.isAfterLast();
+                resultQuery.moveToNext(),i++){
+                //Get the name,title, level and XP points of the user
+                data[i][0] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME));
+                data[i][1] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE));
+                data[i][2] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL));
+                data[i][3] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS));
+            }
+            //Set the data retrieved into the fragment view
+            rankFragment.setArgumentsToFragment(data);
+
+        }
+    }
+
+    public void loadUsersInAPRanking(RankFragment2 rankFragment){
+
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else {
+            int obtainedAux=0;
+            //String array to save all data recovered from the DDBB
+            String [][] data = new String [5][4];
+            //Open the DDBB manager
+            DBUserManager managerDBUsers = new DBUserManager(this);
+            //Select the users ordered by XP points
+            Cursor resultQuery = managerDBUsers.selectUsersOrderedByAP();
+            //iterate each user to save data into the array
+            int i=0;
+            for(resultQuery.moveToFirst();
+                i<5|| !resultQuery.isAfterLast();
+                resultQuery.moveToNext(),i++){
+                //Get the name,title, level and XP points of the user
+                data[i][0] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME));
+                data[i][1] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE));
+                data[i][2] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR));
+                data[i][3] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS));
+            }
+            //Set the data retrieved into the fragment view
+            rankFragment.setArgumentsToFragment(data);
+
+        }
+    }
+
 
     /*
     * Desc: performs a logout from the current logged user

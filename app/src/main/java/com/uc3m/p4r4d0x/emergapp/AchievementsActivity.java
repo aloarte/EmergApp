@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -212,7 +213,7 @@ public class AchievementsActivity extends AppCompatActivity {
                     tvToolbarXP.setText(""+XPpoints);
                     break;
                 case "Veteran":
-                    tvToolbarXPMax.setText(""+100);
+                    tvToolbarXPMax.setText(""+150);
                     tvToolbarXP.setText(""+XPpoints);
                     break;
                 case "Champion":
@@ -232,8 +233,10 @@ public class AchievementsActivity extends AppCompatActivity {
 
             }
 
-
-
+            int avatar = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR));
+            ImageView fragmentImageView = (ImageView) findViewById(R.id.ivLogoToolbar);
+            //Set text to it
+            fragmentImageView.setImageResource(avatar);
         }
     }
 

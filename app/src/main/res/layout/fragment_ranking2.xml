@@ -106,8 +106,8 @@
             </LinearLayout>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:id="@+id/ivFirstAvatar"
                 android:src="@mipmap/ereport" />
 
@@ -168,8 +168,8 @@
             </LinearLayout>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:id="@+id/ivSecondAvatar"
                 android:src="@mipmap/ereport" />
 
@@ -230,8 +230,8 @@
             </LinearLayout>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:id="@+id/ivThirdAvatar"
                 android:src="@mipmap/ereport" />
 
@@ -291,8 +291,8 @@
             </LinearLayout>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:id="@+id/ivFourthAvatar"
                 android:src="@mipmap/ereport" />
 
@@ -352,8 +352,8 @@
             </LinearLayout>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:id="@+id/ivFifthAvatar"
                 android:src="@mipmap/ereport" />
 

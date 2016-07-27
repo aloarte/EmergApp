@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.uc3m.p4r4d0x.emergapp.R;
+
 /**
  * Created by Alvaro Loarte Rodríguez on 19/02/16.
  *
@@ -25,6 +27,7 @@ public class DBUserManager {
     public static final String TU_XP_POINTS="xp_points";
     public static final String TU_TITLE="title";
     public static final String TU_COLOR="color";
+    public static final String TU_AVATAR="avatar";
     public static final String TU_MODIFY_TITLE="modify_title";
     public static final String TU_MODIFY_AVATAR="modify_avatar";
     public static final String TU_MODIFY_COLOR="modify_color";
@@ -45,6 +48,7 @@ public class DBUserManager {
             + TU_XP_POINTS      + " integer not null,"
             + TU_TITLE          + " text,"
             + TU_COLOR          + " integer not null,"
+            + TU_AVATAR         + " integer not null,"
             + TU_MODIFY_TITLE   + " integer not null,"
             + TU_MODIFY_AVATAR  + " integer not null,"
             + TU_MODIFY_COLOR   + " integer not null);";
@@ -52,6 +56,7 @@ public class DBUserManager {
     //DBHelper & SQLIteDatabase objects
     private DBHelper helper;
     private SQLiteDatabase db;
+
 
     //Constructor
     public DBUserManager(Context context) {
@@ -65,7 +70,7 @@ public class DBUserManager {
     * Ret: A filled ContentValues object
     * */
     public ContentValues generateCVUser( String name, String password, String email, String date,
-                                     String level,int ap_points,int xp_points, String title, int color,
+                                     String level,int ap_points,int xp_points, String title, int color,int avatar,
                                      int modifTitle,int modifImage, int modifColor ){
 
         ContentValues contentV = new ContentValues();
@@ -78,6 +83,7 @@ public class DBUserManager {
         contentV.put(TU_XP_POINTS,xp_points);
         contentV.put(TU_TITLE,title);
         contentV.put(TU_COLOR,color);
+        contentV.put(TU_AVATAR,avatar);
         contentV.put(TU_MODIFY_TITLE,modifTitle);
         contentV.put(TU_MODIFY_AVATAR,modifImage);
         contentV.put(TU_MODIFY_COLOR,modifColor);
@@ -93,9 +99,10 @@ public class DBUserManager {
         int APpoints=0,XPpoints=0;
         int color=0;
         int modifTitle=0, modifAvatar=0,modifColor=0;
+        int avatar= R.mipmap.ereport;
         long retValue=0;
         retValue=db.insert(TABLE_NAME, null, generateCVUser(name, password, email, date,level,
-                                                        APpoints,XPpoints,title,color,
+                                                        APpoints,XPpoints,title,color,avatar,
                                                         modifTitle,modifAvatar,modifColor));
         if(retValue==-1 || retValue==0){
             return false;
@@ -116,18 +123,37 @@ public class DBUserManager {
     }
 
     /*
+    * Desc: Select from the database an user ordered by APpoints
+    * Param: the nickname of the user
+    * Ret: Cursor object with the information
+    * */
+    public Cursor selectUsersOrderedByAP(){
+        return db.rawQuery("SELECT * from " + TABLE_NAME + " ORDER BY "+TU_AP_POINTS + " DESC;", new String[]{});
+    }
+
+    /*
+   * Desc: Select from the database an user ordered by XPpoints
+   * Param: the nickname of the user
+   * Ret: Cursor object with the information
+   * */
+    public Cursor selectUsersOrderedByXP(){
+        return db.rawQuery("SELECT * from " + TABLE_NAME + " ORDER BY "+TU_XP_POINTS + " DESC;", new String[]{});
+    }
+
+
+    /*
      * Desc: Upgrade one user in the database
      * Param: Strings with user data, and integers with the points and the level
      * Ret: Long with the amount of elements affected
     * */
     public long upgradeUser(String name, String password, String email, String date,
-                        String level,int ap_points,int xp_points, String title, int color,
+                        String level,int ap_points,int xp_points, String title, int color,int avatar,
                         int modifTitle,int modifImage, int modifColor){
 
         return db.update(
                 TABLE_NAME,
                 generateCVUser(name, password, email, date, level,
-                        ap_points, xp_points, title, color,
+                        ap_points, xp_points, title, color, avatar,
                         modifTitle, modifImage, modifColor)
                 , TU_NAME + " LIKE ? ", new String[]{name});
     }
@@ -149,6 +175,34 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE)),
                     color,
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR))
+            );
+        }
+        return retValue;
+
+
+    }
+
+    public long upgradeUserAvatar(String username,int avatar){
+        long retValue=-1;
+        Cursor resultQuery= selectUser(username);
+
+        //If the user exists
+        if(resultQuery.moveToFirst()==true) {
+            retValue=upgradeUser(
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_EMAIL)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_DATE)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR)),
+                    avatar,
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR))
@@ -175,6 +229,7 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)),
                     title,
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR))
@@ -198,6 +253,7 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR))
@@ -222,6 +278,7 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)) + xppoints,
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR))
@@ -248,6 +305,7 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR)),
                     unlockT,
                     unlockA,
                     unlockC
@@ -266,6 +324,29 @@ public class DBUserManager {
     public boolean userExist(String userName){
         //Execute select and return if there is an element
         return selectUser(userName).moveToFirst();
+    }
+
+
+    /*
+    * Desc: Insert on database a new user
+    * Param: Strings with user data
+    * */
+    public boolean insertFullFieldsUser(  String name, String password, String email
+                                        , String date, String level,String title
+                                        , int APpoints, int XPpoints, int color, int avatar
+                                        , int modifTitle ,int modifAvatar,int modifColor){
+
+        long retValue=0;
+        retValue=db.insert(TABLE_NAME, null, generateCVUser(name, password, email, date,level,
+                APpoints,XPpoints,title,color,avatar,
+                modifTitle,modifAvatar,modifColor));
+        if(retValue==-1 || retValue==0){
+            return false;
+        }
+        else{
+            return true;
+        }
+
     }
 
 

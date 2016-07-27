@@ -884,10 +884,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         return isValid;
     }
 
-    /*
-    * Desc: load the user content into the toolbar
-    *
-    * */
     public void loadToolbar(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -908,17 +904,20 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         Cursor resultQuery                 = managerDB.selectUser(username);
         //If the user exists
         if(resultQuery.moveToFirst()==true){
-            //Get the password by searching first the column index
+            //Set the level
             String level                      = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL));
-            int APpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS));
-            int XPpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS));
-
             TextView tvToolbarLevel = (TextView) findViewById(R.id.tvToolbarLevel);
             tvToolbarLevel.setText(level);
-
+            //Set the title
+            String title                      = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE));
+            TextView tvToolbarTitle = (TextView) findViewById(R.id.tvToolbarTitle);
+            tvToolbarTitle.setText(title);
+            //Set the AP points
+            int APpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS));
             TextView tvToolbarAP = (TextView) findViewById(R.id.tvToolbarCurrentAP);
             tvToolbarAP.setText(""+APpoints);
-
+            //Set the XP points
+            int XPpoints                     = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS));
             TextView tvToolbarXPMax = (TextView) findViewById(R.id.tvToolBarNextLevelXP);
             TextView tvToolbarXP = (TextView) findViewById(R.id.tvToolbarCurrentXP);
 
@@ -928,7 +927,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     tvToolbarXP.setText(""+XPpoints);
                     break;
                 case "Veteran":
-                    tvToolbarXPMax.setText(""+100);
+                    tvToolbarXPMax.setText(""+150);
                     tvToolbarXP.setText(""+XPpoints);
                     break;
                 case "Champion":
@@ -948,8 +947,10 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
             }
 
-
-
+            int avatar = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR));
+            ImageView fragmentImageView = (ImageView) findViewById(R.id.ivLogoToolbar);
+            //Set text to it
+            fragmentImageView.setImageResource(avatar);
         }
     }
 

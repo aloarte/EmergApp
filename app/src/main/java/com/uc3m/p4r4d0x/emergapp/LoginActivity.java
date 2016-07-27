@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         //hide text view
         tvFailLogin.setVisibility(View.GONE);
 
+        insertInitialUsers();
 
         //Check if there is any user logged into the aplication checking shared preferences
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -211,6 +212,32 @@ public class LoginActivity extends AppCompatActivity {
         //Create and launch a new activity
         Intent myIntent = new Intent(context, HomeScreenActivity.class);
         startActivity(myIntent);
+
+    }
+
+    public void insertInitialUsers(){
+
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        //editor.putBoolean("initialusers", false);
+        boolean initialUsersExist = sharedpreferences.getBoolean("initialusers", false);
+        if(!initialUsersExist){
+            editor.putBoolean("initialusers", true);
+
+            DBUserManager dbUser= new DBUserManager(this);
+            boolean insertado =
+                            dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", ""              , 65 , 40, 3,R.mipmap.ereport, 1, 1, 1)&
+                            dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", ""              , 100, 170, 5,R.mipmap.arrowforward, 1, 1, 1) &
+                            dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth", 325, 140, 2,R.mipmap.arrowleft, 1, 1, 1) &
+                            dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", ""              , 175, 160, 6,R.mipmap.back, 1, 1, 1) &
+                            dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"   , 100, 100, 1,R.mipmap.ereport, 1, 1, 1);
+            Log.d("ALR", "InsertadoU: " + insertado);
+        }
+        else{
+            Log.d("ALR", "Usuarios insertados ya insertados " );
+        }
+
 
     }
 }

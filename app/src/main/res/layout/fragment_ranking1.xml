@@ -82,7 +82,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Albrath Hojaverde"
+                    android:text="Default User"
                     android:id="@+id/tvFirstName"
                     android:textSize="14dp"
                     android:textIsSelectable="false"
@@ -94,7 +94,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:text="Seeker of Truth"
+                    android:text="Default title
+                    "
                     android:id="@+id/tvFirstTitle"
                     android:textSize="14dp"
                     android:textStyle="italic"
@@ -108,7 +109,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="Legend"
+                android:text="Default"
                 android:id="@+id/tvFirstLevel"
                 android:padding="10dp"
                 android:textSize="14dp"
@@ -117,7 +118,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="500"
+                android:text="0"
                 android:id="@+id/tvFirstPoints"
                 android:padding="10dp"
                 android:textSize="14dp"
@@ -147,7 +148,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Albrath Hojaverde"
+                    android:text="Default User"
                     android:id="@+id/tvSecondName"
                     android:textSize="14dp"
                     android:textIsSelectable="false"
@@ -159,7 +160,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:text="Seeker of Truth"
+                    android:text="Default title
+                    "
                     android:id="@+id/tvSecondTitle"
                     android:textSize="14dp"
                     android:textStyle="italic"
@@ -173,7 +175,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="Hero"
+                android:text="Default"
                 android:id="@+id/tvSecondLevel"
                 android:padding="10dp"
                 android:textSize="14dp"
@@ -182,7 +184,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="400"
+                android:text="0"
                 android:id="@+id/tvSecondPoints"
                 android:padding="10dp"
                 android:textSize="14dp"
@@ -212,7 +214,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Albrath Hojaverde"
+                    android:text="Default User"
                     android:id="@+id/tvThirdName"
                     android:textSize="14dp"
                     android:textIsSelectable="false"
@@ -224,7 +226,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:text="Seeker of Truth"
+                    android:text="Default title
+                    "
                     android:id="@+id/tvThirdTitle"
                     android:textSize="14dp"
                     android:textStyle="italic"
@@ -238,7 +241,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="Hero"
+                android:text="Default"
                 android:id="@+id/tvThirdLevel"
                 android:padding="10dp"
                 android:textSize="14dp"
@@ -247,7 +250,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="300"
+                android:text="0"
                 android:id="@+id/tvThirdPoints"
                 android:padding="10dp"
                 android:textSize="14dp"
@@ -276,7 +279,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Albrath Hojaverde"
+                    android:text="Default User"
                     android:id="@+id/tvFourthName"
                     android:textSize="14dp"
                     android:textIsSelectable="false"
@@ -288,7 +291,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:text="Seeker of Truth"
+                    android:text="Default title
+                    "
                     android:id="@+id/tvFourthTitle"
                     android:textSize="14dp"
                     android:textStyle="italic"
@@ -302,7 +306,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="Champion"
+                android:text="Default"
                 android:id="@+id/tvFourthLevel"
                 android:padding="10dp"
                 android:textSize="14dp"
@@ -311,7 +315,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="200"
+                android:text="0"
                 android:id="@+id/tvFourthPoints"
                 android:padding="10dp"
                 android:textSize="14dp"
@@ -340,7 +344,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:text="Albrath Hojaverde"
+                    android:text="Default User"
                     android:id="@+id/tvFifthName"
                     android:textSize="14dp"
                     android:textIsSelectable="false"
@@ -352,7 +356,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
-                    android:text="Seeker of Truth"
+                    android:text="Default title
+                    "
                     android:id="@+id/tvFifthTitle"
                     android:textSize="14dp"
                     android:textStyle="italic"
@@ -366,7 +371,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="Veteran"
+                android:text="Default"
                 android:id="@+id/tvFifthLevel"
                 android:padding="10dp"
                 android:textSize="14dp"
@@ -375,7 +380,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:text="100"
+                android:text="0"
                 android:id="@+id/tvFifthPoints"
                 android:padding="10dp"
                 android:textSize="14dp"

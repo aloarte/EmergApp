@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -162,7 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
                     tvToolbarXP.setText(""+XPpoints);
                     break;
                 case "Veteran":
-                    tvToolbarXPMax.setText(""+100);
+                    tvToolbarXPMax.setText(""+150);
                     tvToolbarXP.setText(""+XPpoints);
                     break;
                 case "Champion":
@@ -182,8 +183,10 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
 
-
-
+            int avatar = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR));
+            ImageView fragmentImageView = (ImageView) findViewById(R.id.ivLogoToolbar);
+            //Set text to it
+            fragmentImageView.setImageResource(avatar);
         }
     }
 
@@ -301,6 +304,9 @@ public class ProfileActivity extends AppCompatActivity {
                         tvProfileCurrentXP.setText("" + XPpoints);
                         break;
                     default:
+                        tvProfileLevelXP.setText("" + 999);
+                        maxXpPoints=999;
+                        tvProfileCurrentXP.setText("" + XPpoints);
                         break;
 
                 }
@@ -356,6 +362,7 @@ public class ProfileActivity extends AppCompatActivity {
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String username                    = sharedpreferences.getString("username", "default");
 
+        Log.d("ALR","LoadTitlesInside");
         //Check the username
         if(username.compareTo("default")==0){
             //If is empty (error) do nothing
@@ -376,6 +383,8 @@ public class ProfileActivity extends AppCompatActivity {
                 nameTitleAux = resultQuery.getString(resultQuery.getColumnIndex(DBTitlesManager.TT_NAME_ID));
                 obtainedAux  = resultQuery.getInt(resultQuery.getColumnIndex(DBTitlesManager.TT_OBTAINED));
 
+
+                Log.d("ALR","LoadTitles: "+nameTitleAux+" , "+obtainedAux);
                 //Switch by the title name, get the view and perform the view change
                 switch (nameTitleAux){
                     case "tBegginer":
