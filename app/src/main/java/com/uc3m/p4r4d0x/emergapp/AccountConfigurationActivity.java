@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +40,10 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     Spinner colorOptionsSpinner;
     String colorSelected="";
     int colorSelectedInt=0;
+
+
+    int avatarImageSelected=-1;
+    LinearLayout [] llArray = new LinearLayout[4];
 
     String [][] colors = new String[][] {
                                             {"Default","#009688","#26a69a"},
@@ -66,6 +74,13 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         loadToolbar();
         //Load the color
         loadColor();
+
+
+
+        llArray[0] = (LinearLayout) findViewById(R.id.llAvatar1);
+        llArray[1] = (LinearLayout) findViewById(R.id.llAvatar2);
+        llArray[2] = (LinearLayout) findViewById(R.id.llAvatar3);
+        llArray[3] = (LinearLayout) findViewById(R.id.llAvatar4);
 
         //Get the spinner
         colorOptionsSpinner = (Spinner) findViewById(R.id.spinnerAccountConfiguration);
@@ -371,6 +386,54 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             Toolbar t= (Toolbar) findViewById(R.id.toolbarAC);
             t.setBackgroundColor(Color.parseColor(primaryColor));
 
+        }
+    }
+
+
+    public void markImageViewAvatar(int idLinearLayoutAvatar){
+
+        for(int i=0;i<4;i++){
+            if(i==idLinearLayoutAvatar){
+                llArray[i].setBackgroundColor(Color.argb(20, 84, 84, 84));
+            }
+            else{
+                llArray[i].setBackgroundColor(Color.WHITE);
+            }
+        }
+
+    }
+
+    public void onClickSelectAvatar(View v){
+        int elementId=v.getId();
+        switch(elementId){
+            case R.id.ivACAvatarImageSelect1:
+                markImageViewAvatar(0);
+                avatarImageSelected=R.mipmap.avatarr_black;
+                break;
+            case R.id.ivACAvatarImageSelect2:
+                markImageViewAvatar(1);
+                avatarImageSelected=R.mipmap.avatar_white;
+                break;
+            case R.id.ivACAvatarImageSelect3:
+                markImageViewAvatar(2);
+                avatarImageSelected=R.mipmap.avatar_grey;
+                break;
+            case R.id.ivACAvatarImageSelect4:
+                markImageViewAvatar(3);
+                avatarImageSelected=R.mipmap.avatar_ereporter;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void onClickSaveAvatar(View v){
+        String username = sharedpreferences.getString("username", "default");
+
+        if(username.compareTo("default")!=0 && avatarImageSelected!=-1) {
+            DBUserManager managerDB = new DBUserManager(this);
+            managerDB.upgradeUserAvatar(username, avatarImageSelected);
+            loadToolbar();
         }
     }
 }

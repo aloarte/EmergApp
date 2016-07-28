@@ -313,6 +313,11 @@ public class ProfileActivity extends AppCompatActivity {
                 progressStatus=(XPpoints*100)/maxXpPoints;
                 pbProfile.setProgress(progressStatus);
 
+                int avatar = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR));
+                ImageView fragmentImageView = (ImageView) findViewById(R.id.ivProfileAvatarImage);
+                //Set text to it
+                fragmentImageView.setImageResource(avatar);
+
             }
         }
     }

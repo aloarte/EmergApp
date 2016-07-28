@@ -222,16 +222,19 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         //editor.putBoolean("initialusers", false);
         boolean initialUsersExist = sharedpreferences.getBoolean("initialusers", false);
+
+        Log.d("ALR", "USER ADMIN EXIST: " + initialUsersExist);
+
         if(!initialUsersExist){
             editor.putBoolean("initialusers", true);
 
             DBUserManager dbUser= new DBUserManager(this);
             boolean insertado =
-                            dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", ""              , 65 , 40, 3,R.mipmap.ereport, 1, 1, 1)&
-                            dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", ""              , 100, 170, 5,R.mipmap.arrowforward, 1, 1, 1) &
-                            dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth", 325, 140, 2,R.mipmap.arrowleft, 1, 1, 1) &
-                            dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", ""              , 175, 160, 6,R.mipmap.back, 1, 1, 1) &
-                            dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"   , 100, 100, 1,R.mipmap.ereport, 1, 1, 1);
+                            dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", ""              , 65 , 40, 3,R.mipmap.avatar_grey, 1, 1, 1)&
+                            dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", ""              , 100, 170, 5,R.mipmap.avatar_white, 1, 1, 1) &
+                            dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth", 325, 140, 2,R.mipmap.avatarr_black, 1, 1, 1) &
+                            dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", ""              , 175, 160, 6,R.mipmap.avatar_grey, 1, 1, 1) &
+                            dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"   , 100, 100, 1,R.mipmap.avatar_ereporter, 1, 1, 1);
             Log.d("ALR", "InsertadoU: " + insertado);
         }
         else{

@@ -15,31 +15,132 @@
     android:weightSum="1">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.67"
+        android:layout_weight="0.45"
         android:weightSum="1"
         android:gravity="center"
         android:id="@+id/llProfileAvatarImage">
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/imageView2"
-            android:src="@mipmap/arrowleft" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/llAvatarImages"
+            android:layout_weight="1.12">
 
-        <ImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:id="@+id/ivProfileAvatarImage"
-            android:src="@mipmap/ereport" />
+            <HorizontalScrollView
+                android:layout_width="156dp"
+                android:layout_height="229dp"
+                android:id="@+id/horizontalScrollView3" >
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/imageView3"
-            android:src="@mipmap/arrowright" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/llAvatarsImagesScrollView">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/llAvatar1">
+
+                        <ImageView
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:id="@+id/ivACAvatarImage1"
+                            android:src="@mipmap/avatarr_black"
+                            android:padding="5dp" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/ivACAvatarImageSelect1"
+                            android:src="@mipmap/doneicon"
+                            android:onClick="onClickSelectAvatar" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/llAvatar2" >
+
+                        <ImageView
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:id="@+id/ivACAvatarImage2"
+                            android:src="@mipmap/avatar_white"
+                            android:padding="5dp" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/ivACAvatarImageSelect2"
+                            android:src="@mipmap/doneicon"
+                            android:onClick="onClickSelectAvatar" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/llAvatar3" >
+
+                        <ImageView
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:id="@+id/ivACAvatarImage3"
+                            android:src="@mipmap/avatar_grey"
+                            android:padding="5dp" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/ivACAvatarImageSelect3"
+                            android:src="@mipmap/doneicon"
+                            android:onClick="onClickSelectAvatar" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/llAvatar4" >
+
+                        <ImageView
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:id="@+id/ivACAvatarImage4"
+                            android:src="@mipmap/avatar_ereporter"
+                            android:padding="5dp" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/ivACAvatarImageSelect4"
+                            android:src="@mipmap/doneicon"
+                            android:onClick="onClickSelectAvatar" />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Avatar"
+            android:id="@+id/bACSelectAvatar"
+            android:onClick="onClickSaveAvatar" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -60,7 +161,7 @@
             android:layout_width="153dp"
             android:layout_height="wrap_content"
             android:text="Change color"
-            android:id="@+id/bProfileSelectTitle"
+            android:id="@+id/bACSelectColor"
             android:layout_gravity="center_horizontal"
             android:onClick="onClickChangeColor" />
 
