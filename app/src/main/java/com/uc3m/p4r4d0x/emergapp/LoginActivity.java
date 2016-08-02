@@ -221,12 +221,12 @@ public class LoginActivity extends AppCompatActivity {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         //editor.putBoolean("initialusers", false);
-        boolean initialUsersExist = sharedpreferences.getBoolean("initialusers", false);
+        boolean initialUsersExist = sharedpreferences.getBoolean("initialusers", true);
 
         Log.d("ALR", "USER ADMIN EXIST: " + initialUsersExist);
 
         if(!initialUsersExist){
-            editor.putBoolean("initialusers", true);
+            Log.d("ALR", "inserting users: " + initialUsersExist);
 
             DBUserManager dbUser= new DBUserManager(this);
             boolean insertado =
@@ -235,10 +235,13 @@ public class LoginActivity extends AppCompatActivity {
                             dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth", 325, 140, 2,R.mipmap.avatarr_black, 1, 1, 1) &
                             dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", ""              , 175, 160, 6,R.mipmap.avatar_grey, 1, 1, 1) &
                             dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"   , 100, 100, 1,R.mipmap.avatar_ereporter, 1, 1, 1);
+
+            editor.putBoolean("initialusers", true);
+
             Log.d("ALR", "InsertadoU: " + insertado);
         }
         else{
-            Log.d("ALR", "Usuarios insertados ya insertados " );
+            Log.d("ALR", "no inserta users ");
         }
 
 

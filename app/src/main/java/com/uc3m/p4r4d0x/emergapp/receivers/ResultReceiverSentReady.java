@@ -70,6 +70,9 @@ public class ResultReceiverSentReady extends ResultReceiver {
     @Override
     protected void onReceiveResult(int resultCode, Bundle resultData) {
 
+
+        int ap=0,xp=0;
+        String username="";
         //Check if the method was called proper
         if(mReceiver != null) {
             mReceiver.onReceiveResult(resultCode,resultData);
@@ -81,9 +84,6 @@ public class ResultReceiverSentReady extends ResultReceiver {
 
             //Toast the result
             Toast.makeText(contextRR, resultMessage, Toast.LENGTH_LONG).show();
-
-
-
             if(resultCode==2){
                 //Stay for a new send
                 //Hide the layer

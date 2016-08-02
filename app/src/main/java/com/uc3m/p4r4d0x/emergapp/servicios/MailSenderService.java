@@ -27,10 +27,8 @@ public class MailSenderService extends Service {
     protected ResultReceiver mSender;
     final String MyPREFERENCES="userPreferences";
     SharedPreferences sharedpreferences;
-
     public MailSenderService(Context c,ResultReceiverSentReady mReceiver) {
         mSender=mReceiver;
-        this.sContext = c;
     }
 
 

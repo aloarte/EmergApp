@@ -52,7 +52,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="0/10"
                             android:id="@+id/tvProgressExpert1"
                             android:textSize="12dp"
                             android:gravity="center_vertical" />
@@ -90,7 +89,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedExpert1"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -143,8 +141,7 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/tvProgressExpert2"
                             android:textSize="12dp"
-                            android:gravity="center_vertical"
-                            android:text="0/10" />
+                            android:gravity="center_vertical" />
 
                         <LinearLayout
                             android:orientation="vertical"
@@ -179,7 +176,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedExpert2"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -232,8 +228,7 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/tvProgressExpert3"
                             android:textSize="12dp"
-                            android:gravity="center_vertical"
-                            android:text="0/10" />
+                            android:gravity="center_vertical" />
 
                         <LinearLayout
                             android:orientation="vertical"
@@ -268,7 +263,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedExpert3"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -355,7 +349,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedExpert4"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -442,7 +435,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedExpert5"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -530,7 +522,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedExpert6"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -618,7 +609,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedExpert7"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView

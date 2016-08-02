@@ -24,6 +24,8 @@ import com.uc3m.p4r4d0x.emergapp.fragments.AchievementFragment1;
 import com.uc3m.p4r4d0x.emergapp.fragments.AchievementFragment2;
 import com.uc3m.p4r4d0x.emergapp.fragments.AchievementFragment3;
 import com.uc3m.p4r4d0x.emergapp.fragments.AchievementFragment4;
+import com.uc3m.p4r4d0x.emergapp.fragments.RankFragment2;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAchievementsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
 public class AchievementsActivity extends AppCompatActivity {
@@ -46,16 +48,33 @@ public class AchievementsActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            AchievementFragment1 achievementFragment1;
+            AchievementFragment2 achievementFragment2;
+            AchievementFragment3 achievementFragment3;
+            AchievementFragment4 achievementFragment4;
+            Fragment retFragment;
             //For each position create the correspond fragment, created by a fragment class
             switch (position) {
                 case 0:
-                    return new AchievementFragment1();
+                    achievementFragment1= new AchievementFragment1();
+                    loadNovelAchievements(achievementFragment1);
+                    retFragment=achievementFragment1;
+                    return retFragment;
                 case 1:
-                    return new AchievementFragment2();
+                    achievementFragment2= new AchievementFragment2();
+                    loadExpertAchievements(achievementFragment2);
+                    retFragment=achievementFragment2;
+                    return retFragment;
                 case 2:
-                    return new AchievementFragment3();
+                    achievementFragment3= new AchievementFragment3();
+                    loadSecretAchievements(achievementFragment3);
+                    retFragment=achievementFragment3;
+                    return retFragment;
                 case 3:
-                    return new AchievementFragment4();
+                    achievementFragment4= new AchievementFragment4();
+                    //loadNovelAchievements(achievementFragment4);
+                    retFragment=achievementFragment4;
+                    return retFragment;
                 default:
                     return null;
             }
@@ -279,6 +298,196 @@ public class AchievementsActivity extends AppCompatActivity {
         //Create and launch login activity
         Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(myIntent);
+    }
+
+
+    public void loadNovelAchievements(AchievementFragment1 achievementFragment){
+
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else {
+            int obtainedAux=0;
+            //String array to save all data recovered from the DDBB
+            String [][] data = new String [6][3];
+            //Open the DDBB manager
+            DBAchievementsManager managerDBAchievements = new DBAchievementsManager(this);
+            //Select the users ordered by XP points
+            Cursor resultQuery;
+            //iterate each user to save data into the array
+            int i;
+            for(i=0;i<6;i++){
+                switch (i){
+                    case 0:
+                        resultQuery = managerDBAchievements.selectAchievement("aNovelMeta",username);
+                        break;
+                    case 1:
+                        resultQuery = managerDBAchievements.selectAchievement("aNovel1",username);
+                        break;
+                    case 2:
+                        resultQuery = managerDBAchievements.selectAchievement("aNovel2",username);
+                        break;
+                    case 3:
+                        resultQuery = managerDBAchievements.selectAchievement("aNovel3",username);
+                        break;
+                    case 4:
+                        resultQuery = managerDBAchievements.selectAchievement("aNovel4",username);
+                        break;
+                    case 5:
+                        resultQuery = managerDBAchievements.selectAchievement("aNovel5",username);
+                        break;
+                    default:
+                        resultQuery = managerDBAchievements.selectAchievement("aNovelMeta",username);
+                        break;
+                }
+                if(resultQuery.moveToFirst()==true) {
+                    data[i][0] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS));
+                    data[i][1] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS_MAX));
+                    data[i][2] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_COMPLETED));
+                }
+                else{
+                    data[i][0]="0";
+                    data[i][1]="0";
+                    data[i][2]="0";
+                }
+
+
+            }
+            //Set the data retrieved into the fragment view
+            achievementFragment.setArgumentsToFragment(data,i);
+
+        }
+    }
+
+    public void loadExpertAchievements(AchievementFragment2 achievementFragment){
+
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else {
+            int obtainedAux=0;
+            //String array to save all data recovered from the DDBB
+            String [][] data = new String [7][3];
+            //Open the DDBB manager
+            DBAchievementsManager managerDBAchievements = new DBAchievementsManager(this);
+            //Select the users ordered by XP points
+            Cursor resultQuery;
+            //iterate each user to save data into the array
+            int i;
+            for(i=0;i<7;i++){
+                switch (i){
+                    case 0:
+                        resultQuery = managerDBAchievements.selectAchievement("aExpertMeta",username);
+                        break;
+                    case 1:
+                        resultQuery = managerDBAchievements.selectAchievement("aExpert1",username);
+                        break;
+                    case 2:
+                        resultQuery = managerDBAchievements.selectAchievement("aExpert2",username);
+                        break;
+                    case 3:
+                        resultQuery = managerDBAchievements.selectAchievement("aExpert3",username);
+                        break;
+                    case 4:
+                        resultQuery = managerDBAchievements.selectAchievement("aExpert4",username);
+                        break;
+                    case 5:
+                        resultQuery = managerDBAchievements.selectAchievement("aExpert5",username);
+                        break;
+                    case 6:
+                        resultQuery = managerDBAchievements.selectAchievement("aExpert6",username);
+                        break;
+                    default:
+                        resultQuery = managerDBAchievements.selectAchievement("aExpertMeta",username);
+                        break;
+                }
+                if(resultQuery.moveToFirst()==true) {
+                    data[i][0] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS));
+                    data[i][1] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS_MAX));
+                    data[i][2] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_COMPLETED));
+                }
+                else{
+                    data[i][0]="0";
+                    data[i][1]="0";
+                    data[i][2]="0";
+                }
+
+
+            }
+            //Set the data retrieved into the fragment view
+            achievementFragment.setArgumentsToFragment(data,i);
+
+        }
+    }
+
+    public void loadSecretAchievements(AchievementFragment3 achievementFragment){
+
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else {
+            int obtainedAux=0;
+            //String array to save all data recovered from the DDBB
+            String [][] data = new String [6][3];
+            //Open the DDBB manager
+            DBAchievementsManager managerDBAchievements = new DBAchievementsManager(this);
+            //Select the users ordered by XP points
+            Cursor resultQuery;
+            //iterate each user to save data into the array
+            int i;
+            for(i=0;i<6;i++){
+                switch (i){
+                    case 0:
+                        resultQuery = managerDBAchievements.selectAchievement("aSecretMeta",username);
+                        break;
+                    case 1:
+                        resultQuery = managerDBAchievements.selectAchievement("aSecret1",username);
+                        break;
+                    case 2:
+                        resultQuery = managerDBAchievements.selectAchievement("aSecret2",username);
+                        break;
+                    case 3:
+                        resultQuery = managerDBAchievements.selectAchievement("aSecret3",username);
+                        break;
+                    case 4:
+                        resultQuery = managerDBAchievements.selectAchievement("aSecret4",username);
+                        break;
+                    case 5:
+                        resultQuery = managerDBAchievements.selectAchievement("aSecret5",username);
+                        break;
+                    default:
+                        resultQuery = managerDBAchievements.selectAchievement("aSecretMeta",username);
+                        break;
+                }
+                if(resultQuery.moveToFirst()==true) {
+                    data[i][0] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS));
+                    data[i][1] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS_MAX));
+                    data[i][2] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_COMPLETED));
+                }
+                else{
+                    data[i][0]="0";
+                    data[i][1]="0";
+                    data[i][2]="0";
+                }
+
+
+            }
+            //Set the data retrieved into the fragment view
+            achievementFragment.setArgumentsToFragment(data,i);
+
+        }
     }
 
 }

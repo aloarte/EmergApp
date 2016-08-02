@@ -305,7 +305,7 @@ public class RankingActivity extends AppCompatActivity {
             //iterate each user to save data into the array
             int i=0;
             for(resultQuery.moveToFirst();
-                i<5|| !resultQuery.isAfterLast();
+                i<5 && !resultQuery.isAfterLast();
                 resultQuery.moveToNext(),i++){
                 //Get the name,title, level and XP points of the user
                 data[i][0] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME));
@@ -314,7 +314,7 @@ public class RankingActivity extends AppCompatActivity {
                 data[i][3] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS));
             }
             //Set the data retrieved into the fragment view
-            rankFragment.setArgumentsToFragment(data);
+            rankFragment.setArgumentsToFragment(data,i);
 
         }
     }
@@ -339,7 +339,7 @@ public class RankingActivity extends AppCompatActivity {
             //iterate each user to save data into the array
             int i=0;
             for(resultQuery.moveToFirst();
-                i<5|| !resultQuery.isAfterLast();
+                i<5 && !resultQuery.isAfterLast();
                 resultQuery.moveToNext(),i++){
                 //Get the name,title, level and XP points of the user
                 data[i][0] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME));
@@ -348,7 +348,7 @@ public class RankingActivity extends AppCompatActivity {
                 data[i][3] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS));
             }
             //Set the data retrieved into the fragment view
-            rankFragment.setArgumentsToFragment(data);
+            rankFragment.setArgumentsToFragment(data,i);
 
         }
     }

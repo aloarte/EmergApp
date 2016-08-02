@@ -21,6 +21,7 @@ import com.uc3m.p4r4d0x.emergapp.R;
 public class RankFragment2 extends Fragment {
     View mView;
     String [][] data;
+    int arraySize=0;
 
     @Nullable
     @Override
@@ -34,7 +35,8 @@ public class RankFragment2 extends Fragment {
     /*
  * Desc:  Set the data from Activity into the array
  * */
-    public void setArgumentsToFragment(String [][] data){
+    public void setArgumentsToFragment(String [][] data, int arraySize){
+        this.arraySize=arraySize;
         this.data=data;
     }
 
@@ -43,7 +45,7 @@ public class RankFragment2 extends Fragment {
     * */
     public void setArgumentsOntoViews(){
         //Iterate the array and write on the propper position
-        for(int i=0;i<data.length;i++){
+        for(int i=0;i< arraySize && i<data.length;i++){
             switch(i){
                 //First one
                 case 0:
@@ -102,7 +104,6 @@ public class RankFragment2 extends Fragment {
     }
     public void changeImage(String imageResource, int idTextView)
     {
-        //int source=Integer.parseInt(imageResource);
         //Get the text view
         ImageView fragmentImageView;
         fragmentImageView = (ImageView) mView.findViewById(idTextView);

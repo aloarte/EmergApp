@@ -22,6 +22,8 @@ public class RankFragment1 extends Fragment {
     View mView;
     String [][] data;
 
+    int arraySize=0;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,16 +39,16 @@ public class RankFragment1 extends Fragment {
     /*
     * Desc:  Set the data from Activity into the array
     * */
-    public void setArgumentsToFragment(String [][] data){
+    public void setArgumentsToFragment(String [][] data, int arraySize){
+        this.arraySize=arraySize;
         this.data=data;
     }
-
     /*
     * Desc:  Using the data obtained from the activity, change the TextViews with the data retrieved from DDBB
     * */
     public void setArgumentsOntoViews(){
         //Iterate the array and write on the propper position
-        for(int i=0;i<data.length;i++){
+        for(int i=0; i< arraySize && i< data.length;i++){
             switch(i){
                 //First one
                 case 0:

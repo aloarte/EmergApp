@@ -51,7 +51,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="0/5"
                             android:id="@+id/tvProgressSecret1"
                             android:textSize="12dp"
                             android:gravity="center_vertical" />
@@ -89,7 +88,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret1"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -176,7 +174,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret2"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -263,7 +260,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret3"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -350,7 +346,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret4"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -437,7 +432,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret5"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -525,7 +519,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret6"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView

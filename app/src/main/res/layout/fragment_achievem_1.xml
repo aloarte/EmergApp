@@ -50,7 +50,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="0/5"
                             android:id="@+id/tvProgressNovel1"
                             android:textSize="12dp"
                             android:gravity="center_vertical" />
@@ -88,7 +87,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel1"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -175,7 +173,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel2"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -262,7 +259,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel3"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -348,7 +344,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel4"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
@@ -434,7 +429,6 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel5"
-                    android:src="@mipmap/notdoneicon"
                     android:layout_marginLeft="10dp" />
 
                 <TextView

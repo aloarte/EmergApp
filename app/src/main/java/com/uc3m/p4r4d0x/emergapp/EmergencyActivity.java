@@ -20,6 +20,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -1023,11 +1024,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     /*
     * Desc: Upgrade into the database the points and level for the logged user
-    *
-    public void changeUserStats(){
-        String username = sharedpreferences.getString("username", "default");
+    */
+    public void changeUserStats(String username,int ap,int xp){
 
-        long devuelto1=0,devuelto2;
         DBUserManager managerDB = new DBUserManager(this);
 
         //Select the user
@@ -1035,41 +1034,64 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         //If the user exists
         if(resultQuery.moveToFirst()==true) {
-            //Get the password by searching first the column index
+            int totalxpoints  = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)) + xp;
+            int totalappoints = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS)) + ap;
+           managerDB.upgradeUserAPXPpoints(
+                    username,
+                    totalappoints,
+                    totalxpoints
+                    );
 
-            devuelto1 = managerDB.upgrade(
-                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_NAME)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_PASSWORD)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_EMAIL)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_DATE)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.FN_LEVEL)) + 1,
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.FN_POINTS)));
+            checkLevelUp(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)),totalxpoints);
         }
-
-        resultQuery= managerDB.selectUser(username);
-
-        //If the user exists
-        if(resultQuery.moveToFirst()==true) {
-            devuelto2 = managerDB.upgrade(
-                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_NAME)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_PASSWORD)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_EMAIL)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.FN_DATE)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.FN_LEVEL)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.FN_POINTS)) + 8);
-        }
-
 
         loadToolbar();
     }
 
-*/
+
+    public void checkLevelUp (String level, int xpoints){
+        String username = sharedpreferences.getString("username", "default");
+        DBUserManager managerDB = new DBUserManager(this);
+
+        switch(level){
+            case "Traveler":
+                if(xpoints>=50){
+                    managerDB.upgradeUserLevel(username,"Veteran");
+                }
+                break;
+            case "Veteran":
+                if(xpoints>=150){
+                   managerDB.upgradeUserLevel(username,"Champion");
+                }
+                break;
+            case "Champion":
+                if(xpoints>=300){
+                    managerDB.upgradeUserLevel(username,"Hero");
+                }
+                break;
+            case "Hero":
+                if(xpoints>=500){
+                    managerDB.upgradeUserLevel(username,"Legend");
+                }
+                break;
+            case "Legend":
+                break;
+            default:
+                break;
+
+        }
+
+        //loadToolbar();
+    }
+
 
 
     /*
     * Desc:  function to, after the confirmation, send the email with the info
     * */
     public void sendInfoByMail(){
+        String username = sharedpreferences.getString("username", "default");
+
         //Get the string values for the message, the gps addres and the gps longitude&latitude
         toSendMessage= tvMessagePopUp1.getText().toString();
         toSendGPSStreet= tViewGPS.getText().toString();
@@ -1111,11 +1133,31 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
         sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
 
+
+
+        llAfterSendingMessage.setVisibility(View.VISIBLE);
+
+        boolean areVideosSended = (obtainedVideos[0] && !deletedVideos[0]) || (obtainedVideos[1] && !deletedVideos[1]) ||
+                                  (obtainedVideos[2] && !deletedVideos[2]) || (obtainedVideos[3] && !deletedVideos[3]);
+
+        boolean areImagesSended = (obtainedImages[0] && !deletedImages[0]) || (obtainedImages[1] && !deletedImages[1]) ||
+                                  (obtainedImages[2] && !deletedImages[2]) || (obtainedImages[3] && !deletedImages[3]);
+        if(areVideosSended & areImagesSended){
+            changeUserStats(username, 0, 20);
+        }
+        else if(areVideosSended){
+            changeUserStats(username,0,15);
+        }
+        else if(areImagesSended){
+            changeUserStats(username,0,10);
+        }
+        else{
+            changeUserStats(username,0,5);
+        }
+
         //Re initializate deletedArrays
         deletedImages=new boolean[4];
         deletedVideos=new boolean[4];
-
-        llAfterSendingMessage.setVisibility(View.VISIBLE);
 
     }
 

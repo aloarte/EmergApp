@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.uc3m.p4r4d0x.emergapp.R;
 
@@ -16,9 +18,99 @@ import com.uc3m.p4r4d0x.emergapp.R;
  *
  */
 public class AchievementFragment3 extends Fragment {
+    View mView;
+    String [][] data;
+
+    int arraySize=0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_achievem_3,container,false);
+        View view= inflater.inflate(R.layout.fragment_achievem_3,container,false);
+        this.mView = view;
+        setArgumentsOntoViews();
+        return view;
+    }
+
+    /*
+    * Desc:  Set the data from Activity into the array
+    * */
+    public void setArgumentsToFragment(String [][] data, int arraySize){
+        this.arraySize=arraySize;
+        this.data=data;
+    }
+    /*
+    * Desc:  Using the data obtained from the activity, change the TextViews with the data retrieved from DDBB
+    * */
+    public void setArgumentsOntoViews(){
+        //Iterate the array and write on the propper position
+        for(int i=0; i< arraySize && i< data.length;i++){
+            switch(i){
+                //Seeker of Truth
+                case 0:
+                    changeProgressText(data[i][0],data[i][1], R.id.tvProgressSecret1);
+                    changeImageAchievement(data[i][2], R.id.ivCompletedSecret1);
+                    break;
+                //I give my best
+                case 1:
+                    changeImageAchievement(data[i][2], R.id.ivCompletedSecret2);
+                    break;
+                //An image is worth more than 1000 words
+                case 2:
+                    changeImageAchievement(data[i][2], R.id.ivCompletedSecret3);
+                    break;
+                //As fast as I can
+                case 3:
+                    changeImageAchievement(data[i][2], R.id.ivCompletedSecret4);
+                    break;
+                //Personal image is allways the first
+                case 4:
+                    changeImageAchievement(data[i][2], R.id.ivCompletedSecret5);
+                    break;
+                //First my neighborhood
+                case 5:
+                    changeImageAchievement(data[i][2], R.id.ivCompletedSecret6);
+                    break;
+
+            }
+
+        }
+
+    }
+
+    /*
+    * Desc:  change the text on the text view on the fragment
+    * Param: String with the text to change and a int with the id of the text view
+    * */
+    public void changeProgressText(String progress,String maxProgress, int idTextView)
+    {
+        //Get the text view
+        TextView fragmentTextView;
+        fragmentTextView = (TextView) mView.findViewById(idTextView);
+        String text= ""+progress+"/"+maxProgress;
+        //Set text to it
+        fragmentTextView.setText(text);
+
+    }
+
+    public void changeImageAchievement(String achievementUnlocked, int idTextView)
+    {
+        int isAchievementUnlocked=Integer.parseInt(achievementUnlocked);
+        int resourceID;
+        if(isAchievementUnlocked==0){
+            resourceID=R.mipmap.notdoneicon;
+        }
+        else if(isAchievementUnlocked==1){
+            resourceID=R.mipmap.doneicon;
+        }
+        else{
+            resourceID=R.mipmap.notdoneicon;
+        }
+
+        //Get the text view
+        ImageView fragmentImageView;
+        fragmentImageView = (ImageView) mView.findViewById(idTextView);
+        //Set text to it
+        fragmentImageView.setImageResource(resourceID);
+
     }
 }
