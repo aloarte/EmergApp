@@ -28,28 +28,31 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="140dp"
             android:weightSum="1"
             style="@android:style/ButtonBar"
             android:background="#f9fafa"
             android:baselineAligned="false"
             android:id="@+id/llPhotos"
-            android:layout_weight="0.48">
+            android:layout_weight="0.48"
+            android:layout_margin="5dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="top">
             <ImageView
-                android:layout_width="59dp"
-                android:layout_height="64dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@mipmap/camera_128"
                 android:id="@+id/ivCapturePhoto"
                 android:onClick="onClickTakePhoto"
-                android:layout_margin="10dp"
                 android:adjustViewBounds="true"
                 android:longClickable="false"
                 android:nestedScrollingEnabled="false"
-                android:layout_gravity="top|center_vertical" />
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp" />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:id="@+id/ivSelPictureGallery"
                 android:onClick="onClickGalleryImages"
                 android:src="@mipmap/plusicon"
@@ -72,8 +75,8 @@
                     android:orientation="vertical" >
 
                     <ImageView
-                        android:layout_width="66dp"
-                        android:layout_height="66dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:id="@+id/ivPicture1"
                         android:longClickable="true"
                         android:tag="5"
@@ -102,8 +105,8 @@
                     android:orientation="vertical" >
 
                     <ImageView
-                        android:layout_width="66dp"
-                        android:layout_height="66dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:id="@+id/ivPicture2"
                         android:longClickable="true"
                         android:tag="6"
@@ -131,8 +134,8 @@
                     android:orientation="vertical" >
 
                     <ImageView
-                        android:layout_width="66dp"
-                        android:layout_height="66dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:id="@+id/ivPicture3"
                         android:longClickable="true"
                         android:tag="7"
@@ -160,8 +163,8 @@
                     android:orientation="vertical" >
 
                     <ImageView
-                        android:layout_width="66dp"
-                        android:layout_height="66dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:id="@+id/ivPicture4"
                         android:longClickable="true"
                         android:tag="8"
@@ -193,15 +196,17 @@
             style="@android:style/ButtonBar"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="140dp"
             android:weightSum="1"
             android:background="#f9fafa"
             android:id="@+id/llVideos"
-            android:layout_weight="0.48">
+            android:layout_weight="0.48"
+            android:gravity="center_vertical"
+            android:layout_margin="5dp">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="68dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@mipmap/video"
                 android:id="@+id/ivCaptureVideo"
                 android:onClick="onClickTakeVideo"
@@ -210,11 +215,11 @@
                 android:longClickable="false"
                 android:nestedScrollingEnabled="false"
                 android:clickable="false"
-                android:layout_gravity="top|center_vertical" />
+                android:layout_gravity="center_vertical" />
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:id="@+id/ivSelVideoGallery"
                 android:onClick="onClickGalleryVideos"
                 android:src="@mipmap/plusicon"
@@ -237,8 +242,8 @@
                         android:orientation="vertical" >
 
                         <VideoView
-                            android:layout_width="66dp"
-                            android:layout_height="66dp"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
                             android:id="@+id/ivVideo1"
                             android:tag="1"
                             android:longClickable="true"
@@ -270,8 +275,8 @@
                         android:orientation="vertical" >
 
                         <VideoView
-                            android:layout_width="66dp"
-                            android:layout_height="66dp"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
                             android:id="@+id/ivVideo2"
                             android:tag="2"
                             android:longClickable="true"
@@ -303,8 +308,8 @@
                         android:orientation="vertical" >
 
                         <VideoView
-                            android:layout_width="66dp"
-                            android:layout_height="66dp"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
                             android:id="@+id/ivVideo3"
                             android:tag="3"
                             android:longClickable="true"
@@ -337,8 +342,8 @@
                         android:orientation="vertical" >
 
                         <VideoView
-                            android:layout_width="66dp"
-                            android:layout_height="66dp"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
                             android:id="@+id/ivVideo4"
                             android:tag="4"
                             android:longClickable="true"
@@ -389,7 +394,9 @@
             android:background="#f9fafa"
             android:id="@+id/llPosition"
             android:layout_gravity="left"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:onClick="onClickChangeLocation"
+            android:measureWithLargestChild="true">
 
             <TextView
                 android:layout_width="264dp"
@@ -399,7 +406,7 @@
                 android:text="Loading position..."
                 android:gravity="center"
                 android:layout_weight="0.63"
-                android:textSize="20dp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -410,12 +417,11 @@
                 />
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="68dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/ivChangePosition"
                 android:src="@mipmap/map"
-                android:layout_gravity="center|right"
-                android:onClick="onClickChangeLocation" />
+                android:layout_gravity="center|right" />
         </LinearLayout>
 
         <LinearLayout
@@ -436,7 +442,8 @@
             android:weightSum="1"
             android:background="#f9fafa"
             android:id="@+id/llText"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:onClick="onClickEditMessage">
 
             <TextView
                 android:layout_width="264dp"
@@ -446,16 +453,15 @@
                 android:text="Message info here"
                 android:gravity="center"
                 android:layout_weight="0.72"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:textIsSelectable="false" />
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="68dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/ivChangeMessage"
                 android:src="@mipmap/message"
-                android:layout_gravity="center"
-                android:onClick="onClickEditMessage" />
+                android:layout_gravity="center" />
         </LinearLayout>
 
         <LinearLayout
@@ -479,7 +485,9 @@
             android:background="#f9fafa"
             android:visibility="visible"
             android:baselineAligned="true"
-            android:id="@+id/llSend">
+            android:id="@+id/llSend"
+            android:nestedScrollingEnabled="false"
+            android:onClick="onClickSendInfo">
 
             <TextView
                 android:layout_width="264dp"
@@ -490,19 +498,18 @@
                 android:gravity="center|center_horizontal"
                 android:layout_weight="0.67"
                 android:layout_gravity="bottom"
-                android:textSize="20dp"
-                android:textIsSelectable="true" />
+                android:textSize="16dp"
+                android:textIsSelectable="false" />
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="68dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@mipmap/mail"
                 android:id="@+id/ivSendMessage"
-                android:adjustViewBounds="true"
-                android:longClickable="true"
+                android:adjustViewBounds="false"
+                android:longClickable="false"
                 android:nestedScrollingEnabled="false"
-                android:layout_gravity="center|right"
-                android:onClick="onClickSendInfo" />
+                android:layout_gravity="center|right" />
         </LinearLayout>
     </LinearLayout>
 

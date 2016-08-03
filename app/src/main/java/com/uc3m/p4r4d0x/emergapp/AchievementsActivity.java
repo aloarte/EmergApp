@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.uc3m.p4r4d0x.emergapp.fragments.AchievementFragment3;
 import com.uc3m.p4r4d0x.emergapp.fragments.AchievementFragment4;
 import com.uc3m.p4r4d0x.emergapp.fragments.RankFragment2;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAchievementsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBQuestsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
 public class AchievementsActivity extends AppCompatActivity {
@@ -72,7 +74,7 @@ public class AchievementsActivity extends AppCompatActivity {
                     return retFragment;
                 case 3:
                     achievementFragment4= new AchievementFragment4();
-                    //loadNovelAchievements(achievementFragment4);
+                    loadQuests(achievementFragment4);
                     retFragment=achievementFragment4;
                     return retFragment;
                 default:
@@ -358,7 +360,7 @@ public class AchievementsActivity extends AppCompatActivity {
 
             }
             //Set the data retrieved into the fragment view
-            achievementFragment.setArgumentsToFragment(data,i);
+            achievementFragment.setArgumentsToFragment(data, i);
 
         }
     }
@@ -490,4 +492,78 @@ public class AchievementsActivity extends AppCompatActivity {
         }
     }
 
+    public void loadQuests(AchievementFragment4 achievementFragment){
+
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else {
+            int obtainedAux=0;
+            //String array to save all data recovered from the DDBB
+            String [][] data = new String [2][4];
+            //Open the DDBB manager
+            DBQuestsManager managerDBQuests = new DBQuestsManager(this);
+            DBUserManager managerDB = new DBUserManager(this);
+
+            //Select the user
+            Cursor resultQueryUser = managerDB.selectUser(username);
+            //If the user exists
+            if (resultQueryUser.moveToFirst() == true) {
+
+                Cursor resultQuery = managerDBQuests.selectQuest("Quest1", resultQueryUser.getString(resultQueryUser.getColumnIndex(DBUserManager.TU_LEVEL)));
+                if(resultQuery.moveToFirst()==true) {
+                    data[0][0] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_NAME));
+                    data[0][1] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_DESCRIPTION));
+                    data[0][2] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBQuestsManager.TQ_XP_REWARD));
+                    data[0][3] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBQuestsManager.TQ_AP_REWARD));
+                }
+                else {
+                    data[0][0] = "-";
+                    data[0][1] = "-";
+                    data[0][2] = "-";
+                    data[0][3] = "-";
+                }
+
+                resultQuery = managerDBQuests.selectQuest("Quest2", resultQueryUser.getString(resultQueryUser.getColumnIndex(DBUserManager.TU_LEVEL)));
+                if(resultQuery.moveToFirst()==true) {
+                    data[1][0] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_NAME));
+                    data[1][1] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_DESCRIPTION));
+                    data[1][2] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBQuestsManager.TQ_XP_REWARD));
+                    data[1][3] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBQuestsManager.TQ_AP_REWARD));
+                }
+                else {
+                    data[1][0] = "-";
+                    data[1][1] = "-";
+                    data[1][2] = "-";
+                    data[1][3] = "-";
+                }
+                achievementFragment.setArgumentsToFragment(data);
+
+            }
+            else{
+                achievementFragment.setArgumentsToFragment(new String[][]{{"","","",""},{"","","",""}});
+            }
+        }
+    }
+
+
+    /*
+   * Desc: on click method to navegate from toolbar to profile activity
+   * */
+    public void onClickChangeProfileActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
+        startActivity(myIntent);
+    }
+
+    /*
+   * Desc: on click method to navegate from toolbar to acount configuration activity
+   * */
+    public void onClickChangeACActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+        startActivity(myIntent);
+    }
 }

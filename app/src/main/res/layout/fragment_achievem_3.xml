@@ -88,7 +88,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret1"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -174,7 +175,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret2"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -260,7 +262,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret3"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -346,7 +349,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret4"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -432,7 +436,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret5"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -519,7 +524,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedSecret6"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"

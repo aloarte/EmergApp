@@ -46,11 +46,11 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     LinearLayout [] llArray = new LinearLayout[4];
 
     String [][] colors = new String[][] {
-                                            {"Default","#009688","#26a69a"},
+                                            {"Default","#009688","#4db6ac"},
                                             {"Red"    ,"#d32f2f","#ffcdd2"},
-                                            {"Blue"   ,"#303f9f","#3f51b5"},
-                                            {"Green"  ,"#43a047","#4caf50"},
-                                            {"Yellow" ,"#ffa000","#ffc107"},
+                                            {"Blue"   ,"#303f9f","#7986cb"},
+                                            {"Green"  ,"#43a047","#a5d6a7"},
+                                            {"Yellow" ,"#ffca28","#ffe082"},
                                             {"Pink"   ,"#e91e63","#f8bbd0"},
                                             {"Grey"   ,"#bdbdbd","#e0e0e0"}
     };
@@ -170,7 +170,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     *
     * */
     public void onClickChangeColor(View v){
-        Log.d("ALR","Button pressed. Color: "+ colorSelected);
+        Log.d("ALR", "Button pressed. Color: " + colorSelected);
 
         //if the color is not chosen , skip
         if(colorSelected.compareTo("")!=0){
@@ -406,19 +406,19 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     public void onClickSelectAvatar(View v){
         int elementId=v.getId();
         switch(elementId){
-            case R.id.ivACAvatarImageSelect1:
+            case R.id.ivACAvatarImage1:
                 markImageViewAvatar(0);
                 avatarImageSelected=R.mipmap.avatarr_black;
                 break;
-            case R.id.ivACAvatarImageSelect2:
+            case R.id.ivACAvatarImage2:
                 markImageViewAvatar(1);
                 avatarImageSelected=R.mipmap.avatar_white;
                 break;
-            case R.id.ivACAvatarImageSelect3:
+            case R.id.ivACAvatarImage3:
                 markImageViewAvatar(2);
                 avatarImageSelected=R.mipmap.avatar_grey;
                 break;
-            case R.id.ivACAvatarImageSelect4:
+            case R.id.ivACAvatarImage4:
                 markImageViewAvatar(3);
                 avatarImageSelected=R.mipmap.avatar_ereporter;
                 break;
@@ -435,5 +435,21 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             managerDB.upgradeUserAvatar(username, avatarImageSelected);
             loadToolbar();
         }
+    }
+
+    /*
+   * Desc: on click method to navegate from toolbar to profile activity
+   * */
+    public void onClickChangeProfileActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
+        startActivity(myIntent);
+    }
+
+    /*
+   * Desc: on click method to navegate from toolbar to acount configuration activity
+   * */
+    public void onClickChangeACActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+        startActivity(myIntent);
     }
 }

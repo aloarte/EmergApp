@@ -30,7 +30,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
                     android:weightSum="1"
-                    android:baselineAligned="true">
+                    android:baselineAligned="false"
+                    android:onClick="onClickChangeACActivity"
+                    android:gravity="center_vertical">
 
                     <ImageView
                         android:layout_width="35dp"
@@ -45,7 +47,8 @@
                     android:layout_width="135dp"
                     android:layout_height="match_parent"
                     android:weightSum="1"
-                    android:layout_gravity="left">
+                    android:layout_gravity="left"
+                    android:onClick="onClickChangeProfileActivity">
 
                     <LinearLayout
                         android:orientation="vertical"
@@ -87,7 +90,9 @@
                     android:layout_width="110dp"
                     android:layout_height="match_parent"
                     android:weightSum="1"
-                    android:layout_weight="0.36">
+                    android:layout_weight="0.36"
+                    android:onClick="onClickChangeProfileActivity"
+                    android:longClickable="true">
 
                     <LinearLayout
                         android:orientation="vertical"

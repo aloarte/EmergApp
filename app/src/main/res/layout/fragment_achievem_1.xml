@@ -87,7 +87,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel1"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -173,7 +174,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel2"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -259,7 +261,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel3"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -344,7 +347,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel4"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -429,7 +433,8 @@
                     android:layout_width="62dp"
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel5"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -515,7 +520,8 @@
                     android:layout_height="62dp"
                     android:id="@+id/ivCompletedNovel6"
                     android:src="@mipmap/notdoneicon"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:padding="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"

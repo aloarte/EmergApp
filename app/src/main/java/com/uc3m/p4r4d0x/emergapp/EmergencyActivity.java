@@ -186,7 +186,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         //Get the default message with the answer in the previous boxes
         tvMessagePopUp1.getText();
         //Set an onclick to rewrite info in the message
-        ImageView ivChangeMessage = (ImageView) findViewById(R.id.ivChangeMessage);
+        LinearLayout ivChangeMessage = (LinearLayout) findViewById(R.id.llText);
         ivChangeMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,7 +210,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
 
         //ON CLICK LISTENER for the alert dialog screen for sending the message
-        ImageView ivSendInfo = (ImageView) findViewById(R.id.ivSendMessage);
+        LinearLayout ivSendInfo = (LinearLayout) findViewById(R.id.llSend);
         ivSendInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1433,6 +1433,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+    /*
+    * Desc: on click method to center into the google maps the marker
+    * */
     public void onClickCenterAtMarker(View v){
 
         float lat,longit;
@@ -1449,4 +1452,21 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         LatLng currentLatLng = new LatLng(lat, longit);
         googleMapCP.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16));
     }
+
+    /*
+    * Desc: on click method to navegate from toolbar to profile activity
+    * */
+    public void onClickChangeProfileActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
+        startActivity(myIntent);
+    }
+
+    /*
+   * Desc: on click method to navegate from toolbar to acount configuration activity
+   * */
+    public void onClickChangeACActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+        startActivity(myIntent);
+    }
+
 }

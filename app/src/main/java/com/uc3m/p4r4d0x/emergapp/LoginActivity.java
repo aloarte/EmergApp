@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBQuestsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
 
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         //hide text view
         tvFailLogin.setVisibility(View.GONE);
 
-        insertInitialUsers();
+        insertInitialValues();
 
         //Check if there is any user logged into the aplication checking shared preferences
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -215,35 +216,64 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void insertInitialUsers(){
-
-
+    public void insertInitialValues(){
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        //editor.putBoolean("initialusers", false);
-        boolean initialUsersExist = sharedpreferences.getBoolean("initialusers", true);
 
-        Log.d("ALR", "USER ADMIN EXIST: " + initialUsersExist);
-
-        if(!initialUsersExist){
-            Log.d("ALR", "inserting users: " + initialUsersExist);
-
-            DBUserManager dbUser= new DBUserManager(this);
-            boolean insertado =
-                            dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", ""              , 65 , 40, 3,R.mipmap.avatar_grey, 1, 1, 1)&
-                            dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", ""              , 100, 170, 5,R.mipmap.avatar_white, 1, 1, 1) &
-                            dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth", 325, 140, 2,R.mipmap.avatarr_black, 1, 1, 1) &
-                            dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", ""              , 175, 160, 6,R.mipmap.avatar_grey, 1, 1, 1) &
-                            dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"   , 100, 100, 1,R.mipmap.avatar_ereporter, 1, 1, 1);
-
-            editor.putBoolean("initialusers", true);
-
-            Log.d("ALR", "InsertadoU: " + insertado);
+        //sharedpreferences.edit().putBoolean("first_time", true).commit();
+        if (sharedpreferences.getBoolean("first_time", true)){
+            Log.d("ALR","Si se insertan");
+            insertExampleUsers();
+            insertQuests();
+            sharedpreferences.edit().putBoolean("first_time", false).commit();
         }
         else{
-            Log.d("ALR", "no inserta users ");
+            Log.d("ALR","No se insertan");
         }
+    }
+    public boolean insertExampleUsers(){
 
+            DBUserManager dbUser= new DBUserManager(this);
+            return
+                    dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", ""              , 65 , 40, 3,R.mipmap.avatar_grey, 1, 1, 1)&
+                    dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", ""              , 100, 170, 5,R.mipmap.avatar_white, 1, 1, 1) &
+                    dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth", 325, 140, 2,R.mipmap.avatarr_black, 1, 1, 1) &
+                    dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", ""              , 175, 160, 6,R.mipmap.avatar_grey, 1, 1, 1) &
+                    dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"   , 100, 100, 1,R.mipmap.avatar_ereporter, 1, 1, 1);
+    }
+
+    public boolean insertQuests(){
+        DBQuestsManager dbQuest= new DBQuestsManager(this);
+        boolean quest1Inserted=
+                dbQuest.insertQuest("Q1Tr1", "", "Quest1","Las Rozas"          , "0.0003,0.2223", "Traveler",  5 ,  5 ) &
+                dbQuest.insertQuest("Q1Tr2", "", "Quest1","Getafe"             , "0.0003,0.2223", "Traveler",  5 ,  5 ) &
+                dbQuest.insertQuest("Q1Vt1", "", "Quest1","Leganes"            , "0.0003,0.2223", "Veteran" ,  10 , 5 ) &
+                dbQuest.insertQuest("Q1Vt2", "", "Quest1","Majadahonda"        , "0.0003,0.2223", "Veteran" ,  10 , 5 ) &
+                dbQuest.insertQuest("Q1Vt3", "", "Quest1","Alcorcón"           , "0.0003,0.2223", "Veteran" ,  10 , 5 ) &
+                dbQuest.insertQuest("Q1Ch1", "", "Quest1","Fuenlabrada"        , "0.0003,0.2223", "Champion",  10 , 10) &
+                dbQuest.insertQuest("Q1Ch2", "", "Quest1","Humanes"            , "0.0003,0.2223", "Champion",  10 , 10) &
+                dbQuest.insertQuest("Q1Ch3", "", "Quest1","Móstoles"           , "0.0003,0.2223", "Champion",  10 , 10) &
+                dbQuest.insertQuest("Q1He1", "", "Quest1","Pinto"              , "0.0003,0.2223", "Hero"    ,  15 , 10) &
+                dbQuest.insertQuest("Q1He2", "", "Quest1","Parla"              , "0.0003,0.2223", "Hero"    ,  15 , 10) &
+                dbQuest.insertQuest("Q1He3", "", "Quest1","Coslada"            , "0.0003,0.2223", "Hero"    ,  15 , 10) &
+                dbQuest.insertQuest("Q1Le1", "", "Quest1","Madrid"             , "0.0003,0.2223", "Legend"  ,  15 , 15) &
+                dbQuest.insertQuest("Q1Le2", "", "Quest1","Torrejón de Ardoz"  , "0.0003,0.2223", "Legend"  ,  15 , 15);
+
+        boolean quest2Inserted=
+                dbQuest.insertQuest("Q1Tr1", "Waste evaluation"   , "Quest2","Calle del Maestro, Leganés,Madrid"                      , "0.0003,0.2223", "Traveler"  ,  10 , 5 ) &
+                dbQuest.insertQuest("Q1Tr2", "Street status"      , "Quest2","Calle Vía Dublín, Madrid, Comunidad de Madrid"          , "0.0003,0.2223", "Traveler"  ,  10 , 5 ) &
+                dbQuest.insertQuest("Q1Vt1", "Park evaluation"    , "Quest2","Av. de Menéndez Pelayo,Madrid, Comunidad de Madrid"     , "0.0003,0.2223", "Veteran"   ,  15 , 10) &
+                dbQuest.insertQuest("Q1Vt2", "Waste evaluation"   , "Quest2","Calle Vía Dublín, Madrid, Comunidad de Madrid"          , "0.0003,0.2223", "Veteran"   ,  15 , 10) &
+                dbQuest.insertQuest("Q1Vt3", "Car crush wastes"   , "Quest2","Calle de Eugenia de Montijo,Madrid, Comunidad de Madrid", "0.0003,0.2223", "Veteran"   ,  15 , 10) &
+                dbQuest.insertQuest("Q1Ch1", "Minor car accident" , "Quest2","Calle del Arenal, Madrid, Comunidad de Madrid"          , "0.0003,0.2223", "Champion"  ,  20 , 15) &
+                dbQuest.insertQuest("Q1Ch2", "Park evaluation"    , "Quest2","Carr. Cdad. Universitaria,Madrid, Comunidad de Madrid " , "0.0003,0.2223", "Champion"  ,  20 , 15) &
+                dbQuest.insertQuest("Q1Ch3", "Waste evaluation"   , "Quest2","Av. Complutense, Madrid, Comunidad de Madrid          " , "0.0003,0.2223", "Champion"  ,  20 , 15) &
+                dbQuest.insertQuest("Q1He1", "Damaged building"   , "Quest2","Carr. Cdad. Universitaria,Madrid, Comunidad de Madrid " , "0.0003,0.2223", "Hero"      ,  20 , 20) &
+                dbQuest.insertQuest("Q1He2", "Car accident"       , "Quest2","Calle de Eugenia de Montijo,Madrid, Comunidad de Madrid", "0.0003,0.2223", "Hero"      ,  20 , 20) &
+                dbQuest.insertQuest("Q1He3", "Storm Remains"      , "Quest2","Av. de Logroño, Madrid, Comunidad de Madrid"            , "0.0003,0.2223", "Hero"      ,  20 , 20) &
+                dbQuest.insertQuest("Q1Le1", "Burning"            , "Quest2","Calle del Arenal, Madrid, Comunidad de Madrid"          , "0.0003,0.2223", "Legend"    ,  25 , 25) &
+                dbQuest.insertQuest("Q1Le2", "Car accident"       , "Quest2","Av. de Atenas, Alcorcón, Comunidad de Madrid"           , "0.0003,0.2223", "Legend"    ,  25 , 25) ;
+
+        return quest1Inserted && quest2Inserted;
 
     }
 }

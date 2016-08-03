@@ -284,8 +284,8 @@ public class ProfileActivity extends AppCompatActivity {
                         tvProfileCurrentXP.setText("" + XPpoints);
                         break;
                     case "Veteran":
-                        tvProfileLevelXP.setText("" + 100);
-                        maxXpPoints=100;
+                        tvProfileLevelXP.setText("" + 150);
+                        maxXpPoints=150;
                         tvProfileCurrentXP.setText("" + XPpoints);
                         break;
                     case "Champion":
@@ -485,5 +485,21 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    /*
+   * Desc: on click method to navegate from toolbar to profile activity
+   * */
+    public void onClickChangeProfileActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
+        startActivity(myIntent);
+    }
+
+    /*
+   * Desc: on click method to navegate from toolbar to acount configuration activity
+   * */
+    public void onClickChangeACActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+        startActivity(myIntent);
     }
 }

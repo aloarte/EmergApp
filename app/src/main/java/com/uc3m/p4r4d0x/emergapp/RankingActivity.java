@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -314,7 +315,7 @@ public class RankingActivity extends AppCompatActivity {
                 data[i][3] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS));
             }
             //Set the data retrieved into the fragment view
-            rankFragment.setArgumentsToFragment(data,i);
+            rankFragment.setArgumentsToFragment(data, i);
 
         }
     }
@@ -348,7 +349,7 @@ public class RankingActivity extends AppCompatActivity {
                 data[i][3] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS));
             }
             //Set the data retrieved into the fragment view
-            rankFragment.setArgumentsToFragment(data,i);
+            rankFragment.setArgumentsToFragment(data, i);
 
         }
     }
@@ -369,6 +370,22 @@ public class RankingActivity extends AppCompatActivity {
 
         //Create and launch login activity
         Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(myIntent);
+    }
+
+    /*
+   * Desc: on click method to navegate from toolbar to profile activity
+   * */
+    public void onClickChangeProfileActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
+        startActivity(myIntent);
+    }
+
+    /*
+   * Desc: on click method to navegate from toolbar to acount configuration activity
+   * */
+    public void onClickChangeACActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
         startActivity(myIntent);
     }
 }

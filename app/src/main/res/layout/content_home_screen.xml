@@ -23,7 +23,8 @@
         android:background="#f9fafa"
         android:id="@+id/llAssitedReport"
         android:layout_gravity="left"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:onClick="onClickAssistedReport">
 
         <TextView
             android:layout_width="264dp"
@@ -33,16 +34,16 @@
             android:text="Asisted Report"
             android:gravity="center"
             android:layout_weight="0.63"
-            android:textSize="20dp" />
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="68dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/ivAsistedReport"
             android:src="@mipmap/arrowforward"
             android:layout_gravity="center|right"
-            android:onClick="onClickAssistedReport"
-            android:nestedScrollingEnabled="true" />
+            android:nestedScrollingEnabled="false" />
     </LinearLayout>
 
     <LinearLayout
@@ -52,7 +53,8 @@
         android:weightSum="1"
         android:background="#f9fafa"
         android:id="@+id/llFastReport"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:onClick="onClickFastReport">
 
         <TextView
             android:layout_width="264dp"
@@ -62,17 +64,17 @@
             android:text="Fast Report"
             android:gravity="center"
             android:layout_weight="0.72"
-            android:textSize="20dp"
-            android:textIsSelectable="false" />
+            android:textSize="18dp"
+            android:textIsSelectable="false"
+            android:textStyle="bold|italic" />
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="68dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/ivFastReport"
             android:src="@mipmap/arrowforward"
             android:layout_gravity="center|right"
-            android:onClick="onClickFastReport"
-            android:nestedScrollingEnabled="true" />
+            android:nestedScrollingEnabled="false" />
 
     </LinearLayout>
 
@@ -94,7 +96,10 @@
         android:layout_height="249dp"
         android:id="@+id/llNavegator"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="10dp"
+        android:paddingLeft="40dp"
+        android:paddingTop="40dp"
+        android:paddingRight="40dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -105,18 +110,19 @@
             android:background="#f9fafa"
             android:visibility="visible"
             android:baselineAligned="true"
-            android:id="@+id/llNavRanking" >
+            android:id="@+id/llNavRanking"
+            android:layout_margin="5dp"
+            android:onClick="onClickNavRanking">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="68dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@mipmap/coronaranking"
                 android:id="@+id/ivNavRanking"
                 android:adjustViewBounds="true"
                 android:longClickable="true"
                 android:nestedScrollingEnabled="false"
-                android:layout_gravity="center|right"
-                android:onClick="onClickNavRanking" />
+                android:layout_gravity="center|right" />
 
             <TextView
                 android:layout_width="264dp"
@@ -127,8 +133,8 @@
                 android:gravity="center|center_horizontal"
                 android:layout_weight="0.67"
                 android:layout_gravity="bottom"
-                android:textSize="20dp"
-                android:textIsSelectable="true" />
+                android:textSize="16dp"
+                android:textIsSelectable="false" />
 
         </LinearLayout>
 
@@ -141,18 +147,19 @@
             android:background="#f9fafa"
             android:visibility="visible"
             android:baselineAligned="true"
-            android:id="@+id/llNavAchievements" >
+            android:id="@+id/llNavAchievements"
+            android:layout_margin="5dp"
+            android:onClick="onClickNavAchievements">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="68dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@mipmap/medallalogros"
                 android:id="@+id/ivNavAchievements"
                 android:adjustViewBounds="true"
                 android:longClickable="true"
                 android:nestedScrollingEnabled="false"
-                android:layout_gravity="center|right"
-                android:onClick="onClickNavAchievements" />
+                android:layout_gravity="center|right" />
 
             <TextView
                 android:layout_width="264dp"
@@ -163,8 +170,8 @@
                 android:gravity="center|center_horizontal"
                 android:layout_weight="0.67"
                 android:layout_gravity="bottom"
-                android:textSize="20dp"
-                android:textIsSelectable="true" />
+                android:textSize="16dp"
+                android:textIsSelectable="false" />
 
         </LinearLayout>
 
@@ -177,18 +184,19 @@
             android:background="#f9fafa"
             android:visibility="visible"
             android:baselineAligned="true"
-            android:id="@+id/llNavAchievementProgress">
+            android:id="@+id/llNavAchievementProgress"
+            android:layout_margin="5dp"
+            android:onClick="onClickNavAchievementsProgress">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="68dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@mipmap/progress"
                 android:id="@+id/ivNavAchievementProgress"
                 android:adjustViewBounds="true"
                 android:longClickable="true"
                 android:nestedScrollingEnabled="false"
-                android:layout_gravity="center|right"
-                android:onClick="onClickNavAchievementsProgress" />
+                android:layout_gravity="center|right" />
 
             <TextView
                 android:layout_width="264dp"
@@ -199,8 +207,8 @@
                 android:gravity="center|center_horizontal"
                 android:layout_weight="0.67"
                 android:layout_gravity="bottom"
-                android:textSize="20dp"
-                android:textIsSelectable="true" />
+                android:textSize="16dp"
+                android:textIsSelectable="false" />
 
         </LinearLayout>
     </LinearLayout>

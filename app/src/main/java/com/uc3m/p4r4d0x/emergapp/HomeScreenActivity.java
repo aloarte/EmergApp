@@ -323,4 +323,20 @@ public class HomeScreenActivity extends AppCompatActivity {
         startActivity(myIntent);
     }
 
+    /*
+   * Desc: on click method to navegate from toolbar to profile activity
+   * */
+    public void onClickChangeProfileActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
+        startActivity(myIntent);
+    }
+
+    /*
+   * Desc: on click method to navegate from toolbar to acount configuration activity
+   * */
+    public void onClickChangeACActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+        startActivity(myIntent);
+    }
+
 }
