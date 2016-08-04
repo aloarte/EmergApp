@@ -34,10 +34,9 @@
 
             <HorizontalScrollView
                 android:layout_width="156dp"
-                android:layout_height="229dp"
+                android:layout_height="match_parent"
                 android:id="@+id/horizontalScrollView3"
-                android:fadeScrollbars="false"
-                android:layout_weight="0.01">
+                android:fadeScrollbars="false">
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -56,7 +55,7 @@
                             android:layout_width="160dp"
                             android:layout_height="160dp"
                             android:id="@+id/ivACAvatarImage1"
-                            android:src="@mipmap/avatarr_black"
+                            android:src="@mipmap/avatar_hombre2"
                             android:padding="5dp"
                             android:onClick="onClickSelectAvatar" />
 
@@ -73,7 +72,7 @@
                             android:layout_width="160dp"
                             android:layout_height="160dp"
                             android:id="@+id/ivACAvatarImage2"
-                            android:src="@mipmap/avatar_white"
+                            android:src="@mipmap/avatar_mujer2"
                             android:padding="5dp"
                             android:onClick="onClickSelectAvatar" />
 
@@ -90,7 +89,7 @@
                             android:layout_width="160dp"
                             android:layout_height="160dp"
                             android:id="@+id/ivACAvatarImage3"
-                            android:src="@mipmap/avatar_grey"
+                            android:src="@mipmap/avatar_hombre1"
                             android:padding="5dp"
                             android:onClick="onClickSelectAvatar" />
 
@@ -107,13 +106,49 @@
                             android:layout_width="160dp"
                             android:layout_height="160dp"
                             android:id="@+id/ivACAvatarImage4"
-                            android:src="@mipmap/avatar_ereporter"
+                            android:src="@mipmap/avatar_mujer1"
                             android:padding="5dp"
                             android:onClick="onClickSelectAvatar" />
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/llAvatar5" >
+
+                        <ImageView
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:id="@+id/ivACAvatarImage5"
+                            android:src="@mipmap/avatar_hipster1"
+                            android:padding="5dp"
+                            android:onClick="onClickSelectAvatar" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/llAvatar6" >
+
+                        <ImageView
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:id="@+id/ivACAvatarImage6"
+                            android:src="@mipmap/avatar_hipster2"
+                            android:padding="5dp"
+                            android:onClick="onClickSelectAvatar" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
             </HorizontalScrollView>
+
         </LinearLayout>
 
         <Button
@@ -125,18 +160,6 @@
             style="?android:attr/buttonStyleSmall" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#000000"
-        android:orientation="horizontal"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:id="@+id/linearLayout22"
-        android:layout_gravity="top" />
 
     <LinearLayout
         android:orientation="vertical"

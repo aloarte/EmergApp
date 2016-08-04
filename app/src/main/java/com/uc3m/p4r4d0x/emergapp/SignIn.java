@@ -178,10 +178,12 @@ public class SignIn extends AppCompatActivity {
 
     public boolean insertUserAvatars(String username){
         DBAvatarsManager avatarDB = new  DBAvatarsManager(this);
-        return  avatarDB.insertAvatar("avInitialAvatar","sourceinitialavatar",1, username) &
-                avatarDB.insertAvatar("avAvatar1"      ,"sourceavatar1"      ,0, username) &
-                avatarDB.insertAvatar("avAvatar2"      ,"sourceavatar2"      ,0, username) &
-                avatarDB.insertAvatar("avAvatar3"      ,"sourceavatar3"      ,0, username);
+        return  avatarDB.insertAvatar("avAvatarMan1"         ,R.mipmap.avatar_hombre1  ,1, username) &
+                avatarDB.insertAvatar("avAvatarWoman1"       ,R.mipmap.avatar_mujer1   ,1, username) &
+                avatarDB.insertAvatar("avAvatarMan2"         ,R.mipmap.avatar_hombre2  ,0, username) &
+                avatarDB.insertAvatar("avAvatarWoman2"       ,R.mipmap.avatar_mujer2   ,0, username) &
+                avatarDB.insertAvatar("avAvatarManHipster"   ,R.mipmap.avatar_hipster1 ,0, username) &
+                avatarDB.insertAvatar("avAvatarWomanHipster" ,R.mipmap.avatar_hipster2 ,0, username);
 
     }
 

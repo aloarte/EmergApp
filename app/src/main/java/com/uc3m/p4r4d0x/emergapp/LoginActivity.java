@@ -29,14 +29,15 @@ public class LoginActivity extends AppCompatActivity {
     int retriesLogin = 3;
     Context context;
 
-    String [][] colors = new String[][]{
-                                        {"Default","#009688","#26a69a"},
-                                        {"Red"    ,"#d32f2f","#ffcdd2"},
-                                        {"Blue"   ,"#303f9f","#3f51b5"},
-                                        {"Green"  ,"#43a047","#4caf50"},
-                                        {"Yellow" ,"#ffa000","#ffc107"},
-                                        {"Pink"   ,"#e91e63","#f8bbd0"},
-                                        {"Grey"   ,"#bdbdbd","#e0e0e0"}
+    String [][] colors = new String[][] {
+            {"Default","#009688","#4db6ac"},
+            {"Red"    ,"#d32f2f","#ffcdd2"},
+            {"Blue"   ,"#303f9f","#7986cb"},
+            {"Green"  ,"#43a047","#a5d6a7"},
+            {"Purple" ,"#8e24aa","#ba68c8"},
+            {"Yellow" ,"#ffca28","#ffe082"},
+            {"Pink"   ,"#e91e63","#f8bbd0"},
+            {"Grey"   ,"#bdbdbd","#e0e0e0"}
             };
 
     int colorSelected=0;
@@ -113,18 +114,23 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("colorprimary", colors[3][1]);
                     editor.putString("colorsecondary",colors[3][2]);
                     break;
-                //Yellow
+                //Purple
                 case 4:
                     editor.putString("colorprimary", colors[4][1]);
                     editor.putString("colorsecondary",colors[4][2]);
                     break;
-                //Pink
+                //Yellow
                 case 5:
+                    editor.putString("colorprimary", colors[4][1]);
+                    editor.putString("colorsecondary",colors[4][2]);
+                    break;
+                //Pink
+                case 6:
                     editor.putString("colorprimary", colors[5][1]);
                     editor.putString("colorsecondary",colors[5][2]);
                     break;
                 //Grey
-                case 6:
+                case 7:
                     editor.putString("colorprimary", colors[6][1]);
                     editor.putString("colorsecondary",colors[6][2]);
                     break;
@@ -234,11 +240,11 @@ public class LoginActivity extends AppCompatActivity {
 
             DBUserManager dbUser= new DBUserManager(this);
             return
-                    dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", ""              , 65 , 40, 3,R.mipmap.avatar_grey, 1, 1, 1)&
-                    dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", ""              , 100, 170, 5,R.mipmap.avatar_white, 1, 1, 1) &
-                    dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth", 325, 140, 2,R.mipmap.avatarr_black, 1, 1, 1) &
-                    dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", ""              , 175, 160, 6,R.mipmap.avatar_grey, 1, 1, 1) &
-                    dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"   , 100, 100, 1,R.mipmap.avatar_ereporter, 1, 1, 1);
+                    dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", "-"              , 65 , 40, 3,R.mipmap.avatar_hombre1, 1, 1, 1)&
+                    dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", "-"              , 100, 170, 5,R.mipmap.avatar_mujer1, 1, 1, 1) &
+                    dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth" , 325, 140, 2,R.mipmap.avatar_hombre2, 1, 1, 1) &
+                    dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", "-"              , 175, 160, 6,R.mipmap.avatar_mujer2, 1, 1, 1) &
+                    dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"    , 100, 100, 1,R.mipmap.avatar_hipster1, 1, 1, 1);
     }
 
     public boolean insertQuests(){

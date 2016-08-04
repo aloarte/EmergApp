@@ -43,13 +43,14 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
 
     int avatarImageSelected=-1;
-    LinearLayout [] llArray = new LinearLayout[4];
+    LinearLayout [] llArray = new LinearLayout[6];
 
     String [][] colors = new String[][] {
                                             {"Default","#009688","#4db6ac"},
                                             {"Red"    ,"#d32f2f","#ffcdd2"},
                                             {"Blue"   ,"#303f9f","#7986cb"},
                                             {"Green"  ,"#43a047","#a5d6a7"},
+                                            {"Purple" ,"#8e24aa","#ba68c8"},
                                             {"Yellow" ,"#ffca28","#ffe082"},
                                             {"Pink"   ,"#e91e63","#f8bbd0"},
                                             {"Grey"   ,"#bdbdbd","#e0e0e0"}
@@ -81,6 +82,8 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         llArray[1] = (LinearLayout) findViewById(R.id.llAvatar2);
         llArray[2] = (LinearLayout) findViewById(R.id.llAvatar3);
         llArray[3] = (LinearLayout) findViewById(R.id.llAvatar4);
+        llArray[4] = (LinearLayout) findViewById(R.id.llAvatar5);
+        llArray[5] = (LinearLayout) findViewById(R.id.llAvatar6);
 
         //Get the spinner
         colorOptionsSpinner = (Spinner) findViewById(R.id.spinnerAccountConfiguration);
@@ -92,6 +95,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         alSpinnerData.add(new ItemSpinnerData("Red",R.drawable.redsquare));
         alSpinnerData.add(new ItemSpinnerData("Blue",R.drawable.bluesquare));
         alSpinnerData.add(new ItemSpinnerData("Green",R.drawable.greensquare));
+        alSpinnerData.add(new ItemSpinnerData("Purple",R.drawable.purplesquare));
         alSpinnerData.add(new ItemSpinnerData("Yellow",R.drawable.yellowsquare));
         alSpinnerData.add(new ItemSpinnerData("Pink",R.drawable.pinksquare));
         alSpinnerData.add(new ItemSpinnerData("Grey",R.drawable.greysquare));
@@ -392,7 +396,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
     public void markImageViewAvatar(int idLinearLayoutAvatar){
 
-        for(int i=0;i<4;i++){
+        for(int i=0;i<6;i++){
             if(i==idLinearLayoutAvatar){
                 llArray[i].setBackgroundColor(Color.argb(20, 84, 84, 84));
             }
@@ -408,19 +412,27 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         switch(elementId){
             case R.id.ivACAvatarImage1:
                 markImageViewAvatar(0);
-                avatarImageSelected=R.mipmap.avatarr_black;
+                avatarImageSelected=R.mipmap.avatar_hombre2;
                 break;
             case R.id.ivACAvatarImage2:
                 markImageViewAvatar(1);
-                avatarImageSelected=R.mipmap.avatar_white;
+                avatarImageSelected=R.mipmap.avatar_mujer2;
                 break;
             case R.id.ivACAvatarImage3:
                 markImageViewAvatar(2);
-                avatarImageSelected=R.mipmap.avatar_grey;
+                avatarImageSelected=R.mipmap.avatar_hombre1;
                 break;
             case R.id.ivACAvatarImage4:
                 markImageViewAvatar(3);
-                avatarImageSelected=R.mipmap.avatar_ereporter;
+                avatarImageSelected=R.mipmap.avatar_mujer1;
+                break;
+            case R.id.ivACAvatarImage5:
+                markImageViewAvatar(4);
+                avatarImageSelected=R.mipmap.avatar_hipster1;
+                break;
+            case R.id.ivACAvatarImage6:
+                markImageViewAvatar(5);
+                avatarImageSelected=R.mipmap.avatar_hipster2;
                 break;
             default:
                 break;

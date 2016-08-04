@@ -470,7 +470,7 @@ public class ProfileActivity extends AppCompatActivity {
             String titleSelected = (String) rbTitle.getText();
             //Set blank if the option was dont display
             if (titleSelected.compareTo("Dont display any title") == 0) {
-                titleSelected = "";
+                titleSelected = "-";
 
             }
 

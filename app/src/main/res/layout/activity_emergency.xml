@@ -49,7 +49,8 @@
                     android:weightSum="1"
                     android:layout_gravity="left"
                     android:onClick="onClickChangeProfileActivity"
-                    android:nestedScrollingEnabled="false">
+                    android:nestedScrollingEnabled="false"
+                    android:gravity="center_horizontal">
 
                     <LinearLayout
                         android:orientation="vertical"
@@ -92,7 +93,8 @@
                     android:layout_height="match_parent"
                     android:weightSum="1"
                     android:layout_weight="0.36"
-                    android:onClick="onClickChangeProfileActivity">
+                    android:onClick="onClickChangeProfileActivity"
+                    android:gravity="center_horizontal">
 
                     <LinearLayout
                         android:orientation="vertical"

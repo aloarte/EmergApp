@@ -95,11 +95,11 @@ public class DBUserManager {
     * Param: Strings with user data
     * */
     public boolean insertUser(String name, String password, String email, String date){
-        String level="Traveler",title=null;
+        String level="Traveler",title="-";
         int APpoints=0,XPpoints=0;
         int color=0;
         int modifTitle=0, modifAvatar=0,modifColor=0;
-        int avatar= R.mipmap.ereport;
+        int avatar= R.mipmap.avatar_noavatar;
         long retValue=0;
         retValue=db.insert(TABLE_NAME, null, generateCVUser(name, password, email, date,level,
                                                         APpoints,XPpoints,title,color,avatar,

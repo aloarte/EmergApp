@@ -25,7 +25,7 @@ public class DBAvatarsManager {
     public static final String CREATE_TABLE = "create table "+TABLE_NAME+" ("
             + TAV_ID            + " integer primary key autoincrement,"
             + TAV_NAME_ID       + " text not null,"
-            + TAV_SOURCE       + " text not null,"
+            + TAV_SOURCE        + " integer not null,"
             + TAV_UNLOCKED      + " integer not null,"
             + TAV_USER_NAME     + " text not null,"
             + " FOREIGN KEY (" + TAV_USER_NAME + ") REFERENCES "+ DBUserManager.TABLE_NAME + "(" + DBUserManager.TU_NAME + ") ON DELETE CASCADE );";
@@ -45,7 +45,7 @@ public class DBAvatarsManager {
     * Param: Strings with title data
     * Ret: A filled ContentValues object
     * */
-    public ContentValues generateCVAvatar( String nameId,String avatarSource, int avatarUnlocked ,String userName ){
+    public ContentValues generateCVAvatar( String nameId,int avatarSource, int avatarUnlocked ,String userName ){
 
         ContentValues contentV = new ContentValues();
         contentV.put(TAV_NAME_ID, nameId);
@@ -60,7 +60,7 @@ public class DBAvatarsManager {
     * Desc: Insert on database a new avatar
     * Param:  avatar data
     * */
-    public boolean insertAvatar( String nameId,String avatarSource,int avatarUnlocked, String userName ){
+    public boolean insertAvatar( String nameId,int avatarSource,int avatarUnlocked, String userName ){
 
 
 
@@ -87,7 +87,7 @@ public class DBAvatarsManager {
      * Param: the avatar id and the user name
      * Ret: Long with the amount of elements affected
     * */
-    public long upgradeAvatar(String nameId,String avatarSource, int avatarUnlocked ,String userName ){
+    public long upgradeAvatar(String nameId,int avatarSource, int avatarUnlocked ,String userName ){
 
         int id=0;
 
@@ -121,7 +121,7 @@ public class DBAvatarsManager {
         if(resultQuery.moveToFirst()==true) {
             retValue=upgradeAvatar(
                     resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_NAME_ID)),
-                    resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_SOURCE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBAvatarsManager.TAV_SOURCE)),
                     avatarUnlocked,
                     resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_USER_NAME))
 
