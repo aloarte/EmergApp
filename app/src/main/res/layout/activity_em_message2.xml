@@ -21,13 +21,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.26" >
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="99dp"
-            android:layout_weight="0.21" />
+        android:layout_weight="0.26"
+        android:gravity="center_horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -61,7 +56,8 @@
                 android:layout_gravity="center_horizontal"
                 android:textIsSelectable="false"
                 android:textAlignment="center"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="18dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,7 +65,10 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/SelfDamContent"
                 android:id="@+id/tvPopUp2Content"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="14dp"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp" />
 
         </LinearLayout>
 

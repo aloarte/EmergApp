@@ -36,11 +36,11 @@
                     android:layout_marginRight="10dp" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:id="@+id/ivDeletePic1"
                     android:longClickable="true"
-                    android:src="@mipmap/delete"
+                    android:src="@mipmap/ic_delete"
                     android:tag="1"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
@@ -65,11 +65,11 @@
                     android:layout_marginRight="10dp" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:id="@+id/ivDeletePic2"
                     android:longClickable="true"
-                    android:src="@mipmap/delete"
+                    android:src="@mipmap/ic_delete"
                     android:tag="2"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
@@ -93,12 +93,12 @@
                     android:layout_marginRight="10dp" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:id="@+id/ivDeletePic3"
                     android:tag="3"
                     android:longClickable="true"
-                    android:src="@mipmap/delete"
+                    android:src="@mipmap/ic_delete"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
                     android:onClick="onClickDeleteSelectedItem" />
@@ -121,12 +121,12 @@
                     android:layout_marginRight="10dp" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:id="@+id/ivDeletePic4"
                     android:tag="4"
                     android:longClickable="true"
-                    android:src="@mipmap/delete"
+                    android:src="@mipmap/ic_delete"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
                     android:onClick="onClickDeleteSelectedItem" />
@@ -160,9 +160,9 @@
                     android:background="#000000" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/delete"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/ic_delete"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
                     android:onClick="onClickDeleteSelectedItem"
@@ -187,12 +187,12 @@
                     android:background="#000000" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:id="@+id/ivDeleteVid2"
                     android:tag="6"
                     android:longClickable="true"
-                    android:src="@mipmap/delete"
+                    android:src="@mipmap/ic_delete"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
                     android:onClick="onClickDeleteSelectedItem" />
@@ -214,12 +214,12 @@
                     android:background="#000000" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:id="@+id/ivDeleteVid3"
                     android:tag="7"
                     android:longClickable="true"
-                    android:src="@mipmap/delete"
+                    android:src="@mipmap/ic_delete"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
                     android:onClick="onClickDeleteSelectedItem" />
@@ -240,12 +240,12 @@
                     android:background="#000000" />
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:id="@+id/ivDeleteVid4"
                     android:tag="8"
                     android:longClickable="true"
-                    android:src="@mipmap/delete"
+                    android:src="@mipmap/ic_delete"
                     android:adjustViewBounds="true"
                     android:layout_gravity="center_horizontal"
                     android:onClick="onClickDeleteSelectedItem" />

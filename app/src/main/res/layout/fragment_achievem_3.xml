@@ -25,7 +25,7 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="140dp"
+                    android:layout_width="120dp"
                     android:layout_height="57dp"
                     android:id="@+id/llSecretAchievement1Data"
                     android:gravity="center" >
@@ -39,7 +39,8 @@
                         android:textIsSelectable="false"
                         android:textStyle="bold"
                         android:layout_gravity="left"
-                        android:layout_marginBottom="2dp" />
+                        android:layout_marginBottom="2dp"
+                        android:textSize="14dp" />
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -55,33 +56,34 @@
                             android:textSize="12dp"
                             android:gravity="center_vertical" />
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/llSecretAchievementPoints1"
-                            android:gravity="right" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="200 AP"
-                                android:id="@+id/tvAPSecret1"
-                                android:textSize="12dp"
-                                android:gravity="center_vertical" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="50 XP"
-                                android:id="@+id/tvXPSecret1"
-                                android:textSize="12dp"
-                                android:textStyle="normal"
-                                android:gravity="center_vertical" />
-                        </LinearLayout>
                     </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/linearLayout16"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="200 AP"
+                        android:id="@+id/textView30"
+                        android:textSize="12dp"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="50 XP"
+                        android:id="@+id/textView31"
+                        android:textSize="12dp"
+                        android:textStyle="normal"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
 
                 <ImageView
@@ -100,7 +102,7 @@
                     android:id="@+id/tvDescSecret1"
                     android:textIsSelectable="false"
                     android:textStyle="normal"
-                    android:textSize="13dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -112,7 +114,7 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="140dp"
+                    android:layout_width="120dp"
                     android:layout_height="57dp"
                     android:id="@+id/llSecretAchievement2Data"
                     android:gravity="center" >
@@ -143,32 +145,33 @@
                             android:textSize="12dp"
                             android:gravity="center_vertical" />
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/llSecretAchievementPoints2"
-                            android:gravity="right" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="10 AP"
-                                android:id="@+id/tvAPSecret2"
-                                android:textSize="12dp"
-                                android:gravity="center_vertical" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:id="@+id/tvXPSecret2"
-                                android:textSize="12dp"
-                                android:textStyle="normal"
-                                android:gravity="center_vertical" />
-                        </LinearLayout>
                     </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/linearLayout17"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="10 AP"
+                        android:id="@+id/textView32"
+                        android:textSize="12dp"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/textView33"
+                        android:textSize="12dp"
+                        android:textStyle="normal"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
 
                 <ImageView
@@ -187,7 +190,7 @@
                     android:id="@+id/tvDescSecret2"
                     android:textIsSelectable="false"
                     android:textStyle="normal"
-                    android:textSize="13dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -199,7 +202,7 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="140dp"
+                    android:layout_width="120dp"
                     android:layout_height="57dp"
                     android:id="@+id/llSecretAchievement3Data"
                     android:gravity="center" >
@@ -230,32 +233,33 @@
                             android:textSize="12dp"
                             android:gravity="center_vertical" />
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/llSecretAchievementPoints3"
-                            android:gravity="right" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="10 AP"
-                                android:id="@+id/tvAPSecret3"
-                                android:textSize="12dp"
-                                android:gravity="center_vertical" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:id="@+id/tvXPSecret3"
-                                android:textSize="12dp"
-                                android:textStyle="normal"
-                                android:gravity="center_vertical" />
-                        </LinearLayout>
                     </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/linearLayout18"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="10 AP"
+                        android:id="@+id/textView34"
+                        android:textSize="12dp"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/textView35"
+                        android:textSize="12dp"
+                        android:textStyle="normal"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
 
                 <ImageView
@@ -274,7 +278,7 @@
                     android:id="@+id/tvDescSecret3"
                     android:textIsSelectable="false"
                     android:textStyle="normal"
-                    android:textSize="13dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -286,7 +290,7 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="140dp"
+                    android:layout_width="120dp"
                     android:layout_height="57dp"
                     android:id="@+id/llSecretAchievement4Data"
                     android:gravity="center" >
@@ -317,32 +321,33 @@
                             android:textSize="12dp"
                             android:gravity="center_vertical" />
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/llSecretAchievementPoints4"
-                            android:gravity="right" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="10 AP"
-                                android:id="@+id/tvAPSecret4"
-                                android:textSize="12dp"
-                                android:gravity="center_vertical" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:id="@+id/tvXPSecret4"
-                                android:textSize="12dp"
-                                android:textStyle="normal"
-                                android:gravity="center_vertical" />
-                        </LinearLayout>
                     </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/linearLayout19"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="10 AP"
+                        android:id="@+id/textView36"
+                        android:textSize="12dp"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/textView37"
+                        android:textSize="12dp"
+                        android:textStyle="normal"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
 
                 <ImageView
@@ -361,7 +366,7 @@
                     android:id="@+id/tvDescSecret4"
                     android:textIsSelectable="false"
                     android:textStyle="normal"
-                    android:textSize="13dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -373,7 +378,7 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="140dp"
+                    android:layout_width="120dp"
                     android:layout_height="57dp"
                     android:id="@+id/llSecretAchievement5Data"
                     android:gravity="center" >
@@ -404,32 +409,33 @@
                             android:textSize="12dp"
                             android:gravity="center_vertical" />
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/llSecretAchievementPoints5"
-                            android:gravity="right" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="10 AP"
-                                android:id="@+id/tvAPSecret5"
-                                android:textSize="12dp"
-                                android:gravity="center_vertical" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:id="@+id/tvXPSecret5"
-                                android:textSize="12dp"
-                                android:textStyle="normal"
-                                android:gravity="center_vertical" />
-                        </LinearLayout>
                     </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/linearLayout21"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="10 AP"
+                        android:id="@+id/textView40"
+                        android:textSize="12dp"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/textView41"
+                        android:textSize="12dp"
+                        android:textStyle="normal"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
 
                 <ImageView
@@ -448,7 +454,7 @@
                     android:id="@+id/tvDescSecret5"
                     android:textIsSelectable="false"
                     android:textStyle="normal"
-                    android:textSize="13dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -460,7 +466,7 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="140dp"
+                    android:layout_width="120dp"
                     android:layout_height="57dp"
                     android:id="@+id/llSecretAchievement6Data"
                     android:gravity="center" >
@@ -492,32 +498,33 @@
                             android:gravity="center_vertical"
                             android:text="0/5" />
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/llSecretAchievementPoints6"
-                            android:gravity="right" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="5 AP"
-                                android:id="@+id/tvAPSecret6"
-                                android:textSize="12dp"
-                                android:gravity="center_vertical" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:id="@+id/tvXPSecret6"
-                                android:textSize="12dp"
-                                android:textStyle="normal"
-                                android:gravity="center_vertical" />
-                        </LinearLayout>
                     </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/linearLayout20"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="5 AP"
+                        android:id="@+id/textView38"
+                        android:textSize="12dp"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/textView39"
+                        android:textSize="12dp"
+                        android:textStyle="normal"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
 
                 <ImageView
@@ -536,7 +543,7 @@
                     android:id="@+id/tvDescSecret6"
                     android:textIsSelectable="false"
                     android:textStyle="normal"
-                    android:textSize="13dp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
         </LinearLayout>

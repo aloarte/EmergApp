@@ -18,7 +18,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="140dp"
+        android:layout_height="100dp"
         android:weightSum="1"
         android:background="#f9fafa"
         android:id="@+id/llAssitedReport"
@@ -26,55 +26,43 @@
         android:layout_marginBottom="5dp"
         android:onClick="onClickAssistedReport">
 
-        <TextView
-            android:layout_width="264dp"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/tvTextAsistedReport"
-            android:text="Asisted Report"
-            android:gravity="center"
-            android:layout_weight="0.63"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Assisted Report"
+            android:id="@+id/button"
+            android:textStyle="bold"
+            android:onClick="onClickAssistedReport"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp" />
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/ivAsistedReport"
-            android:src="@mipmap/arrowforward"
-            android:layout_gravity="center|right"
-            android:nestedScrollingEnabled="false" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="140dp"
+        android:layout_height="100dp"
         android:weightSum="1"
         android:background="#f9fafa"
         android:id="@+id/llFastReport"
         android:layout_marginBottom="5dp"
-        android:onClick="onClickFastReport">
+        style="@style/Base.Theme.AppCompat.Light.Dialog">
 
-        <TextView
-            android:layout_width="264dp"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/tvTextFastReport"
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
             android:text="Fast Report"
-            android:gravity="center"
-            android:layout_weight="0.72"
-            android:textSize="18dp"
-            android:textIsSelectable="false"
-            android:textStyle="bold|italic" />
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/ivFastReport"
-            android:src="@mipmap/arrowforward"
-            android:layout_gravity="center|right"
-            android:nestedScrollingEnabled="false" />
+            android:id="@+id/bTextFastReport"
+            android:textStyle="bold"
+            android:onClick="onClickFastReport"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="40dp" />
 
     </LinearLayout>
 
@@ -93,7 +81,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="249dp"
+        android:layout_height="220dp"
         android:id="@+id/llNavegator"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
@@ -117,10 +105,10 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@mipmap/coronaranking"
+                android:src="@mipmap/ic_ranking"
                 android:id="@+id/ivNavRanking"
-                android:adjustViewBounds="true"
-                android:longClickable="true"
+                android:adjustViewBounds="false"
+                android:longClickable="false"
                 android:nestedScrollingEnabled="false"
                 android:layout_gravity="center|right" />
 
@@ -154,7 +142,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@mipmap/medallalogros"
+                android:src="@mipmap/ic_achievements"
                 android:id="@+id/ivNavAchievements"
                 android:adjustViewBounds="true"
                 android:longClickable="true"
@@ -191,7 +179,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@mipmap/progress"
+                android:src="@mipmap/ic_progress"
                 android:id="@+id/ivNavAchievementProgress"
                 android:adjustViewBounds="true"
                 android:longClickable="true"
@@ -211,6 +199,19 @@
                 android:textIsSelectable="false" />
 
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="23dp"
+        android:layout_weight="0.15" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView2"
+            android:src="@mipmap/letraslogo" />
     </LinearLayout>
 
     <LinearLayout

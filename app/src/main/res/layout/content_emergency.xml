@@ -39,9 +39,9 @@
             android:gravity="center_vertical"
             android:layout_gravity="top">
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@mipmap/camera_128"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/ic_camera"
                 android:id="@+id/ivCapturePhoto"
                 android:onClick="onClickTakePhoto"
                 android:adjustViewBounds="true"
@@ -55,7 +55,7 @@
                 android:layout_height="40dp"
                 android:id="@+id/ivSelPictureGallery"
                 android:onClick="onClickGalleryImages"
-                android:src="@mipmap/plusicon"
+                android:src="@mipmap/ic_galleryimage"
                 android:adjustViewBounds="true"
                 android:focusableInTouchMode="false"
                 android:layout_marginTop="15dp"
@@ -87,11 +87,11 @@
                         android:layout_marginRight="10dp" />
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:id="@+id/ivDeleteMainPicture1"
                         android:longClickable="true"
-                        android:src="@mipmap/delete"
+                        android:src="@mipmap/ic_delete"
                         android:tag="1"
                         android:adjustViewBounds="true"
                         android:layout_gravity="center_horizontal"
@@ -117,13 +117,13 @@
                         android:layout_marginRight="10dp" />
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:id="@+id/ivDeleteMainPicture2"
                         android:longClickable="true"
-                        android:src="@mipmap/delete"
+                        android:src="@mipmap/ic_delete"
                         android:tag="2"
-                        android:adjustViewBounds="true"
+                        android:adjustViewBounds="false"
                         android:layout_gravity="center_horizontal"
                         android:onClick="onClickDeletePicture" />
                 </LinearLayout>
@@ -146,13 +146,13 @@
                         android:layout_marginRight="10dp" />
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:id="@+id/ivDeleteMainPicture3"
                         android:longClickable="true"
-                        android:src="@mipmap/delete"
+                        android:src="@mipmap/ic_delete"
                         android:tag="3"
-                        android:adjustViewBounds="true"
+                        android:adjustViewBounds="false"
                         android:layout_gravity="center_horizontal"
                         android:onClick="onClickDeletePicture" />
                 </LinearLayout>
@@ -175,11 +175,11 @@
                         android:layout_marginRight="10dp" />
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:id="@+id/ivDeleteMainPicture4"
                         android:longClickable="true"
-                        android:src="@mipmap/delete"
+                        android:src="@mipmap/ic_delete"
                         android:tag="4"
                         android:adjustViewBounds="true"
                         android:layout_gravity="center_horizontal"
@@ -205,13 +205,13 @@
             android:layout_margin="5dp">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@mipmap/video"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/ic_video"
                 android:id="@+id/ivCaptureVideo"
                 android:onClick="onClickTakeVideo"
                 android:layout_margin="10dp"
-                android:adjustViewBounds="true"
+                android:adjustViewBounds="false"
                 android:longClickable="false"
                 android:nestedScrollingEnabled="false"
                 android:clickable="false"
@@ -222,7 +222,7 @@
                 android:layout_height="40dp"
                 android:id="@+id/ivSelVideoGallery"
                 android:onClick="onClickGalleryVideos"
-                android:src="@mipmap/plusicon"
+                android:src="@mipmap/ic_galleryvideo"
                 android:adjustViewBounds="true"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
@@ -258,11 +258,11 @@
                             android:layout_marginRight="10dp" />
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:id="@+id/ivDeleteMainVideo1"
                             android:longClickable="true"
-                            android:src="@mipmap/delete"
+                            android:src="@mipmap/ic_delete"
                             android:tag="1"
                             android:adjustViewBounds="true"
                             android:layout_gravity="center_horizontal"
@@ -291,11 +291,11 @@
                             android:layout_marginRight="10dp" />
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:id="@+id/ivDeleteMainVideo2"
                             android:longClickable="true"
-                            android:src="@mipmap/delete"
+                            android:src="@mipmap/ic_delete"
                             android:tag="2"
                             android:adjustViewBounds="true"
                             android:layout_gravity="center_horizontal"
@@ -324,11 +324,11 @@
                             android:layout_marginRight="10dp" />
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:id="@+id/ivDeleteMainVideo3"
                             android:longClickable="true"
-                            android:src="@mipmap/delete"
+                            android:src="@mipmap/ic_delete"
                             android:tag="3"
                             android:adjustViewBounds="true"
                             android:layout_gravity="center_horizontal"
@@ -358,11 +358,11 @@
                             android:layout_marginRight="10dp" />
 
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:id="@+id/ivDeleteMainVideo4"
                             android:longClickable="true"
-                            android:src="@mipmap/delete"
+                            android:src="@mipmap/ic_delete"
                             android:tag="4"
                             android:adjustViewBounds="true"
                             android:layout_gravity="center_horizontal"
@@ -399,14 +399,16 @@
             android:measureWithLargestChild="true">
 
             <TextView
-                android:layout_width="264dp"
+                android:layout_width="180dp"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/tvGPS"
                 android:text="Loading position..."
+                android:textSize="15dp"
                 android:gravity="center"
                 android:layout_weight="0.63"
-                android:textSize="16dp" />
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="15dp" />
 
             <TextView
                 android:layout_width="0dp"
@@ -420,7 +422,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/ivChangePosition"
-                android:src="@mipmap/map"
+                android:src="@mipmap/ic_map"
                 android:layout_gravity="center|right" />
         </LinearLayout>
 
@@ -446,21 +448,25 @@
             android:onClick="onClickEditMessage">
 
             <TextView
-                android:layout_width="264dp"
+                android:layout_width="180dp"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/tvInfoMessage"
                 android:text="Message info here"
                 android:gravity="center"
-                android:layout_weight="0.72"
-                android:textSize="16dp"
-                android:textIsSelectable="false" />
+                android:textSize="15dp"
+                android:textIsSelectable="false"
+                android:layout_weight="0.63"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="15dp" />
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/ivChangeMessage"
-                android:src="@mipmap/message"
+                android:src="@mipmap/ic_editmessage"
                 android:layout_gravity="center" />
         </LinearLayout>
 
@@ -490,21 +496,23 @@
             android:onClick="onClickSendInfo">
 
             <TextView
-                android:layout_width="264dp"
+                android:layout_width="180dp"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/sendMessage"
                 android:id="@+id/tvSendMessage"
                 android:gravity="center|center_horizontal"
-                android:layout_weight="0.67"
+                android:layout_weight="0.63"
                 android:layout_gravity="bottom"
-                android:textSize="16dp"
-                android:textIsSelectable="false" />
+                android:textSize="15dp"
+                android:textIsSelectable="false"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="15dp" />
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/mail"
+                android:src="@mipmap/ic_sendmessage"
                 android:id="@+id/ivSendMessage"
                 android:adjustViewBounds="false"
                 android:longClickable="false"
@@ -531,26 +539,29 @@
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:id="@+id/ivBack"
-            android:src="@mipmap/backr"
+            android:src="@mipmap/ic_mapsback"
             android:onClick="onClickCloseMap"
-            android:background="#dedede"
+            android:background="#D0dedede"
             android:layout_marginLeft="12dp"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="12dp"
+            android:padding="8dp" />
 
         <ImageView
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:id="@+id/ivCentreToMarker"
-            android:src="@mipmap/movetomarker"
+            android:src="@mipmap/ic_mapsmarker"
             android:onClick="onClickCenterAtMarker"
             android:layout_alignTop="@+id/ivLoading"
             android:layout_alignLeft="@+id/ivLoading"
             android:layout_alignStart="@+id/ivLoading"
             android:layout_gravity="center_vertical|right"
             android:nestedScrollingEnabled="false"
-            android:background="#dedede"
+            android:background="#D0dedede"
             android:layout_marginBottom="190dp"
-            android:layout_marginRight="12dp" />
+            android:layout_marginRight="12dp"
+            android:padding="8dp"
+            android:adjustViewBounds="false" />
 
     </FrameLayout>
 
