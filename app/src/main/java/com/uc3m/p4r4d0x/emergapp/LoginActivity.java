@@ -3,6 +3,7 @@ package com.uc3m.p4r4d0x.emergapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,7 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAchievementsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAvatarsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBQuestsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBTitlesManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
 
@@ -45,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarL);
         setSupportActionBar(toolbar);
@@ -225,7 +231,7 @@ public class LoginActivity extends AppCompatActivity {
     public void insertInitialValues(){
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        //sharedpreferences.edit().putBoolean("first_time", true).commit();
+        sharedpreferences.edit().putBoolean("first_time", true).commit();
         if (sharedpreferences.getBoolean("first_time", true)){
             Log.d("ALR","Si se insertan");
             insertExampleUsers();
@@ -239,12 +245,93 @@ public class LoginActivity extends AppCompatActivity {
     public boolean insertExampleUsers(){
 
             DBUserManager dbUser= new DBUserManager(this);
-            return
-                    dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", "-"              , 65 , 40, 3,R.mipmap.avatar_hombre1, 1, 1, 1)&
-                    dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", "-"              , 100, 170, 5,R.mipmap.avatar_mujer1, 1, 1, 1) &
-                    dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth" , 325, 140, 2,R.mipmap.avatar_hombre2, 1, 1, 1) &
-                    dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", "-"              , 175, 160, 6,R.mipmap.avatar_mujer2, 1, 1, 1) &
-                    dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"    , 100, 100, 1,R.mipmap.avatar_hipster1, 1, 1, 1);
+            boolean users=
+                            dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", "-"              , 65 , 40, 3,R.mipmap.avatar_hombre1, 1, 1, 1)&
+                            dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", "-"              , 100, 170, 5,R.mipmap.avatar_mujer1, 1, 1, 1) &
+                            dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth" , 325, 140, 2,R.mipmap.avatar_hombre2, 1, 1, 1) &
+                            dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", "-"              , 175, 160, 6,R.mipmap.avatar_mujer2, 1, 1, 1) &
+                            dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"    , 100, 100, 1,R.mipmap.avatar_hipster1, 1, 1, 1);
+            boolean titles=
+                            insertUserTitles("AdminUser1") & insertUserTitles("AdminUser2") &
+                            insertUserTitles("AdminUser3") & insertUserTitles("AdminUser4") &
+                            insertUserTitles("AdminUser5") ;
+
+            boolean achievements=
+                            insertUserAchievements("AdminUser1") & insertUserAchievements("AdminUser2") &
+                            insertUserAchievements("AdminUser3") & insertUserAchievements("AdminUser4") &
+                            insertUserAchievements("AdminUser5") ;
+
+            boolean avatars=
+                            insertUserAvatars("AdminUser1") & insertUserAvatars("AdminUser2") &
+                            insertUserAvatars("AdminUser3") & insertUserAvatars("AdminUser4") &
+                            insertUserAvatars("AdminUser5") ;
+
+        return users & titles & achievements & avatars;
+
+    }
+    /*
+     * Desc: Insert the titles of the user
+     * Param: an String with the name of the user for calling the DDBB
+     * Ret value: true or false if anything fails
+     * */
+    public boolean insertUserTitles(String username){
+        DBTitlesManager titleDB = new DBTitlesManager(this);
+        return  titleDB.inserttitle("tBegginer", username,1) &
+                titleDB.inserttitle("tChampion", username,1) &
+                titleDB.inserttitle("tTop", username,1) &
+                titleDB.inserttitle("tSeeker", username,1);
+
+    }
+
+    /*
+     * Desc: Insert the achievements of the user
+     * Param: an String with the name of the user for calling the DDBB
+     * Ret value: true or false if anything fails
+     * */
+    public boolean insertUserAchievements(String username){
+        DBAchievementsManager achievementsDB = new DBAchievementsManager(this);
+        boolean achievementsNovel, achievementsExpert, achievementsSecret;
+        achievementsNovel=
+                achievementsDB.insertAchievement("aNovelMeta","First Steps"                             ,5 ,50 ,50 ,1,username) &
+                achievementsDB.insertAchievement("aNovel1"   ,"Photo Editor"                            ,0 ,5  ,5  ,1,username) &
+                achievementsDB.insertAchievement("aNovel2"   ,"Video Editor"                            ,0 ,5  ,5  ,1,username) &
+                achievementsDB.insertAchievement("aNovel3"   ,"Message Editor"                          ,0 ,5  ,0  ,1,username) &
+                achievementsDB.insertAchievement("aNovel4"   ,"Ubication Editor"                        ,0 ,5  ,0  ,1,username) &
+                achievementsDB.insertAchievement("aNovel5"   ,"Reporter"                                ,0 ,5  ,0  ,1,username) ;
+
+        achievementsExpert= achievementsDB.insertAchievement("aExpertMeta","Community Helper"                       ,5 ,100,50,1,username) &
+                achievementsDB.insertAchievement("aExpert1"   ,"Pictures Lover"                         ,10,10 ,10 ,1,username) &
+                achievementsDB.insertAchievement("aExpert2"   ,"Videos Lover"                           ,10,10 ,10 ,1,username) &
+                achievementsDB.insertAchievement("aExpert3"   ,"Expert Reporter"                        ,0 ,25 ,0  ,1,username) &
+                achievementsDB.insertAchievement("aExpert4"   ,"Hard Worker"                            ,0 ,0  ,20 ,1,username) &
+                achievementsDB.insertAchievement("aExpert5"   ,"Top Reporter"                           ,0 ,10 ,10 ,1,username) &
+                achievementsDB.insertAchievement("aExpert6"   ,"Reporting Anywhere"                     ,3 ,20 ,10 ,1,username) ;
+
+        achievementsSecret= achievementsDB.insertAchievement("aSecretMeta","Seeker of Truth"                        ,5 ,200,50 ,1,username) &
+                achievementsDB.insertAchievement("aSecret1"   ,"I give my best"                         ,0 ,10 ,0  ,1,username) &
+                achievementsDB.insertAchievement("aSecret2"   ,"An image is worth more than 1000 words" ,0 ,10 ,0  ,1,username) &
+                achievementsDB.insertAchievement("aSecret3"   ,"As fast as I can"                       ,0 ,10 ,0  ,1,username) &
+                achievementsDB.insertAchievement("aSecret4"   ,"Personal image is allways the first"    ,0 ,10 ,0  ,1,username) &
+                achievementsDB.insertAchievement("aSecret5"   ,"First my neighborhood"                  ,0 ,10 ,0  ,1,username);
+
+
+        return achievementsNovel & achievementsExpert & achievementsSecret;
+    }
+
+    /*
+     * Desc: Insert the avatars of the user
+     * Param: an String with the name of the user for calling the DDBB
+     * Ret value: true or false if anything fails
+     * */
+    public boolean insertUserAvatars(String username){
+        DBAvatarsManager avatarDB = new  DBAvatarsManager(this);
+        return  avatarDB.insertAvatar("avAvatarMan1"        , R.mipmap.avatar_hombre1  ,1, username) &
+                avatarDB.insertAvatar("avAvatarWoman1"      , R.mipmap.avatar_mujer1  , 1, username) &
+                avatarDB.insertAvatar("avAvatarMan2"        , R.mipmap.avatar_hombre2 , 1, username) &
+                avatarDB.insertAvatar("avAvatarWoman2"      , R.mipmap.avatar_mujer2  , 1, username) &
+                avatarDB.insertAvatar("avAvatarManHipster"  , R.mipmap.avatar_hipster1, 1, username) &
+                avatarDB.insertAvatar("avAvatarWomanHipster", R.mipmap.avatar_hipster2, 1, username);
+
     }
 
     public boolean insertQuests(){

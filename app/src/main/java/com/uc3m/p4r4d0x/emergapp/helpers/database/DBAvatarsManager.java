@@ -83,6 +83,17 @@ public class DBAvatarsManager {
     }
 
     /*
+    * Desc: Select from the database an title
+    * Param: the avatar id and the user name
+    * Ret: Cursor object with the information
+    * */
+    public Cursor selectUserTitles(String userName){
+        return db.rawQuery(
+                "SELECT * from " + TABLE_NAME + " where " +  TAV_USER_NAME + "=\"" + userName + "\";"
+                , null);
+    }
+
+    /*
      * Desc: Upgrade one avatar in the database
      * Param: the avatar id and the user name
      * Ret: Long with the amount of elements affected

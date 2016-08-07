@@ -76,14 +76,14 @@ public class DBAchievementsManager {
     * Param: achievements data
     * */
     public boolean insertAchievement(String nameId,String nameAchievement,int progressMax,
-                                        int rewardAP, int rewardXP, String  userName ){
+                                        int rewardAP, int rewardXP, int obtained,String  userName ){
 
 
-        int progress=0, achievementObtained=0;
+        int progress=0;
         long retValue=0;
         retValue=db.insert(TABLE_NAME, null, generateCVAchievement(nameId, nameAchievement,
                 rewardAP, rewardXP, progress,progressMax,
-                achievementObtained, userName));
+                obtained, userName));
         if(retValue==-1 || retValue==0){
             return false;
         }

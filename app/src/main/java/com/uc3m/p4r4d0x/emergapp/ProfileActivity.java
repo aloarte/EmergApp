@@ -1,8 +1,12 @@
 package com.uc3m.p4r4d0x.emergapp;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -11,6 +15,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,6 +48,8 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarP);
         setSupportActionBar(toolbar);
@@ -52,11 +59,69 @@ public class ProfileActivity extends AppCompatActivity {
 
         pbProfile = (ProgressBar) findViewById(R.id.pbProfile);
 
-        // Get the Drawable custom_progressbar
-        Drawable draw = getResources().getDrawable(R.drawable.customprogressbar);
-        // set the drawable as progress drawable
-        pbProfile.setProgressDrawable(draw);
-        pbProfile.setProgress(progressStatus);
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        //Check the username
+        if(username.compareTo("default")==0){
+            // Get the Drawable custom_progressbar
+            Drawable draw = getResources().getDrawable(R.drawable.customprogressbar);
+            // set the drawable as progress drawable
+            pbProfile.setProgressDrawable(draw);
+            pbProfile.setProgress(progressStatus);
+        }
+        else{
+            DBUserManager managerDB                = new DBUserManager(this);
+            //Select the user
+            Cursor resultQuery                 = managerDB.selectUser(username);
+            if(resultQuery.moveToFirst()==true){
+                Drawable draw;
+                int progressbarcolor  = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR));
+                switch(progressbarcolor){
+                    //DefaultColor
+                    case 0:
+                        draw = getResources().getDrawable(R.drawable.customprogressbar);
+                        break;
+                    //Red
+                    case 1:
+                        draw = getResources().getDrawable(R.drawable.customprogressbar_red);
+                        break;
+                    //Blue
+                    case 2:
+                        draw = getResources().getDrawable(R.drawable.customprogressbar_blue);
+                        break;
+                    //Green
+                    case 3:
+                        draw = getResources().getDrawable(R.drawable.customprogressbar_green);
+                        break;
+                    //Purple
+                    case 4:
+                        draw = getResources().getDrawable(R.drawable.customprogressbar_purple);
+                        break;
+                    //Yellow
+                    case 5:
+                        draw = getResources().getDrawable(R.drawable.customprogressbar_yellow);
+                        break;
+                    //Pink
+                    case 6:
+                        draw = getResources().getDrawable(R.drawable.customprogressbar_pink);
+                        break;
+                    //Grey
+                    case 7:
+                        draw = getResources().getDrawable(R.drawable.customprogressbar_grey);
+                        break;
+                    default:
+                        draw = getResources().getDrawable(R.drawable.customprogressbar);
+                        break;
+                }
+                pbProfile.setProgressDrawable(draw);
+                pbProfile.setProgress(progressStatus);
+            }
+
+        }
+
+
+
 
 
         //Load the toolbar
@@ -96,8 +161,13 @@ public class ProfileActivity extends AppCompatActivity {
                 performLogout();
                 return true;
             case R.id.action_acount_configuration:
-                myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-                startActivity(myIntent);
+                if(checkUnlockAcountConfiguration()){
+                    myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+                    startActivity(myIntent);
+                }
+                else{
+                    Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_profile:
                 myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
@@ -431,21 +501,63 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     /*
-    * Desc: performs a logout from the current logged user
-    *
+    * Desc: Check from the DDBB if the user can select his account configuration
     * */
+    public boolean checkUnlockAcountConfiguration(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        boolean retValue=false;
+        //Get the linear layout
+
+        DBUserManager managerDBUser = new DBUserManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBUser.selectUser(username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_TITLE)) == 1) {
+                retValue = true;
+            } else {
+                retValue = false;
+            }
+        }
+
+        return retValue;
+    }
+
+    /*
+        * Desc: on click function to logout from the aplication
+        * */
     public void performLogout(){
 
-        //Remove from the shared preferences the username
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.remove("username");
-        editor.remove("colorprimary");
-        editor.remove("colorsecondary");
-        editor.commit();
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(ProfileActivity.this);
+        View layView = (LayoutInflater.from(ProfileActivity.this)).inflate(R.layout.confirm_logout, null);
+        alertBuilder.setView(layView);
+        alertBuilder.setCancelable(true)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Remove from the shared preferences the username
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.remove("username");
+                        editor.remove("colorprimary");
+                        editor.remove("colorsecondary");
+                        editor.commit();
 
-        //Create and launch login activity
-        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(myIntent);
+                        Toast.makeText(getApplicationContext(), "Session Closed", Toast.LENGTH_SHORT).show();
+                        //Create and launch login activity
+                        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(myIntent);
+                    }
+                })
+        ;
+        Dialog dialog = alertBuilder.create();
+        dialog.show();
     }
 
     /*
@@ -482,6 +594,7 @@ public class ProfileActivity extends AppCompatActivity {
                 managerDB.upgradeUserTitle(username, titleSelected);
                 Toast.makeText(getApplicationContext(), "Title changed", Toast.LENGTH_SHORT).show();
                 loadToolbar();
+                loadUserData();
             }
 
         }
@@ -496,10 +609,15 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     /*
-   * Desc: on click method to navegate from toolbar to acount configuration activity
-   * */
+  * Desc: on click method to navegate from toolbar to acount configuration activity
+  * */
     public void onClickChangeACActivity(View v){
-        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-        startActivity(myIntent);
+        if(checkUnlockAcountConfiguration()){
+            Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+            startActivity(myIntent);
+        }
+        else{
+            Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.uc3m.p4r4d0x.emergapp;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,8 @@ public class SignIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_sign_in);
 
         //Asociate all the elements from the layout
@@ -34,9 +37,11 @@ public class SignIn extends AppCompatActivity {
         etDate =(EditText) findViewById(R.id.etSIdate);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarS);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     /*
@@ -139,43 +144,59 @@ public class SignIn extends AppCompatActivity {
         return userInsert;
     }
 
+    /*
+     * Desc: Insert the titles of the user
+     * Param: an String with the name of the user for calling the DDBB
+     * Ret value: true or false if anything fails
+     * */
     public boolean insertUserTitles(String username){
         DBTitlesManager titleDB = new DBTitlesManager(this);
-        return  titleDB.inserttitle("tBegginer", username) &
-                titleDB.inserttitle("tChampion", username) &
-                titleDB.inserttitle("tTop", username) &
-                titleDB.inserttitle("tSeeker", username);
+        return  titleDB.inserttitle("tBegginer", username,0) &
+                titleDB.inserttitle("tChampion", username,0) &
+                titleDB.inserttitle("tTop", username,0) &
+                titleDB.inserttitle("tSeeker", username,0);
 
     }
+
+    /*
+     * Desc: Insert the achievements of the user
+     * Param: an String with the name of the user for calling the DDBB
+     * Ret value: true or false if anything fails
+     * */
     public boolean insertUserAchievements(String username){
         DBAchievementsManager achievementsDB = new DBAchievementsManager(this);
         boolean achievementsNovel, achievementsExpert, achievementsSecret;
-        achievementsNovel=  achievementsDB.insertAchievement("aNovelMeta","First Steps"                             ,5 ,50 ,50 ,username) &
-                            achievementsDB.insertAchievement("aNovel1"   ,"Photo Editor"                            ,0 ,5  ,5  ,username) &
-                            achievementsDB.insertAchievement("aNovel2"   ,"Video Editor"                            ,0 ,5  ,5  ,username) &
-                            achievementsDB.insertAchievement("aNovel3"   ,"Message Editor"                          ,0 ,5  ,0  ,username) &
-                            achievementsDB.insertAchievement("aNovel4"   ,"Ubication Editor"                        ,0 ,5  ,0  ,username) &
-                            achievementsDB.insertAchievement("aNovel5"   ,"Reporter"                                ,0 ,5  ,0  ,username) ;
+        achievementsNovel=  achievementsDB.insertAchievement("aNovelMeta","First Steps"                             ,5 ,50 ,50 ,0,username) &
+                            achievementsDB.insertAchievement("aNovel1"   ,"Photo Editor"                            ,0 ,5  ,5  ,0,username) &
+                            achievementsDB.insertAchievement("aNovel2"   ,"Video Editor"                            ,0 ,5  ,5  ,0,username) &
+                            achievementsDB.insertAchievement("aNovel3"   ,"Message Editor"                          ,0 ,5  ,0  ,0,username) &
+                            achievementsDB.insertAchievement("aNovel4"   ,"Ubication Editor"                        ,0 ,5  ,0  ,0,username) &
+                            achievementsDB.insertAchievement("aNovel5"   ,"Reporter"                                ,0 ,5  ,0  ,0,username) ;
 
-        achievementsExpert= achievementsDB.insertAchievement("aExpertMeta","Community Helper"                       ,5 ,100,50 ,username) &
-                            achievementsDB.insertAchievement("aExpert1"   ,"Pictures Lover"                         ,10,10 ,10 ,username) &
-                            achievementsDB.insertAchievement("aExpert2"   ,"Videos Lover"                           ,10,10 ,10 ,username) &
-                            achievementsDB.insertAchievement("aExpert3"   ,"Expert Reporter"                        ,0 ,25 ,0  ,username) &
-                            achievementsDB.insertAchievement("aExpert4"   ,"Hard Worker"                            ,0 ,0  ,20 ,username) &
-                            achievementsDB.insertAchievement("aExpert5"   ,"Top Reporter"                           ,0 ,10 ,10 ,username) &
-                            achievementsDB.insertAchievement("aExpert6"   ,"Reporting Anywhere"                     ,3 ,20 ,10 ,username) ;
+        achievementsExpert= achievementsDB.insertAchievement("aExpertMeta","Community Helper"                       ,5 ,100,50 ,0,username) &
+                            achievementsDB.insertAchievement("aExpert1"   ,"Pictures Lover"                         ,10,10 ,10 ,0,username) &
+                            achievementsDB.insertAchievement("aExpert2"   ,"Videos Lover"                           ,10,10 ,10 ,0,username) &
+                            achievementsDB.insertAchievement("aExpert3"   ,"Expert Reporter"                        ,0 ,25 ,0  ,0,username) &
+                            achievementsDB.insertAchievement("aExpert4"   ,"Hard Worker"                            ,0 ,0  ,20 ,0,username) &
+                            achievementsDB.insertAchievement("aExpert5"   ,"Top Reporter"                           ,0 ,10 ,10 ,0,username) &
+                            achievementsDB.insertAchievement("aExpert6"   ,"Reporting Anywhere"                     ,3 ,20 ,10 ,0,username) ;
 
-        achievementsSecret= achievementsDB.insertAchievement("aSecretMeta","Seeker of Truth"                        ,5 ,200,50 ,username) &
-                            achievementsDB.insertAchievement("aSecret1"   ,"I give my best"                         ,0 ,10 ,0  ,username) &
-                            achievementsDB.insertAchievement("aSecret2"   ,"An image is worth more than 1000 words" ,0 ,10 ,0  ,username) &
-                            achievementsDB.insertAchievement("aSecret3"   ,"As fast as I can"                       ,0 ,10 ,0  ,username) &
-                            achievementsDB.insertAchievement("aSecret4"   ,"Personal image is allways the first"    ,0 ,10 ,0  ,username) &
-                            achievementsDB.insertAchievement("aSecret5"   ,"First my neighborhood"                  ,0 ,10 ,0  ,username);
+        achievementsSecret= achievementsDB.insertAchievement("aSecretMeta","Seeker of Truth"                        ,5 ,200,50 ,0,username) &
+                            achievementsDB.insertAchievement("aSecret1"   ,"I give my best"                         ,0 ,10 ,0  ,0,username) &
+                            achievementsDB.insertAchievement("aSecret2"   ,"An image is worth more than 1000 words" ,0 ,10 ,0  ,0,username) &
+                            achievementsDB.insertAchievement("aSecret3"   ,"As fast as I can"                       ,0 ,10 ,0  ,0,username) &
+                            achievementsDB.insertAchievement("aSecret4"   ,"Personal image is allways the first"    ,0 ,10 ,0  ,0,username) &
+                            achievementsDB.insertAchievement("aSecret5"   ,"First my neighborhood"                  ,0 ,10 ,0  ,0,username);
 
 
         return achievementsNovel & achievementsExpert & achievementsSecret;
     }
 
+    /*
+     * Desc: Insert the avatars of the user
+     * Param: an String with the name of the user for calling the DDBB
+     * Ret value: true or false if anything fails
+     * */
     public boolean insertUserAvatars(String username){
         DBAvatarsManager avatarDB = new  DBAvatarsManager(this);
         return  avatarDB.insertAvatar("avAvatarMan1"         ,R.mipmap.avatar_hombre1  ,1, username) &

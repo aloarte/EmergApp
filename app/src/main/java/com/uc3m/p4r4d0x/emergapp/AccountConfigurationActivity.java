@@ -1,8 +1,12 @@
 package com.uc3m.p4r4d0x.emergapp;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -12,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +70,8 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_account_configuration);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAC);
         setSupportActionBar(toolbar);
@@ -75,6 +83,9 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         loadToolbar();
         //Load the color
         loadColor();
+
+
+        loadAvatars();
 
 
 
@@ -146,8 +157,13 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                 performLogout();
                 return true;
             case R.id.action_acount_configuration:
-                myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-                startActivity(myIntent);
+                if(checkUnlockAcountConfiguration()){
+                    myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+                    startActivity(myIntent);
+                }
+                else{
+                    Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_profile:
                 myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
@@ -164,35 +180,6 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-
-
-
-    /*
-    * Desc: on click method to change for the button to change the app color style
-    *
-    * */
-    public void onClickChangeColor(View v){
-        Log.d("ALR", "Button pressed. Color: " + colorSelected);
-
-        //if the color is not chosen , skip
-        if(colorSelected.compareTo("")!=0){
-            String[] colorsToSet=getColorsCodes(colorSelected);
-
-
-            SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putString("colorprimary", colorsToSet[0]);
-            editor.putString("colorsecondary",colorsToSet[1]);
-            editor.commit();
-
-            //insert on the database that color
-            insertColorOnDDBB(colorSelectedInt);
-
-            loadColor();
-        }
-
-
     }
 
     /*
@@ -282,6 +269,9 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    * Desc: load the info in the toolbar
+    * */
     public void loadToolbar(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -353,21 +343,38 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     }
 
     /*
-    * Desc: performs a logout from the current logged user
-    *
-    * */
+        * Desc: on click function to logout from the aplication
+        * */
     public void performLogout(){
 
-        //Remove from the shared preferences the username
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.remove("username");
-        editor.remove("colorprimary");
-        editor.remove("colorsecondary");
-        editor.commit();
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(AccountConfigurationActivity.this);
+        View layView = (LayoutInflater.from(AccountConfigurationActivity.this)).inflate(R.layout.confirm_logout, null);
+        alertBuilder.setView(layView);
+        alertBuilder.setCancelable(true)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Remove from the shared preferences the username
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.remove("username");
+                        editor.remove("colorprimary");
+                        editor.remove("colorsecondary");
+                        editor.commit();
 
-        //Create and launch login activity
-        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(myIntent);
+                        Toast.makeText(getApplicationContext(), "Session Closed", Toast.LENGTH_SHORT).show();
+                        //Create and launch login activity
+                        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(myIntent);
+                    }
+                })
+        ;
+        Dialog dialog = alertBuilder.create();
+        dialog.show();
     }
 
     /*
@@ -393,13 +400,121 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    * Load the avatars unlocked by the user
+    * */
+    public void loadAvatars(){
 
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        Log.d("ALR","LoadTitlesInside");
+        //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else {
+            int obtainedAux=0;
+            String nameTitleAux="";
+            DBAvatarsManager managerDBAvatars = new DBAvatarsManager(this);
+
+            //Select all the titles that the user have
+            Cursor resultQuery = managerDBAvatars.selectUserTitles(username);
+            //iterate each title
+            for(resultQuery.moveToFirst();
+                !resultQuery.isAfterLast();
+                resultQuery.moveToNext()){
+
+                //Get the title name and if is obtained
+                nameTitleAux = resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_NAME_ID));
+                obtainedAux  = resultQuery.getInt(resultQuery.getColumnIndex(DBAvatarsManager.TAV_UNLOCKED));
+
+                //Switch by the title name, get the view and perform the view change
+                switch (nameTitleAux){
+                    case "avAvatarMan1":
+                        LinearLayout llAvatar1 = (LinearLayout) findViewById(R.id.llAvatar1);
+                        changeAvatarVisiblity(obtainedAux, llAvatar1);
+                        break;
+                    case "avAvatarWoman1":
+                        LinearLayout llAvatar2 = (LinearLayout) findViewById(R.id.llAvatar2);
+                        changeAvatarVisiblity(obtainedAux, llAvatar2);
+                        break;
+                    case "avAvatarMan2":
+                        LinearLayout llAvatar3 = (LinearLayout) findViewById(R.id.llAvatar3);
+                        changeAvatarVisiblity(obtainedAux, llAvatar3);
+                        break;
+                    case "avAvatarWoman2":
+                        LinearLayout llAvatar4 = (LinearLayout) findViewById(R.id.llAvatar4);
+                        changeAvatarVisiblity(obtainedAux, llAvatar4);
+                        break;
+                    case "avAvatarManHipster":
+                        LinearLayout llAvatar5 = (LinearLayout) findViewById(R.id.llAvatar5);
+                        changeAvatarVisiblity(obtainedAux, llAvatar5);
+                        break;
+                    case "avAvatarWomanHipster":
+                        LinearLayout llAvatar6 = (LinearLayout) findViewById(R.id.llAvatar6);
+                        changeAvatarVisiblity(obtainedAux,llAvatar6);
+                        break;
+                }
+            }
+
+        }
+    }
+
+    /*
+    * Desc: Check from the DDBB if the user can select his account configuration
+    * */
+    public boolean checkUnlockAcountConfiguration(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        boolean retValue=false;
+        //Get the linear layout
+
+        DBUserManager managerDBUser = new DBUserManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBUser.selectUser(username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_TITLE)) == 1) {
+                retValue = true;
+            } else {
+                retValue = false;
+            }
+        }
+
+        return retValue;
+    }
+
+    /*
+   * Desc: Change the visibility on the button if the avatar is obtained
+   * Par: int 1 obtained 0 not obtained, and the radio button view
+   *
+   * */
+    public void changeAvatarVisiblity(int obtained, View titleRadioButton){
+        //If the title was obtained
+        if(obtained==1){
+            titleRadioButton.setVisibility(TextView.VISIBLE);
+        }
+        //If the title wasnt obtained
+        else if(obtained==0){
+            titleRadioButton.setVisibility(TextView.GONE);
+        }
+    }
+
+    /*
+    * Desc: change the color of a selected image
+    * */
     public void markImageViewAvatar(int idLinearLayoutAvatar){
 
+        //Iterate all the avatar images
         for(int i=0;i<6;i++){
+            //If is the selected, mark it
             if(i==idLinearLayoutAvatar){
                 llArray[i].setBackgroundColor(Color.argb(20, 84, 84, 84));
             }
+            //if not, set its regular color
             else{
                 llArray[i].setBackgroundColor(Color.WHITE);
             }
@@ -407,6 +522,37 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
     }
 
+
+    //ON CLICK METHODS
+
+    /*
+    * Desc: on click method to change for the button to change the app color style
+    *
+    * */
+    public void onClickChangeColor(View v){
+
+        //if the color is not chosen , skip
+        if(colorSelected.compareTo("")!=0){
+            String[] colorsToSet=getColorsCodes(colorSelected);
+
+
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString("colorprimary", colorsToSet[0]);
+            editor.putString("colorsecondary",colorsToSet[1]);
+            editor.commit();
+
+            //insert on the database that color
+            insertColorOnDDBB(colorSelectedInt);
+
+            loadColor();
+        }
+
+
+    }
+
+    /*
+     * Desc: on click method to select an avatar
+     * */
     public void onClickSelectAvatar(View v){
         int elementId=v.getId();
         switch(elementId){
@@ -439,6 +585,9 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Desc: on click method to save the selected avatar
+     * */
     public void onClickSaveAvatar(View v){
         String username = sharedpreferences.getString("username", "default");
 
@@ -450,18 +599,23 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     }
 
     /*
-   * Desc: on click method to navegate from toolbar to profile activity
-   * */
+     * Desc: on click method to navegate from toolbar to profile activity
+     * */
     public void onClickChangeProfileActivity(View v){
         Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
         startActivity(myIntent);
     }
 
     /*
-   * Desc: on click method to navegate from toolbar to acount configuration activity
-   * */
+     * Desc: on click method to navegate from toolbar to acount configuration activity
+     * */
     public void onClickChangeACActivity(View v){
-        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-        startActivity(myIntent);
+        if(checkUnlockAcountConfiguration()){
+            Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+            startActivity(myIntent);
+        }
+        else{
+            Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+        }
     }
 }

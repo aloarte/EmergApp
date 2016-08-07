@@ -57,19 +57,13 @@ public class DBTitlesManager {
     * Desc: Insert on database a new title
     * Param:  title data
     * */
-    public boolean inserttitle(String nameId, String nameUser){
-
-
-            int titileObtained=0;
-            long retValue=0;
-            retValue=db.insert(TABLE_NAME, null, generateCVtitle(nameId, titileObtained, nameUser));
-            if(retValue==-1 || retValue==0){
-                return false;
-            }
-            else return true;
-
-
-
+    public boolean inserttitle(String nameId, String nameUser,int obtained){
+     long retValue=0;
+        retValue=db.insert(TABLE_NAME, null, generateCVtitle(nameId, obtained, nameUser));
+        if(retValue==-1 || retValue==0){
+            return false;
+        }
+        else return true;
 
     }
 

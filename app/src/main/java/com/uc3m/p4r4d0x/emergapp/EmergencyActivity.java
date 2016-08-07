@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -159,6 +160,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_emergency);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarE);
         setSupportActionBar(toolbar);
@@ -324,8 +327,13 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 performLogout();
                 return true;
             case R.id.action_acount_configuration:
-                myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-                startActivity(myIntent);
+                if(checkUnlockAcountConfiguration()){
+                    myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+                    startActivity(myIntent);
+                }
+                else{
+                    Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_profile:
                 myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
@@ -1185,16 +1193,34 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         * */
     public void performLogout(){
 
-        //Remove from the shared preferences the username
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.remove("username");
-        editor.remove("colorprimary");
-        editor.remove("colorsecondary");
-        editor.commit();
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(EmergencyActivity.this);
+        View layView = (LayoutInflater.from(EmergencyActivity.this)).inflate(R.layout.confirm_logout, null);
+        alertBuilder.setView(layView);
+        alertBuilder.setCancelable(true)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Remove from the shared preferences the username
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.remove("username");
+                        editor.remove("colorprimary");
+                        editor.remove("colorsecondary");
+                        editor.commit();
 
-        //Create and launch login activity
-        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(myIntent);
+                        Toast.makeText(getApplicationContext(), "Session Closed", Toast.LENGTH_SHORT).show();
+                        //Create and launch login activity
+                        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(myIntent);
+                    }
+                })
+                ;
+        Dialog dialog = alertBuilder.create();
+        dialog.show();
     }
 
     /*
@@ -1217,6 +1243,31 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             t.setBackgroundColor(Color.parseColor(primaryColor));
 
         }
+    }
+
+    /*
+    * Desc: Check from the DDBB if the user can select his account configuration
+    * */
+    public boolean checkUnlockAcountConfiguration(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        boolean retValue=false;
+        //Get the linear layout
+
+        DBUserManager managerDBUser = new DBUserManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBUser.selectUser(username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_TITLE)) == 1) {
+                retValue = true;
+            } else {
+                retValue = false;
+            }
+        }
+
+        return retValue;
     }
 
     //-----------------------------------------------------------//
@@ -1462,11 +1513,16 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     /*
-   * Desc: on click method to navegate from toolbar to acount configuration activity
-   * */
+  * Desc: on click method to navegate from toolbar to acount configuration activity
+  * */
     public void onClickChangeACActivity(View v){
-        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-        startActivity(myIntent);
+        if(checkUnlockAcountConfiguration()){
+            Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+            startActivity(myIntent);
+        }
+        else{
+            Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

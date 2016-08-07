@@ -10,6 +10,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:focusable="false"
+    android:screenOrientation="portrait"
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.uc3m.p4r4d0x.emergapp.EmergencyActivity"
@@ -543,7 +544,7 @@
             android:onClick="onClickCloseMap"
             android:background="#D0dedede"
             android:layout_marginLeft="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="62dp"
             android:padding="8dp" />
 
         <ImageView

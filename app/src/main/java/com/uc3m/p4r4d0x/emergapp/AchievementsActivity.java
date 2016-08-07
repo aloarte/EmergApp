@@ -1,8 +1,13 @@
 package com.uc3m.p4r4d0x.emergapp;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +18,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -95,14 +101,18 @@ public class AchievementsActivity extends AppCompatActivity {
         }
     }
 
+
+
     /*
-    * Desc: method overrided from AppCompatActivity
-    *       this method is called when activity starts
-    *       Initialize all the neccessary parts of the main screen
-    * */
+        * Desc: method overrided from AppCompatActivity
+        *       this method is called when activity starts
+        *       Initialize all the neccessary parts of the main screen
+        * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_achievements);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarA);
         setSupportActionBar(toolbar);
@@ -171,8 +181,13 @@ public class AchievementsActivity extends AppCompatActivity {
                 performLogout();
                 return true;
             case R.id.action_acount_configuration:
-                myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-                startActivity(myIntent);
+                if(checkUnlockAcountConfiguration()){
+                    myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+                    startActivity(myIntent);
+                }
+                else{
+                    Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_profile:
                 myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
@@ -191,6 +206,9 @@ public class AchievementsActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * Desc: load the data into the toolbar
+     * */
     public void loadToolbar(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -262,8 +280,8 @@ public class AchievementsActivity extends AppCompatActivity {
     }
 
     /*
-  * Desc: load the color on the toolbar and other elements
-  * */
+     * Desc: load the color on the toolbar and other elements
+     * */
     public void loadColor(){
 
         //Check if there is any user logged into the aplication checking shared preferences
@@ -285,24 +303,45 @@ public class AchievementsActivity extends AppCompatActivity {
     }
 
     /*
-    * Desc: performs a logout from the current logged user
-    *
-    * */
+        * Desc: on click function to logout from the aplication
+        * */
     public void performLogout(){
 
-        //Remove from the shared preferences the username
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.remove("username");
-        editor.remove("colorprimary");
-        editor.remove("colorsecondary");
-        editor.commit();
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(AchievementsActivity.this);
+        View layView = (LayoutInflater.from(AchievementsActivity.this)).inflate(R.layout.confirm_logout, null);
+        alertBuilder.setView(layView);
+        alertBuilder.setCancelable(true)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Remove from the shared preferences the username
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.remove("username");
+                        editor.remove("colorprimary");
+                        editor.remove("colorsecondary");
+                        editor.commit();
 
-        //Create and launch login activity
-        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(myIntent);
+                        Toast.makeText(getApplicationContext(), "Session Closed", Toast.LENGTH_SHORT).show();
+                        //Create and launch login activity
+                        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(myIntent);
+                    }
+                })
+        ;
+        Dialog dialog = alertBuilder.create();
+        dialog.show();
     }
 
-
+    /*
+    * Desc: load the achievements stored on the DDBB for each user, setting the data into a array
+    *       and passing it to a fragment
+    * Param:AchievementFragment1 with the fragment that will be created
+    * */
     public void loadNovelAchievements(AchievementFragment1 achievementFragment){
 
         //Get sharedpreferences item and the username asociated
@@ -321,7 +360,7 @@ public class AchievementsActivity extends AppCompatActivity {
             //Select the users ordered by XP points
             Cursor resultQuery;
             //iterate each user to save data into the array
-            int i;
+            int i,color=-1;
             for(i=0;i<6;i++){
                 switch (i){
                     case 0:
@@ -356,19 +395,28 @@ public class AchievementsActivity extends AppCompatActivity {
                     data[i][1]="0";
                     data[i][2]="0";
                 }
-
-
+            }
+            //Get the color selected by the user
+            DBUserManager dbUserManager = new DBUserManager (this);
+            Cursor resultQueryUser = dbUserManager.selectUser(username);
+            if(resultQueryUser.moveToFirst()==true) {
+                color = resultQueryUser.getInt(resultQueryUser.getColumnIndex(DBUserManager.TU_COLOR));
             }
             //Set the data retrieved into the fragment view
-            achievementFragment.setArgumentsToFragment(data, i);
+            achievementFragment.setArgumentsToFragment(data, i,color);
 
         }
     }
 
+    /*
+    * Desc: load the achievements stored on the DDBB for each user, setting the data into a array
+    *       and passing it to a fragment
+    * Param:AchievementFragment2 with the fragment that will be created
+    * */
     public void loadExpertAchievements(AchievementFragment2 achievementFragment){
 
         //Get sharedpreferences item and the username asociated
-        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String username                    = sharedpreferences.getString("username", "default");
         //Check the username
         if(username.compareTo("default")==0){
@@ -383,7 +431,7 @@ public class AchievementsActivity extends AppCompatActivity {
             //Select the users ordered by XP points
             Cursor resultQuery;
             //iterate each user to save data into the array
-            int i;
+            int i,color=-1;
             for(i=0;i<7;i++){
                 switch (i){
                     case 0:
@@ -422,14 +470,24 @@ public class AchievementsActivity extends AppCompatActivity {
                     data[i][2]="0";
                 }
 
-
+            }
+            //Get the color selected by the user
+            DBUserManager dbUserManager = new DBUserManager (this);
+            Cursor resultQueryUser = dbUserManager.selectUser(username);
+            if(resultQueryUser.moveToFirst()==true) {
+                color = resultQueryUser.getInt(resultQueryUser.getColumnIndex(DBUserManager.TU_COLOR));
             }
             //Set the data retrieved into the fragment view
-            achievementFragment.setArgumentsToFragment(data,i);
+            achievementFragment.setArgumentsToFragment(data,i,color);
 
         }
     }
 
+    /*
+    * Desc: load the achievements stored on the DDBB for each user, setting the data into a array
+    *       and passing it to a fragment
+    * Param:AchievementFragment3 with the fragment that will be created
+    * */
     public void loadSecretAchievements(AchievementFragment3 achievementFragment){
 
         //Get sharedpreferences item and the username asociated
@@ -448,7 +506,7 @@ public class AchievementsActivity extends AppCompatActivity {
             //Select the users ordered by XP points
             Cursor resultQuery;
             //iterate each user to save data into the array
-            int i;
+            int i,color=-1;
             for(i=0;i<6;i++){
                 switch (i){
                     case 0:
@@ -486,12 +544,23 @@ public class AchievementsActivity extends AppCompatActivity {
 
 
             }
+            //Get the color selected by the user
+            DBUserManager dbUserManager = new DBUserManager (this);
+            Cursor resultQueryUser = dbUserManager.selectUser(username);
+            if(resultQueryUser.moveToFirst()==true) {
+                color = resultQueryUser.getInt(resultQueryUser.getColumnIndex(DBUserManager.TU_COLOR));
+            }
             //Set the data retrieved into the fragment view
-            achievementFragment.setArgumentsToFragment(data,i);
+            achievementFragment.setArgumentsToFragment(data,i,color);
 
         }
     }
 
+    /*
+    * Desc: load the quests recovered from the DDBB, setting the data into a array
+    *       and passing it to a fragment
+    * Param:AchievementFragment4 with the fragment that will be created
+    * */
     public void loadQuests(AchievementFragment4 achievementFragment){
 
         //Get sharedpreferences item and the username asociated
@@ -550,6 +619,30 @@ public class AchievementsActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    * Desc: Check from the DDBB if the user can select his account configuration
+    * */
+    public boolean checkUnlockAcountConfiguration(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        boolean retValue=false;
+        //Get the linear layout
+
+        DBUserManager managerDBUser = new DBUserManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBUser.selectUser(username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_TITLE)) == 1) {
+                retValue = true;
+            } else {
+                retValue = false;
+            }
+        }
+
+        return retValue;
+    }
 
     /*
    * Desc: on click method to navegate from toolbar to profile activity
@@ -563,7 +656,12 @@ public class AchievementsActivity extends AppCompatActivity {
    * Desc: on click method to navegate from toolbar to acount configuration activity
    * */
     public void onClickChangeACActivity(View v){
-        Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-        startActivity(myIntent);
+        if(checkUnlockAcountConfiguration()){
+            Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+            startActivity(myIntent);
+        }
+        else{
+            Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+        }
     }
 }

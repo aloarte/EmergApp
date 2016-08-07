@@ -20,6 +20,7 @@ import com.uc3m.p4r4d0x.emergapp.R;
 public class AchievementFragment2 extends Fragment {
     View mView;
     String [][] data;
+    int color=-1;
 
     int arraySize=0;
     @Nullable
@@ -34,7 +35,8 @@ public class AchievementFragment2 extends Fragment {
     /*
     * Desc:  Set the data from Activity into the array
     * */
-    public void setArgumentsToFragment(String [][] data, int arraySize){
+    public void setArgumentsToFragment(String [][] data, int arraySize,int colorSelected){
+        this.color=colorSelected;
         this.arraySize=arraySize;
         this.data=data;
     }
@@ -107,7 +109,43 @@ public class AchievementFragment2 extends Fragment {
             resourceID=R.mipmap.notdoneicon;
         }
         else if(isAchievementUnlocked==1){
-            resourceID=R.mipmap.doneicon;
+            switch(color){
+                //DefaultColor
+                case 0:
+                    resourceID=R.mipmap.doneicon_ereporter;
+                    break;
+                //Red
+                case 1:
+                    resourceID=R.mipmap.doneicon_red;
+                    break;
+                //Blue
+                case 2:
+                    resourceID=R.mipmap.doneicon_blue;
+                    break;
+                //Green
+                case 3:
+                    resourceID=R.mipmap.doneicon_green;
+                    break;
+                //Purple
+                case 4:
+                    resourceID=R.mipmap.doneicon_purple;
+                    break;
+                //Yellow
+                case 5:
+                    resourceID=R.mipmap.doneicon_yellow;
+                    break;
+                //Pink
+                case 6:
+                    resourceID=R.mipmap.doneicon_pink;
+                    break;
+                //Grey
+                case 7:
+                    resourceID=R.mipmap.doneicon_grey;
+                    break;
+                default:
+                    resourceID=R.mipmap.doneicon;
+                    break;
+            }
         }
         else{
             resourceID=R.mipmap.notdoneicon;
