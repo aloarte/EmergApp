@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,8 +27,8 @@ import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
-    TextView tViewGPS, tViewGPSCoord;
-    String   sGPSAddr, sGPSCoord;
+    TextView tViewGPS, tViewGPSCoord,tViewGPSCity;
+    String   sGPSAddr, sGPSCoord ,sGPSCity;
     //Info to use shared preferences to have a session
     final String MyPREFERENCES = "userPreferences";
     SharedPreferences sharedpreferences;
@@ -273,9 +274,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         //Get the TextView to show the address value
         tViewGPS      = (TextView) findViewById(R.id.tvGPSEM1);
         tViewGPSCoord = (TextView) findViewById(R.id.tvGPSCoordEM1);
+        tViewGPSCity = (TextView) findViewById(R.id.tvGPSCityEM1);
+
 
         //create service passing two TextViews as a param
-        GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS, this.tViewGPSCoord);
+        GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS, this.tViewGPSCoord,this.tViewGPSCity);
 
         //Try to get the location from GPS or network
         if (sGPS.getLocation()) {
@@ -296,6 +299,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     public boolean retrieveGPSPosition(){
         sGPSCoord = (String) tViewGPSCoord.getText();
         sGPSAddr  = (String) tViewGPS.getText();
+        sGPSCity  = (String) tViewGPSCity.getText();
+
 
         return (!sGPSAddr.isEmpty() && !sGPSCoord.isEmpty());
 
@@ -315,6 +320,8 @@ public class HomeScreenActivity extends AppCompatActivity {
             //Set value to gps position and address
             i.putExtra("GPSC",sGPSCoord);
             i.putExtra("GPSA",sGPSAddr);
+            i.putExtra("GPSCY",sGPSCity);
+
             //Launch intent
             startActivity(i);
         }
@@ -334,6 +341,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             i.putExtra("popUp2","");
             i.putExtra("GPSC",sGPSCoord);
             i.putExtra("GPSA",sGPSAddr);
+            i.putExtra("GPSCY",sGPSCity);
             //Launch intent
             startActivity(i);
         }

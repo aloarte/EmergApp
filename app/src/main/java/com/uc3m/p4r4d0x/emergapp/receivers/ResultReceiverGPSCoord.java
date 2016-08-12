@@ -18,18 +18,22 @@ public class ResultReceiverGPSCoord extends ResultReceiver {
         private Receiver mReceiver=null;
         private String address="";
         private String gpsCoord="0,0";
+        private String gpsCity="";
         private String errorMessage="";
         private TextView GPSAddressView;
         private TextView GPSCoordView;
+        private TextView GPSCityView;
+
 
     /*
     * Param: Handler and the TextViews for printing the address and the latitude and longitude
     * Desc: Main Constructor
     * */
-    public ResultReceiverGPSCoord(android.os.Handler handler, TextView addrView, TextView GPSView) {
+    public ResultReceiverGPSCoord(android.os.Handler handler, TextView addrView, TextView GPSView,TextView city) {
         super(handler);
         GPSAddressView=addrView;
         GPSCoordView=GPSView;
+        GPSCityView=city;
     }
 
     /*
@@ -58,6 +62,7 @@ public class ResultReceiverGPSCoord extends ResultReceiver {
                 // Get the address and the latitude and longitude from the resultData object
                 address = resultData.getString(Constants.RESULT_DATA_KEY);
                 gpsCoord=resultData.getString(Constants.RESULT_DATA_KEY2);
+                gpsCity =resultData.getString(Constants.RESULT_DATA_KEY3);
 
                 //Print the addres on the TextView
                 setView(true,resultCode);
@@ -84,6 +89,7 @@ public class ResultReceiverGPSCoord extends ResultReceiver {
         if(addressObtained){
             //Display the address on the textView
             GPSAddressView.setText(address);
+            GPSCityView.setText(gpsCity);
 
         }
         else{

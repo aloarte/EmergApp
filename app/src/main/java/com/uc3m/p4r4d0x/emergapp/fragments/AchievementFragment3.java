@@ -70,6 +70,7 @@ public class AchievementFragment3 extends Fragment {
                     break;
                 //First my neighborhood
                 case 5:
+                    changeProgressText(data[i][0],data[i][1], R.id.tvProgressSecret6);
                     changeImageAchievement(data[i][2], R.id.ivCompletedSecret6);
                     break;
 

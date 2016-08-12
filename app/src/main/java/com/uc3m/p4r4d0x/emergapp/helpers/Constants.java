@@ -15,6 +15,8 @@ public final class Constants {
             ".RESULT_DATA_KEY";
     public static final String RESULT_DATA_KEY2 = PACKAGE_NAME +
             ".RESULT_DATA_KEY2";
+    public static final String RESULT_DATA_KEY3 = PACKAGE_NAME +
+            ".RESULT_DATA_KEY3";
     public static final String     RESULT_XP_KEY
             = PACKAGE_NAME +
             ".    RESULT_XP_KEY\n";

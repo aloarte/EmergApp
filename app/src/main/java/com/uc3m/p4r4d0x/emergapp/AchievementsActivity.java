@@ -186,6 +186,9 @@ public class AchievementsActivity extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+                    //REMOVE THIS
+                    myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+                    startActivity(myIntent);
                 }
                 return true;
             case R.id.action_profile:

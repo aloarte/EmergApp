@@ -177,7 +177,7 @@ public class SignIn extends AppCompatActivity {
                             achievementsDB.insertAchievement("aNovel4"   ,"Ubication Editor"                        ,0 ,5  ,0  ,0,username) &
                             achievementsDB.insertAchievement("aNovel5"   ,"Reporter"                                ,0 ,5  ,0  ,0,username) ;
 
-        achievementsExpert= achievementsDB.insertAchievement("aExpertMeta","Community Helper"                       ,5 ,100,50 ,0,username) &
+        achievementsExpert= achievementsDB.insertAchievement("aExpertMeta","Community Helper"                       ,10,100,50 ,0,username) &
                             achievementsDB.insertAchievement("aExpert1"   ,"Pictures Lover"                         ,10,10 ,10 ,0,username) &
                             achievementsDB.insertAchievement("aExpert2"   ,"Videos Lover"                           ,10,10 ,10 ,0,username) &
                             achievementsDB.insertAchievement("aExpert3"   ,"Expert Reporter"                        ,0 ,25 ,0  ,0,username) &
@@ -190,7 +190,7 @@ public class SignIn extends AppCompatActivity {
                             achievementsDB.insertAchievement("aSecret2"   ,"An image is worth more than 1000 words" ,0 ,10 ,0  ,0,username) &
                             achievementsDB.insertAchievement("aSecret3"   ,"As fast as I can"                       ,0 ,10 ,0  ,0,username) &
                             achievementsDB.insertAchievement("aSecret4"   ,"Personal image is allways the first"    ,0 ,10 ,0  ,0,username) &
-                            achievementsDB.insertAchievement("aSecret5"   ,"First my neighborhood"                  ,0 ,10 ,0  ,0,username);
+                            achievementsDB.insertAchievement("aSecret5"   ,"First my neighborhood"                  ,5 ,10 ,0  ,0,username);
 
 
         return achievementsNovel & achievementsExpert & achievementsSecret;

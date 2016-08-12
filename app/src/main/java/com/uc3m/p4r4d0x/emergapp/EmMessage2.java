@@ -16,7 +16,7 @@ public class EmMessage2 extends AppCompatActivity {
     final int C_PREV_YES=1,C_PREV_NO=2,C_PREV_NOVALUE=0;
     final int C_YES_YES=1,C_YES_NO=2, C_NO_YES=3, C_NO_NO=4;
 
-    String   sGPSAddr, sGPSCoord;
+    String   sGPSAddr, sGPSCoord,sGPSCity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +32,8 @@ public class EmMessage2 extends AppCompatActivity {
             valueFromPopup1 = extras.getInt("popUp1");
             sGPSAddr        = extras.getString("GPSA");
             sGPSCoord       = extras.getString("GPSC");
+            sGPSCity       = extras.getString("GPSCY");
+
         }
 
     }
@@ -64,6 +66,7 @@ public class EmMessage2 extends AppCompatActivity {
         i.putExtra("popUp2",value);
         i.putExtra("GPSC",sGPSCoord);
         i.putExtra("GPSA",sGPSAddr);
+        i.putExtra("GPSCY",sGPSCity);
 
         //Launch next activity
         startActivity(i);
@@ -97,6 +100,7 @@ public class EmMessage2 extends AppCompatActivity {
         i.putExtra("popUp2",value);
         i.putExtra("GPSC",sGPSCoord);
         i.putExtra("GPSA",sGPSAddr);
+        i.putExtra("GPSCY",sGPSCity);
         //Launch next activity
         startActivity(i);
 

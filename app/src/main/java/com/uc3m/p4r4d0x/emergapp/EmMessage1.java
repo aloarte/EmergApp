@@ -15,8 +15,7 @@ public class EmMessage1 extends AppCompatActivity {
 
     //Define constants to send info
     final int C_YES=1,C_NO=2;
-    TextView tViewGPS, tViewGPSCoord;
-    String   sGPSAddr, sGPSCoord;
+    String   sGPSAddr, sGPSCoord,sGPSCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +30,7 @@ public class EmMessage1 extends AppCompatActivity {
         if (extras != null) {
             sGPSAddr        = extras.getString("GPSA");
             sGPSCoord       = extras.getString("GPSC");
+            sGPSCity       = extras.getString("GPSCY");
         }
     }
 
@@ -51,6 +51,7 @@ public class EmMessage1 extends AppCompatActivity {
         i.putExtra("popUp1", C_YES);
         i.putExtra("GPSC", sGPSCoord);
         i.putExtra("GPSA", sGPSAddr);
+        i.putExtra("GPSCY",sGPSCity);
         //Launch intent
         startActivity(i);
     }
@@ -66,6 +67,7 @@ public class EmMessage1 extends AppCompatActivity {
         i.putExtra("popUp1",C_NO);
         i.putExtra("GPSC",sGPSCoord);
         i.putExtra("GPSA",sGPSAddr);
+        i.putExtra("GPSCY",sGPSCity);
         //Launch intent
         startActivity(i);
     }

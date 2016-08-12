@@ -498,8 +498,7 @@
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/tvProgressSecret6"
                             android:textSize="12dp"
-                            android:gravity="center_vertical"
-                            android:text="0/5" />
+                            android:gravity="center_vertical" />
 
                     </LinearLayout>
                 </LinearLayout>

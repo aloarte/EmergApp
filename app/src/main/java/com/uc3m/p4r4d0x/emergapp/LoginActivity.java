@@ -235,7 +235,7 @@ public class LoginActivity extends AppCompatActivity {
     public void insertInitialValues(){
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        sharedpreferences.edit().putBoolean("first_time", true).commit();
+        //sharedpreferences.edit().putBoolean("first_time", true).commit();
         if (sharedpreferences.getBoolean("first_time", true)){
             insertExampleUsers();
             insertQuests();

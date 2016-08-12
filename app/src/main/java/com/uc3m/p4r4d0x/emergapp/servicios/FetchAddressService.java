@@ -30,6 +30,7 @@ public class FetchAddressService extends IntentService {
     public Context sContext;
     double latitude=0,longitude=0;
     int accuracy;
+    String city="";
 
     //Default constructor (Neccesary for the AndroidManifest.xml)
     public FetchAddressService() {
@@ -113,6 +114,7 @@ public class FetchAddressService extends IntentService {
             Address address = addresses.get(0);
             ArrayList<String> addressFragments = new ArrayList<String>();
 
+            city=address.getLocality();
             // Fetch the address lines using getAddressLine,join in them, and send them to the thread.
             for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                 addressFragments.add(address.getAddressLine(i));
@@ -136,6 +138,8 @@ public class FetchAddressService extends IntentService {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.RESULT_DATA_KEY, message);
         bundle.putString(Constants.RESULT_DATA_KEY2,""+latitude+","+longitude+"");
+        bundle.putString(Constants.RESULT_DATA_KEY3,city);
+
 
         //Send the values
         mSender.send(resultCode, bundle);
@@ -143,14 +147,11 @@ public class FetchAddressService extends IntentService {
 
     protected Boolean isConnectedToNetwork(){
         if(isConnectedByWifi()){
-            //Log.d("ALR", "connected by wifi");
             return true;
         }else{
             if(isConnectedBy3G()){
-                //Log.d("ALR", "connected by 3g");
                 return true;
             }else{
-                //Log.d("ALR", "Not connected to network");
 
                 return false;
             }
