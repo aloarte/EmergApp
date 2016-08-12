@@ -49,7 +49,8 @@
                 android:longClickable="false"
                 android:nestedScrollingEnabled="false"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="10dp" />
+                android:layout_margin="10dp"
+                android:contentDescription="Designed by Freepik and distributed by Flaticon" />
 
             <ImageView
                 android:layout_width="40dp"
@@ -61,7 +62,8 @@
                 android:focusableInTouchMode="false"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginBottom="15dp" />
+                android:layout_marginBottom="15dp"
+                android:contentDescription="Designed by Freepik and distributed by Flaticon" />
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"
@@ -96,7 +98,8 @@
                         android:tag="1"
                         android:adjustViewBounds="true"
                         android:layout_gravity="center_horizontal"
-                        android:onClick="onClickDeletePicture" />
+                        android:onClick="onClickDeletePicture"
+                        android:contentDescription="Designed by Freepik and distributed by Flaticon" />
 
                 </LinearLayout>
 

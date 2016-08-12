@@ -22,7 +22,6 @@ public class EmMessage1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         setContentView(R.layout.activity_em_message1);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
@@ -33,6 +32,12 @@ public class EmMessage1 extends AppCompatActivity {
             sGPSAddr        = extras.getString("GPSA");
             sGPSCoord       = extras.getString("GPSC");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent myIntent = new Intent(this, HomeScreenActivity.class);
+        startActivity(myIntent);
     }
 
     /*

@@ -177,7 +177,6 @@ public class AchievementsActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_close_session:
-                Toast.makeText(this, getText(R.string.action_close_session), Toast.LENGTH_SHORT).show();
                 performLogout();
                 return true;
             case R.id.action_acount_configuration:
@@ -204,6 +203,10 @@ public class AchievementsActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     /*

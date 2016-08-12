@@ -25,9 +25,13 @@ import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
 public class MailSenderService extends Service {
     private Context sContext;
     protected ResultReceiver mSender;
+    private int xp,ap,achievement;
     final String MyPREFERENCES="userPreferences";
     SharedPreferences sharedpreferences;
-    public MailSenderService(Context c,ResultReceiverSentReady mReceiver) {
+    public MailSenderService(Context c,ResultReceiverSentReady mReceiver,int ap,int xp,int achievement) {
+        this.ap=ap;
+        this.xp=xp;
+        this.achievement=achievement;
         mSender=mReceiver;
     }
 
@@ -98,6 +102,11 @@ public class MailSenderService extends Service {
         //Put the result message or the address on a Bundle
         Bundle bundle = new Bundle();
         bundle.putString(Constants.RESULT_DATA_KEY, message);
+        bundle.putInt(Constants.RESULT_AP_KEY, ap);
+        bundle.putInt(Constants.RESULT_XP_KEY,xp);
+        bundle.putInt(Constants.RESULT_ACHIEVEMENT_COMPLETED,achievement);
+
+
         //Send the values
         mSender.send(resultCode, bundle);
     }

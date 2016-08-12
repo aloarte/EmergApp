@@ -85,6 +85,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     /*
      * Desc: onClickListener for button bLogIn
      *       Check if the login was successfull
@@ -233,13 +237,11 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedpreferences.edit().putBoolean("first_time", true).commit();
         if (sharedpreferences.getBoolean("first_time", true)){
-            Log.d("ALR","Si se insertan");
             insertExampleUsers();
             insertQuests();
             sharedpreferences.edit().putBoolean("first_time", false).commit();
         }
         else{
-            Log.d("ALR","No se insertan");
         }
     }
     public boolean insertExampleUsers(){

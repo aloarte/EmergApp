@@ -71,7 +71,7 @@ public class ResultReceiverSentReady extends ResultReceiver {
     protected void onReceiveResult(int resultCode, Bundle resultData) {
 
 
-        int ap=0,xp=0;
+        int ap=0,xp=0,achievementCompleted=-1;
         String username="";
         //Check if the method was called proper
         if(mReceiver != null) {
@@ -81,9 +81,12 @@ public class ResultReceiverSentReady extends ResultReceiver {
 
             // Get the address and the latitude and longitude from the resultData object
             resultMessage = resultData.getString(Constants.RESULT_DATA_KEY);
+            ap=resultData.getInt(Constants.RESULT_AP_KEY);
+            xp=resultData.getInt(Constants.RESULT_XP_KEY);
+            achievementCompleted=resultData.getInt(Constants.RESULT_ACHIEVEMENT_COMPLETED);
 
             //Toast the result
-            Toast.makeText(contextRR, resultMessage, Toast.LENGTH_LONG).show();
+            toastMessages(ap,xp,achievementCompleted);
             if(resultCode==2){
                 //Stay for a new send
                 //Hide the layer
@@ -96,7 +99,17 @@ public class ResultReceiverSentReady extends ResultReceiver {
         }
     }
 
+    public void toastMessages(int ap,int xp,int achievement){
+        //Toast message status
+        Toast.makeText(contextRR, resultMessage
+                + " : "
+                +xp + " XP", Toast.LENGTH_LONG).show();
+        if(achievement==1){
+            Toast.makeText(contextRR,"Achievement completed", Toast.LENGTH_LONG).show();
+        }
 
+
+    }
 
 
     }

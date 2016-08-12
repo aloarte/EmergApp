@@ -44,8 +44,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:weightSum="1"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/llProfileNickname">
+            android:id="@+id/llProfileNickname"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp">
 
             <TextView
                 android:layout_width="120dp"
@@ -75,8 +76,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:weightSum="1"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/llProfileTitle" >
+            android:id="@+id/llProfileTitle"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp">
 
             <TextView
                 android:layout_width="120dp"
@@ -98,7 +100,7 @@
                 android:layout_weight="0.72"
                 android:textStyle="bold|italic"
                 android:layout_gravity="bottom"
-                android:textSize="14dp" />
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -106,7 +108,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:weightSum="1"
-            android:id="@+id/llProfileAP" >
+            android:id="@+id/llProfileAP"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp">
 
             <TextView
                 android:layout_width="120dp"
@@ -127,7 +131,8 @@
                 android:gravity="center"
                 android:layout_weight="0.09"
                 android:textStyle="bold"
-                android:layout_gravity="bottom" />
+                android:layout_gravity="bottom"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -136,7 +141,8 @@
             android:layout_height="match_parent"
             android:weightSum="1"
             android:id="@+id/llProfileRank"
-            android:layout_marginBottom="5dp">
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp">
 
             <TextView
                 android:layout_width="120dp"
@@ -171,7 +177,9 @@
             android:progressDrawable="@drawable/customprogressbar"
             android:background="#f6f6f6"
             android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp" />
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -179,7 +187,8 @@
             android:layout_height="match_parent"
             android:weightSum="1"
             android:id="@+id/llProfileXP"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="2.5dp"
+            android:layout_marginTop="2.5dp">
 
             <LinearLayout
                 android:orientation="horizontal"

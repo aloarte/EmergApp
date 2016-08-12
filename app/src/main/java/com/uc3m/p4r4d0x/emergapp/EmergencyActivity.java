@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAchievementsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverGPSCoord;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
@@ -147,6 +148,10 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     final String MyPREFERENCES = "userPreferences";
     SharedPreferences sharedpreferences;
 
+    //For achievements
+    boolean textModified=false, ubicationModified=false;
+    int achievementObtained=0;
+
 
     //-------------------------------------------------------//
     //---------------------OVERRIDED METHODS-----------------//
@@ -204,6 +209,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 tvMessagePopUp1.setText(userInput.getText());
+                                textModified = true;
+
                             }
                         });
                 Dialog dialog = alertBuilder.create();
@@ -456,6 +463,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         //Toast that a new location is selected
         Toast.makeText(getApplicationContext(), "Selected a new position", Toast.LENGTH_LONG).show();
+
+        ubicationModified=true;
     }
 
 
@@ -585,6 +594,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
 
+    @Override
+    public void onBackPressed() {
+    }
 
 
     //---------------------------------------------------//
@@ -1051,6 +1063,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     );
 
             checkLevelUp(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)),totalxpoints);
+            if(totalappoints>=250){upgradeAchievementExpert250AP();}
         }
 
         loadToolbar();
@@ -1070,6 +1083,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             case "Veteran":
                 if(xpoints>=150){
                    managerDB.upgradeUserLevel(username,"Champion");
+                    upgradeAchievementExpertChampion();
                 }
                 break;
             case "Champion":
@@ -1088,8 +1102,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 break;
 
         }
-
-        //loadToolbar();
     }
 
 
@@ -1133,35 +1145,67 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
-        mReceiverReady = new ResultReceiverSentReady(new android.os.Handler(),llAfterSendingMessage,rlSendMessage,rlReloadScreen,ivLoadingRotate,getApplicationContext(),R.animator.girar);
-
-        //Iniciate the mail sender service
-        MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiverReady);
-
-        //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
-        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
-
-
-
         llAfterSendingMessage.setVisibility(View.VISIBLE);
+        int imagesSended=0,videosSended=0;
+        for(int j=0;j<4;j++){
+            if((obtainedVideos[j] && !deletedVideos[j]))
+                videosSended++;
+            if((obtainedImages[j] && !deletedImages[j]))
+                imagesSended++;
+        }
 
         boolean areVideosSended = (obtainedVideos[0] && !deletedVideos[0]) || (obtainedVideos[1] && !deletedVideos[1]) ||
                                   (obtainedVideos[2] && !deletedVideos[2]) || (obtainedVideos[3] && !deletedVideos[3]);
 
         boolean areImagesSended = (obtainedImages[0] && !deletedImages[0]) || (obtainedImages[1] && !deletedImages[1]) ||
                                   (obtainedImages[2] && !deletedImages[2]) || (obtainedImages[3] && !deletedImages[3]);
+
+        //Logros
+        int ap=0,xp=0;
         if(areVideosSended & areImagesSended){
-            changeUserStats(username, 0, 20);
+            upgradeAchievementNovelPictures();
+            upgradeAchievementNovelVideos();
+            xp=20;
+            changeUserStats(username, ap, xp);
         }
         else if(areVideosSended){
-            changeUserStats(username,0,15);
+            upgradeAchievementNovelVideos();
+            xp=15;
+            changeUserStats(username, ap, xp);
+
         }
         else if(areImagesSended){
-            changeUserStats(username,0,10);
+            upgradeAchievementNovelPictures();
+            xp=10;
+            changeUserStats(username, 0, 10);
+
         }
         else{
+            xp=5;
             changeUserStats(username,0,5);
+
         }
+
+        if(textModified){
+            upgradeAchievementNovelMessage();
+        }
+        if(ubicationModified){
+            upgradeAchievementNovelUbication();
+        }
+
+        upgradeAchievementExpertVideosLover(videosSended);
+        upgradeAchievementExpertImagesLover(imagesSended);
+        upgradeAchievementNovelReporter();
+
+
+        mReceiverReady = new ResultReceiverSentReady(new android.os.Handler(),llAfterSendingMessage,rlSendMessage,rlReloadScreen,ivLoadingRotate,getApplicationContext(),R.animator.girar);
+
+        //Iniciate the mail sender service
+        MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiverReady,ap,xp,achievementObtained);
+
+        //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
+        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
+
 
         //Re initializate deletedArrays
         deletedImages=new boolean[4];
@@ -1269,6 +1313,456 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         return retValue;
     }
+
+    //-----------------------------------------------------------//
+    //---------------------ACHIEVEMENTS METHODS------------------//
+    //-----------------------------------------------------------//
+
+    public void upgradeAchievementNovelPictures(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aNovel1", username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            //If the achievement is not obtained already
+            if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
+                //Upgrade the achievement aNovel1 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aNovel1", 1, 0, username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaNovel();
+                achievementObtained=1;
+
+
+
+            }
+
+        }
+
+    }
+
+    public void upgradeAchievementNovelVideos(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aNovel2", username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            //If the achievement is not obtained already
+            if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
+                //Upgrade the achievement aNovel1 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aNovel2", 1, 0, username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaNovel();
+                achievementObtained=1;
+
+            }
+
+        }
+
+    }
+
+    public void upgradeAchievementNovelMessage(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aNovel3", username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            //If the achievement is not obtained already
+            if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
+                //Upgrade the achievement aNovel3 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aNovel3", 1, 0, username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaNovel();
+                achievementObtained=1;
+
+            }
+
+        }
+
+    }
+
+    public void upgradeAchievementNovelUbication(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aNovel4", username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            //If the achievement is not obtained already
+            if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
+                //Upgrade the achievement aNovel4 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aNovel4", 1, 0, username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaNovel();
+                achievementObtained=1;
+
+            }
+
+        }
+
+    }
+
+    public void upgradeAchievementNovelReporter(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aNovel5", username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            //If the achievement is not obtained already
+            if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
+                //Upgrade the achievement aNovel5 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aNovel5", 1, 0, username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaNovel();
+                achievementObtained=1;
+
+            }
+
+        }
+
+    }
+
+    public void upgradeAchievementExpertImagesLover(int imagesSended) {
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username = sharedpreferences.getString("username", "default");
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aExpert1", username);
+        //Check if the title selection is unlocked
+        if (resultQuery.moveToFirst()) {
+            int currentNumberImages = resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+imagesSended;
+            int maxNumberImages     = resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX));
+
+            //If is the last achievement to complet progress
+            if(currentNumberImages == maxNumberImages){
+                //Upgrade the achievement aExpert1 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aExpert1",
+                        1,
+                        maxNumberImages,
+                        username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaExpert();
+                achievementObtained=1;
+            }
+            else if(currentNumberImages > maxNumberImages){
+                //Upgrade the achievement aExpert1 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aExpert1",
+                        1,
+                        (currentNumberImages-maxNumberImages),
+                        username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaExpert();
+                achievementObtained=1;
+            }
+            else{
+                if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0) {
+                    //Upgrade the achievement aNovelMeta to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aExpert1",
+                            0,
+                            currentNumberImages,
+                            username);
+                }
+                else{
+                    //Upgrade the achievement aNovelMeta to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aExpert1",
+                            1,
+                            currentNumberImages,
+                            username);
+                }
+            }
+        }
+    }
+
+    public void upgradeAchievementExpertVideosLover(int videosSended) {
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username = sharedpreferences.getString("username", "default");
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aExpert2", username);
+         //Check if the title selection is unlocked
+        if (resultQuery.moveToFirst()) {
+            int currentNumberImages = resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+videosSended;
+            int maxNumberImages     = resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX));
+            //If is the last achievement to complet progress
+            if(currentNumberImages == maxNumberImages){
+                //Upgrade the achievement aExpert1 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aExpert2",
+                        1,
+                        maxNumberImages,
+                        username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaExpert();
+                achievementObtained=1;
+            }
+            else if(currentNumberImages > maxNumberImages){
+                //Upgrade the achievement aExpert1 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aExpert2",
+                        1,
+                        (currentNumberImages-maxNumberImages),
+                        username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaExpert();
+                achievementObtained=1;
+            }
+            else{
+                if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0) {
+                    //Upgrade the achievement aNovelMeta to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aExpert2",
+                            0,
+                            currentNumberImages,
+                            username);
+                }
+                else{
+                    //Upgrade the achievement aNovelMeta to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aExpert2",
+                            1,
+                            currentNumberImages,
+                            username);
+                }
+            }
+        }
+    }
+
+    public void upgradeAchievementExpertChampion(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aExpert3", username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            //If the achievement is not obtained already
+            if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
+                //Upgrade the achievement aExpert3 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aExpert3", 1, 0, username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaExpert();
+                achievementObtained=1;
+
+            }
+
+        }
+
+    }
+
+    public void upgradeAchievementExpert250AP(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aExpert4", username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()==true) {
+            //If the achievement is not obtained already
+            if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
+                //Upgrade the achievement aExpert4 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aExpert4", 1, 0, username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaExpert();
+                achievementObtained=1;
+
+            }
+
+        }
+
+    }
+
+    public void upgradeAchievementMetaNovel() {
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username = sharedpreferences.getString("username", "default");
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aNovelMeta", username);
+        //Check if the title selection is unlocked
+        if (resultQuery.moveToFirst()) {
+            //If the achievement is not obtained already
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED)) == 0) {
+                //If is the last achievement to complet progress
+                if(     resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1 ==
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX))){
+                    //Upgrade the achievement aNovelMeta to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aNovelMeta",
+                            1,
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)), username);
+                    //Upgrade the XP and AP of the achievement
+                    changeUserStats(
+                            username,
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                    achievementObtained=1;
+
+
+                }
+                else{
+                    //Upgrade the achievement aNovelMeta to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aNovelMeta",
+                            0,
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, username);
+                }
+
+
+            }
+        }
+    }
+
+    public void upgradeAchievementMetaExpert() {
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username = sharedpreferences.getString("username", "default");
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aExpertMeta", username);
+        //Check if the title selection is unlocked
+        if (resultQuery.moveToFirst()) {
+            //If the achievement is not obtained already
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED)) == 0) {
+                //If is the last achievement to complet progress
+                if(     resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1 ==
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX))){
+                    //Upgrade the achievement aExpertMeta to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aExpertMeta",
+                            1,
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)), username);
+                    //Upgrade the XP and AP of the achievement
+                    changeUserStats(
+                            username,
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+
+                }
+                else{
+                    //Upgrade the progress of achievement aExpertMeta
+                    managerDBAchiements.upgradeAchievementObtained("aExpertMeta",
+                            0,
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, username);
+                }
+
+
+            }
+        }
+    }
+
+    public void upgradeAchievementMetaSecret() {
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username = sharedpreferences.getString("username", "default");
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aSecretMeta", username);
+        //Check if the title selection is unlocked
+        if (resultQuery.moveToFirst()) {
+            //If the achievement is not obtained already
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED)) == 0) {
+                //If is the last achievement to complet progress
+                if(     resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1 ==
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX))){
+                    //Upgrade the achievement aSecretMeta to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aSecretMeta",
+                            1,
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)), username);
+                    //Upgrade the XP and AP of the achievement
+                    changeUserStats(
+                            username,
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+
+                }
+                else{
+                    //Upgrade the progress of achievement aSecretMeta
+                    managerDBAchiements.upgradeAchievementObtained("aSecretMeta",
+                            0,
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, username);
+                }
+
+
+            }
+        }
+    }
+
+
+
+
 
     //-----------------------------------------------------------//
     //---------------------ON CLICK BUTTON METHODS---------------//

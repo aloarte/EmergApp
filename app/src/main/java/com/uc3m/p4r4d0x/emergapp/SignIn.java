@@ -44,6 +44,10 @@ public class SignIn extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     /*
     * Desc: onClickLister for button bSignIn
     *       Insert a new user in de DDBB and swap to another activity

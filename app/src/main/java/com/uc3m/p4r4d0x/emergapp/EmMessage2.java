@@ -36,6 +36,7 @@ public class EmMessage2 extends AppCompatActivity {
 
     }
 
+
     /*
     * onClick method from button bYpop2
     * With previous info, save previous + "yes" info and run next activity

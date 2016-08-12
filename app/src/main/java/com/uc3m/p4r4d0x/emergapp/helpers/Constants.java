@@ -27,4 +27,8 @@ public final class Constants {
 
     public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME +
             ".LOCATION_DATA_EXTRA";
+
+    public static final String RESULT_ACHIEVEMENT_COMPLETED = PACKAGE_NAME +
+            ".RESULT_ACHIEVEMENT_COMPLETED";
+
 }
