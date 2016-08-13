@@ -25,7 +25,7 @@
         android:layout_marginTop="30dp">
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:text=""
@@ -36,7 +36,7 @@
             android:layout_centerHorizontal="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:inputType="textVisiblePassword"
             android:ems="10"
@@ -47,7 +47,7 @@
             android:layout_alignStart="@+id/etSIUser" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Repeat Password"
@@ -58,7 +58,7 @@
             android:inputType="textVisiblePassword" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
@@ -68,16 +68,30 @@
             android:layout_alignLeft="@+id/etSIRepPassword"
             android:layout_alignStart="@+id/etSIRepPassword" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:hint="Date"
-            android:id="@+id/etSIdate"
-            android:layout_below="@+id/etSIemail"
-            android:layout_alignLeft="@+id/etSIemail"
-            android:layout_alignStart="@+id/etSIemail" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:hint="Date"
+                android:id="@+id/etSIdate"
+                android:layout_below="@+id/etSIemail"
+                android:layout_alignLeft="@+id/etSIemail"
+                android:layout_alignStart="@+id/etSIemail" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageView7"
+                android:src="@mipmap/ic_editmessage"
+                android:onClick="onClickSelectDate" />
+        </LinearLayout>
 
         <Button
             android:layout_width="200dp"

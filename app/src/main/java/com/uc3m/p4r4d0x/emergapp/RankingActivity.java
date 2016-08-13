@@ -340,21 +340,26 @@ public class RankingActivity extends AppCompatActivity {
         else {
             int obtainedAux=0;
             //String array to save all data recovered from the DDBB
-            String [][] data = new String [5][4];
+            String [][] data = new String [5][5];
             //Open the DDBB manager
             DBUserManager managerDBUsers = new DBUserManager(this);
             //Select the users ordered by XP points
             Cursor resultQuery = managerDBUsers.selectUsersOrderedByXP();
             //iterate each user to save data into the array
-            int i=0;
+            int i=0,userTop=0;
             for(resultQuery.moveToFirst();
                 i<5 && !resultQuery.isAfterLast();
                 resultQuery.moveToNext(),i++){
+                if(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)).compareTo(username)==0){
+                    userTop=1;
+                }
                 //Get the name,title, level and XP points of the user
                 data[i][0] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME));
                 data[i][1] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE));
                 data[i][2] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL));
                 data[i][3] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS));
+                data[i][4] = ""+userTop;
+                userTop=0;
             }
             //Set the data retrieved into the fragment view
             rankFragment.setArgumentsToFragment(data, i);
@@ -378,21 +383,26 @@ public class RankingActivity extends AppCompatActivity {
         else {
             int obtainedAux=0;
             //String array to save all data recovered from the DDBB
-            String [][] data = new String [5][4];
+            String [][] data = new String [5][5];
             //Open the DDBB manager
             DBUserManager managerDBUsers = new DBUserManager(this);
             //Select the users ordered by XP points
             Cursor resultQuery = managerDBUsers.selectUsersOrderedByAP();
             //iterate each user to save data into the array
-            int i=0;
+            int i=0,userTop=0;
             for(resultQuery.moveToFirst();
                 i<5 && !resultQuery.isAfterLast();
                 resultQuery.moveToNext(),i++){
+                if(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)).compareTo(username)==0){
+                    userTop=1;
+                }
                 //Get the name,title, level and XP points of the user
                 data[i][0] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME));
                 data[i][1] = resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE));
                 data[i][2] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR));
                 data[i][3] = ""+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS));
+                data[i][4] = ""+userTop;
+                userTop=0;
             }
             //Set the data retrieved into the fragment view
             rankFragment.setArgumentsToFragment(data, i);
@@ -433,6 +443,36 @@ public class RankingActivity extends AppCompatActivity {
         ;
         Dialog dialog = alertBuilder.create();
         dialog.show();
+    }
+
+    /*
+  * Desc: Check from the DDBB if the user is in the top of the any ranking
+  * */
+    public boolean checkUserIsInTopRanking(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        boolean retValue=false;
+        DBUserManager managerDBUser = new DBUserManager(this);
+        //Make the querys
+        Cursor resultQueryAP = managerDBUser.selectUsersOrderedByAP();
+        Cursor resultQueryXP = managerDBUser.selectUsersOrderedByXP();
+
+        //Search the three top users and check if the current user is there
+        int i;
+        for(i=0,resultQueryAP.moveToFirst(),resultQueryXP.moveToFirst();
+            i<3 && !resultQueryAP.isAfterLast() && !resultQueryXP.isAfterLast();
+            i++,resultQueryAP.moveToNext(),resultQueryXP.moveToNext()){
+
+            //check if the user is at the position in the ranking
+            if (   resultQueryAP.getString(resultQueryAP.getColumnIndex(managerDBUser.TU_NAME)).compareTo(username)==0
+                    || resultQueryXP.getString(resultQueryXP.getColumnIndex(managerDBUser.TU_NAME)).compareTo(username)==0
+                    ){
+                retValue=true;
+                break;
+            }
+        }
+        return retValue;
     }
 
     /*

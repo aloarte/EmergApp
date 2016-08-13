@@ -583,7 +583,8 @@
         android:layout_height="match_parent"
         android:id="@+id/afterSendingLL"
         android:visibility="invisible"
-        android:background="#f9fafa">
+        android:background="#f9fafa"
+        android:weightSum="1">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -616,10 +617,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="351dp"
+            android:layout_height="107dp"
             android:visibility="visible"
             android:id="@+id/sendMessageRL"
-            android:background="#f9fafa">
+            android:background="#f9fafa"
+            android:layout_weight="0.63">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -645,6 +647,20 @@
                 android:visibility="visible" />
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:id="@+id/imageView6"
+                android:src="@mipmap/letraslogo"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
 
     </LinearLayout>
 

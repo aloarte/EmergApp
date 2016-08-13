@@ -46,9 +46,10 @@
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/llExpertAchievementInnerData1">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/llExpertAchievementInnerData1"
+                        android:gravity="left">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -366,7 +367,7 @@
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center"
-                    android:text="Reach &quot;Champion&quot; level"
+                    android:text="Reach &quot;Hero&quot; level"
                     android:id="@+id/tvDescExpert4"
                     android:textIsSelectable="false"
                     android:textStyle="normal"
@@ -454,7 +455,7 @@
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center"
-                    android:text="Reach 300 AP"
+                    android:text="Reach 250 AP"
                     android:id="@+id/tvDescExpert5"
                     android:textIsSelectable="false"
                     android:textStyle="normal"

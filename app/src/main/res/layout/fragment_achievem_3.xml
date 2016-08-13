@@ -112,7 +112,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:id="@+id/llSecretAchievement2" >
+                android:id="@+id/llSecretAchievement2"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -200,7 +201,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:id="@+id/llSecretAchievement3" >
+                android:id="@+id/llSecretAchievement3"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -289,7 +291,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:id="@+id/llSecretAchievement4" >
+                android:id="@+id/llSecretAchievement4"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -365,11 +368,12 @@
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center"
-                    android:text="Send a fast report only with the photos and videos recovered automatically"
+                    android:text="Report only with media recovered automatically"
                     android:id="@+id/tvDescSecret4"
                     android:textIsSelectable="false"
                     android:textStyle="normal"
-                    android:textSize="12dp" />
+                    android:textSize="12dp"
+                    android:singleLine="false" />
             </LinearLayout>
 
             <LinearLayout
@@ -377,7 +381,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:id="@+id/llSecretAchievement5" >
+                android:id="@+id/llSecretAchievement5"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -465,7 +470,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="20dp"
-                android:id="@+id/llSecretAchievement6" >
+                android:id="@+id/llSecretAchievement6"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:orientation="vertical"

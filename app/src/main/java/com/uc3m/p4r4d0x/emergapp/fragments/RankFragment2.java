@@ -1,6 +1,7 @@
 package com.uc3m.p4r4d0x.emergapp.fragments;
 
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.uc3m.p4r4d0x.emergapp.R;
@@ -53,6 +55,7 @@ public class RankFragment2 extends Fragment {
                     changeText(data[i][1], R.id.tvFirstTitle);
                     changeImage(data[i][2], R.id.ivFirstAvatar);
                     changeText(data[i][3], R.id.tvFirstPoints);
+                    if(data[i][4].compareTo("1")==0) changeStyle(R.id.trFirst);
                     break;
                 //Second one
                 case 1:
@@ -60,6 +63,7 @@ public class RankFragment2 extends Fragment {
                     changeText(data[i][1], R.id.tvSecondTitle);
                     changeImage(data[i][2], R.id.ivSecondAvatar);
                     changeText(data[i][3], R.id.tvSecondPoints);
+                    if(data[i][4].compareTo("1")==0) changeStyle(R.id.trSecond);
                     break;
                 //third one
                 case 2:
@@ -67,6 +71,7 @@ public class RankFragment2 extends Fragment {
                     changeText(data[i][1], R.id.tvThirdTitle);
                     changeImage(data[i][2], R.id.ivThirdAvatar);
                     changeText(data[i][3], R.id.tvThirdPoints);
+                    if(data[i][4].compareTo("1")==0) changeStyle(R.id.trThird);
                     break;
                 //Forth
                 case 3:
@@ -74,6 +79,8 @@ public class RankFragment2 extends Fragment {
                     changeText(data[i][1], R.id.tvFourthTitle);
                     changeImage(data[i][2], R.id.ivFourthAvatar);
                     changeText(data[i][3], R.id.tvFourthPoints);
+                    if(data[i][4].compareTo("1")==0) changeStyle(R.id.trFourth);
+
                     break;
                 //Fifth
                 case 4:
@@ -81,6 +88,8 @@ public class RankFragment2 extends Fragment {
                     changeText(data[i][1], R.id.tvFifthTitle);
                     changeImage(data[i][2], R.id.ivFifthAvatar);
                     changeText(data[i][3], R.id.tvFifthPoints);
+                    if(data[i][4].compareTo("1")==0) changeStyle(R.id.trFifth);
+
                     break;
 
             }
@@ -109,6 +118,12 @@ public class RankFragment2 extends Fragment {
         fragmentImageView = (ImageView) mView.findViewById(idTextView);
         //Set text to it
         fragmentImageView.setImageResource(Integer.parseInt(imageResource));
+
+    }
+
+    public void changeStyle(int idTableRow){
+        TableRow trAtPosition= (TableRow) mView.findViewById(idTableRow);
+        trAtPosition.setBackgroundColor(Color.parseColor("#f2f2f2"));
 
     }
 }

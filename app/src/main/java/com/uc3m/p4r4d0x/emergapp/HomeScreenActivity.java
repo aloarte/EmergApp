@@ -54,6 +54,10 @@ public class HomeScreenActivity extends AppCompatActivity {
         loadToolbar();
         //Load the color
         loadColor();
+        //check if this activity came from EmergencyActivity to make another report
+        checkResend();
+
+
     }
 
     /*
@@ -306,6 +310,47 @@ public class HomeScreenActivity extends AppCompatActivity {
 
 
     }
+
+    /*
+    * Desc: check if have to make another report and this activity came from a report
+    * */
+    public void checkResend(){
+        String sGPSCoord,sGPSAddr,sGPSCity;
+        int resendMessage=-1;
+        int C_FAST=1, C_ASSISTED=0;
+        //Get the extras
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            //recover the extras from EmergencyActivity
+            sGPSAddr        = extras.getString("GPSA");
+            sGPSCoord       = extras.getString("GPSC");
+            sGPSCity       = extras.getString("GPSCY");
+            resendMessage   = extras.getInt("lAgainReport");
+            //Make a fast report again
+            if(resendMessage==C_FAST){
+                Intent i = new Intent(getApplicationContext(), EmergencyActivity.class);
+                //Set value to var popUp1
+                i.putExtra("popUp2", "");
+                i.putExtra("GPSC", sGPSCoord);
+                i.putExtra("GPSA", sGPSAddr);
+                i.putExtra("GPSCY", sGPSCity);
+                //Launch intent
+                startActivity(i);
+
+            }
+            //Make an assisted report again
+            else if(resendMessage==C_ASSISTED){
+                Intent i = new Intent(getApplicationContext(), EmMessage1.class);
+                //Set value to gps position and address
+                i.putExtra("GPSC",sGPSCoord);
+                i.putExtra("GPSA",sGPSAddr);
+                i.putExtra("GPSCY",sGPSCity);
+
+                //Launch intent
+                startActivity(i);
+            }
+        }
+   }
 
 
     // ----------- ON CLICK METHODS --------------

@@ -235,7 +235,7 @@ public class LoginActivity extends AppCompatActivity {
     public void insertInitialValues(){
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        //sharedpreferences.edit().putBoolean("first_time", true).commit();
+        sharedpreferences.edit().putBoolean("first_time", true).commit();
         if (sharedpreferences.getBoolean("first_time", true)){
             insertExampleUsers();
             insertQuests();
@@ -294,27 +294,27 @@ public class LoginActivity extends AppCompatActivity {
         DBAchievementsManager achievementsDB = new DBAchievementsManager(this);
         boolean achievementsNovel, achievementsExpert, achievementsSecret;
         achievementsNovel=
-                achievementsDB.insertAchievement("aNovelMeta","First Steps"                             ,5 ,50 ,50 ,1,username) &
-                achievementsDB.insertAchievement("aNovel1"   ,"Photo Editor"                            ,0 ,5  ,5  ,1,username) &
-                achievementsDB.insertAchievement("aNovel2"   ,"Video Editor"                            ,0 ,5  ,5  ,1,username) &
-                achievementsDB.insertAchievement("aNovel3"   ,"Message Editor"                          ,0 ,5  ,0  ,1,username) &
-                achievementsDB.insertAchievement("aNovel4"   ,"Ubication Editor"                        ,0 ,5  ,0  ,1,username) &
-                achievementsDB.insertAchievement("aNovel5"   ,"Reporter"                                ,0 ,5  ,0  ,1,username) ;
+                achievementsDB.insertAchievement("aNovelMeta","First Steps"                             ,5 ,50 ,50 ,1,1,username) &
+                achievementsDB.insertAchievement("aNovel1"   ,"Photo Editor"                            ,0 ,5  ,5  ,1,1,username) &
+                achievementsDB.insertAchievement("aNovel2"   ,"Video Editor"                            ,0 ,5  ,5  ,1,1,username) &
+                achievementsDB.insertAchievement("aNovel3"   ,"Message Editor"                          ,0 ,5  ,0  ,1,1,username) &
+                achievementsDB.insertAchievement("aNovel4"   ,"Ubication Editor"                        ,0 ,5  ,0  ,1,1,username) &
+                achievementsDB.insertAchievement("aNovel5"   ,"Reporter"                                ,0 ,5  ,0  ,1,1,username) ;
 
-        achievementsExpert= achievementsDB.insertAchievement("aExpertMeta","Community Helper"                       ,5 ,100,50,1,username) &
-                achievementsDB.insertAchievement("aExpert1"   ,"Pictures Lover"                         ,10,10 ,10 ,1,username) &
-                achievementsDB.insertAchievement("aExpert2"   ,"Videos Lover"                           ,10,10 ,10 ,1,username) &
-                achievementsDB.insertAchievement("aExpert3"   ,"Expert Reporter"                        ,0 ,25 ,0  ,1,username) &
-                achievementsDB.insertAchievement("aExpert4"   ,"Hard Worker"                            ,0 ,0  ,20 ,1,username) &
-                achievementsDB.insertAchievement("aExpert5"   ,"Top Reporter"                           ,0 ,10 ,10 ,1,username) &
-                achievementsDB.insertAchievement("aExpert6"   ,"Reporting Anywhere"                     ,3 ,20 ,10 ,1,username) ;
+        achievementsExpert= achievementsDB.insertAchievement("aExpertMeta","Community Helper"                       ,5 ,100,50,1,1,username) &
+                achievementsDB.insertAchievement("aExpert1"   ,"Pictures Lover"                         ,10,10 ,10 ,1,1,username) &
+                achievementsDB.insertAchievement("aExpert2"   ,"Videos Lover"                           ,10,10 ,10 ,1,1,username) &
+                achievementsDB.insertAchievement("aExpert3"   ,"Expert Reporter"                        ,0 ,25 ,0  ,1,1,username) &
+                achievementsDB.insertAchievement("aExpert4"   ,"Hard Worker"                            ,0 ,0  ,20 ,1,1,username) &
+                achievementsDB.insertAchievement("aExpert5"   ,"Top Reporter"                           ,0 ,10 ,10 ,1,1,username) &
+                achievementsDB.insertAchievement("aExpert6"   ,"Reporting Anywhere"                     ,3 ,20 ,10 ,1,1,username) ;
 
-        achievementsSecret= achievementsDB.insertAchievement("aSecretMeta","Seeker of Truth"                        ,5 ,200,50 ,1,username) &
-                achievementsDB.insertAchievement("aSecret1"   ,"I give my best"                         ,0 ,10 ,0  ,1,username) &
-                achievementsDB.insertAchievement("aSecret2"   ,"An image is worth more than 1000 words" ,0 ,10 ,0  ,1,username) &
-                achievementsDB.insertAchievement("aSecret3"   ,"As fast as I can"                       ,0 ,10 ,0  ,1,username) &
-                achievementsDB.insertAchievement("aSecret4"   ,"Personal image is allways the first"    ,0 ,10 ,0  ,1,username) &
-                achievementsDB.insertAchievement("aSecret5"   ,"First my neighborhood"                  ,0 ,10 ,0  ,1,username);
+        achievementsSecret= achievementsDB.insertAchievement("aSecretMeta","Seeker of Truth"                        ,5 ,200,50 ,1,1,username) &
+                achievementsDB.insertAchievement("aSecret1"   ,"I give my best"                         ,0 ,10 ,0  ,1,0,username) &
+                achievementsDB.insertAchievement("aSecret2"   ,"An image is worth more than 1000 words" ,0 ,10 ,0  ,1,0,username) &
+                achievementsDB.insertAchievement("aSecret3"   ,"As fast as I can"                       ,0 ,10 ,0  ,1,0,username) &
+                achievementsDB.insertAchievement("aSecret4"   ,"Personal image is allways the first"    ,0 ,10 ,0  ,1,0,username) &
+                achievementsDB.insertAchievement("aSecret5"   ,"First my neighborhood"                  ,0 ,10 ,0  ,1,0,username);
 
 
         return achievementsNovel & achievementsExpert & achievementsSecret;

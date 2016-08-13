@@ -24,6 +24,7 @@ public class DBAchievementsManager {
     public static final String TA_PROGRESS="progress";
     public static final String TA_PROGRESS_MAX="progressmax";
     public static final String TA_COMPLETED="completed";
+    public static final String TA_DISPLAYED="displayed";
     public static final String TA_USER_NAME= "username";
 
     //Sql sentence for building the table achievements
@@ -36,6 +37,7 @@ public class DBAchievementsManager {
             + TA_PROGRESS            + " integer not null,"
             + TA_PROGRESS_MAX        + " integer not null,"
             + TA_COMPLETED           + " integer not null,"
+            + TA_DISPLAYED           + " integer not null,"
             + TA_USER_NAME           + " text not null,"
             + " FOREIGN KEY (" + TA_USER_NAME + ") REFERENCES "+ DBUserManager.TABLE_NAME + "(" + DBUserManager.TU_NAME + ") ON DELETE CASCADE );";
 
@@ -56,7 +58,7 @@ public class DBAchievementsManager {
     * */
     public ContentValues generateCVAchievement( String nameId,String nameAchievement,
                                           int rewardAP, int rewardXP, int progress,int progressMax,
-                                          int achievementObtained, String  userName ){
+                                          int achievementObtained,int displayed, String  userName ){
 
         ContentValues contentV = new ContentValues();
         contentV.put(TA_NAME_ID, nameId);
@@ -66,6 +68,7 @@ public class DBAchievementsManager {
         contentV.put(TA_PROGRESS, progress);
         contentV.put(TA_PROGRESS_MAX, progressMax);
         contentV.put(TA_COMPLETED, achievementObtained);
+        contentV.put(TA_DISPLAYED, displayed );
         contentV.put(TA_USER_NAME,userName);
 
         return contentV;
@@ -76,14 +79,14 @@ public class DBAchievementsManager {
     * Param: achievements data
     * */
     public boolean insertAchievement(String nameId,String nameAchievement,int progressMax,
-                                        int rewardAP, int rewardXP, int obtained,String  userName ){
+                                        int rewardAP, int rewardXP, int obtained, int displayed, String  userName ){
 
 
         int progress=0;
         long retValue=0;
         retValue=db.insert(TABLE_NAME, null, generateCVAchievement(nameId, nameAchievement,
                 rewardAP, rewardXP, progress,progressMax,
-                obtained, userName));
+                obtained,displayed, userName));
         if(retValue==-1 || retValue==0){
             return false;
         }
@@ -111,7 +114,7 @@ public class DBAchievementsManager {
     * */
     public long upgradeAchievement( String nameId,String nameAchievement,
                                     int rewardAP, int rewardXP, int progress,int progressMax,
-                                    int achievementObtained, String  userName ){
+                                    int achievementObtained,int displayed ,String  userName ){
 
         int id=0;
 
@@ -128,7 +131,7 @@ public class DBAchievementsManager {
                     TABLE_NAME,
                     generateCVAchievement(nameId, nameAchievement,
                             rewardAP, rewardXP, progress,progressMax,
-                            achievementObtained, userName),
+                            achievementObtained,displayed, userName),
                     TA_ID + " LIKE ? ",new String[]{""+id});
         }
         else return -1;
@@ -140,7 +143,7 @@ public class DBAchievementsManager {
      * Param: the data to upgrade the achievement
      * Ret: Long with the amount of elements affected
     * */
-    public long upgradeAchievementObtained(String nameId, int achievementObtained ,int progress,String nameUser ){
+    public long upgradeAchievementObtained(String nameId, int achievementObtained ,int progress,int displayed,String nameUser ){
         long retValue=-1;
         Cursor resultQuery= selectAchievement(nameId, nameUser);
 
@@ -154,6 +157,7 @@ public class DBAchievementsManager {
                     progress,
                     resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS_MAX)),
                     achievementObtained,
+                    displayed,
                     resultQuery.getString(resultQuery.getColumnIndex(DBAchievementsManager.TA_USER_NAME))
 
             );

@@ -76,6 +76,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             , C_NO_YES  = 3
             , C_NO_NO   = 4;
 
+    boolean fastReport=false;
+
     /*
     * Variables to hold and control all the logic related with the images and videos
     * from taking them from phone to sending through a message
@@ -205,7 +207,12 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 View layView = (LayoutInflater.from(EmergencyActivity.this)).inflate(R.layout.user_input, null);
                 alertBuilder.setView(layView);
                 final EditText userInput = (EditText) layView.findViewById(R.id.tvContentMessage);
-                userInput.setText(tvMessagePopUp1.getText());
+                if(fastReport){
+                    userInput.setText("");
+                }
+                else{
+                    userInput.setText(tvMessagePopUp1.getText());
+                }
 
                 alertBuilder.setCancelable(true)
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -637,9 +644,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 case C_NO_NO:
                     tvMessagePopUp1.setText("There are no human damages and I dont need help");
                     break;
-
                 default:
-                    tvMessagePopUp1.setText("Write an emergency message here");
+                    tvMessagePopUp1.setText("Write a message here");
+                    fastReport=true;
                     break;
             }
         }
@@ -1101,13 +1108,13 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 if(xpoints>=150){
                     Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
                     managerDB.upgradeUserLevel(username, "Champion");
-                    upgradeAchievementExpert("aExpert3");
                 }
                 break;
             case "Champion":
                 if(xpoints>=300){
                     Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
                     managerDB.upgradeUserLevel(username,"Hero");
+                    upgradeAchievementExpert("aExpert3");
                 }
                 break;
             case "Hero":
@@ -1325,8 +1332,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     /*
-   * Desc: Check from the DDBB if the user can select his account configuration
-   * */
+     * Desc: Check from the DDBB if the user has sent their last report from the same location
+     * Param:the current location
+     * */
     public void checkUpdateSameLastLocation(String location){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -1370,7 +1378,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         managerDBUser.upgradeUserLastLocation(username,location,0);
                         managerDBAchiements.upgradeAchievementObtained("aSecret5",
                                 0,
-                                0, username);
+                                0,1, username);
                         upgradeAchievementSecretLocations();
                     }
                 }
@@ -1380,8 +1388,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     /*
-  * Desc: Check from the DDBB if the user can select his account configuration
-  * */
+     * Desc: Check from the DDBB if the user has sent their last report 3 different locations
+     * Param:the current location
+     * */
     public void checkUpdateDifferentLastLocation(String location){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -1511,7 +1520,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             //If the achievement is not obtained already
             if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
                 //Upgrade the achievement to obtained
-                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0, username);
+                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0,1, username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
                         username,
@@ -1546,7 +1555,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             //If the achievement is not obtained already
             if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
                 //Upgrade the achievement to obtained
-                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0, username);
+                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0,1, username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
                         username,
@@ -1578,7 +1587,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             //If the achievement is not obtained already
             if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
                 //Upgrade the achievement to obtained
-                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0, username);
+                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0, 1, username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
                         username,
@@ -1616,7 +1625,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the achievement aNovelMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aNovelMeta",
                             1,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)), username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)),
+                            1,
+                            username);
                     //Upgrade the XP and AP of the achievement
                     changeUserStats(
                             username,
@@ -1630,7 +1641,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the achievement aNovelMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aNovelMeta",
                             0,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1,
+                            1, username);
                 }
 
 
@@ -1659,7 +1671,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the achievement aExpertMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aExpertMeta",
                             1,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)), username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)),1, username);
                     //Upgrade the XP and AP of the achievement
                     changeUserStats(
                             username,
@@ -1671,7 +1683,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the progress of achievement aExpertMeta
                     managerDBAchiements.upgradeAchievementObtained("aExpertMeta",
                             0,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1,1, username);
                 }
 
 
@@ -1700,7 +1712,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the achievement aSecretMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aSecretMeta",
                             1,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)), username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)),
+                            1,
+                            username);
                     //Upgrade the XP and AP of the achievement
                     changeUserStats(
                             username,
@@ -1712,7 +1726,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the progress of achievement aSecretMeta
                     managerDBAchiements.upgradeAchievementObtained("aSecretMeta",
                             0,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1,
+                            1,
+                            username);
                 }
 
 
@@ -1742,7 +1758,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 //Upgrade the achievement aExpert1 to obtained
                 managerDBAchiements.upgradeAchievementObtained("aExpert1",
                         1,
-                        0,
+                        0,1,
                         username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
@@ -1756,7 +1772,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 //Upgrade the achievement aExpert1 to obtained
                 managerDBAchiements.upgradeAchievementObtained("aExpert1",
                         1,
-                        (currentNumberImages-maxNumberImages),
+                        (currentNumberImages-maxNumberImages),1,
                         username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
@@ -1771,14 +1787,14 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the achievement aNovelMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aExpert1",
                             0,
-                            currentNumberImages,
+                            currentNumberImages,1,
                             username);
                 }
                 else{
                     //Upgrade the achievement aNovelMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aExpert1",
                             1,
-                            currentNumberImages,
+                            currentNumberImages,1,
                             username);
                 }
             }
@@ -1806,7 +1822,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 //Upgrade the achievement aExpert1 to obtained
                 managerDBAchiements.upgradeAchievementObtained("aExpert2",
                         1,
-                        0,
+                        0,1,
                         username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
@@ -1820,7 +1836,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 //Upgrade the achievement aExpert1 to obtained
                 managerDBAchiements.upgradeAchievementObtained("aExpert2",
                         1,
-                        (currentNumberImages-maxNumberImages),
+                        (currentNumberImages-maxNumberImages),1,
                         username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
@@ -1835,14 +1851,14 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the achievement aNovelMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aExpert2",
                             0,
-                            currentNumberImages,
+                            currentNumberImages,1,
                             username);
                 }
                 else{
                     //Upgrade the achievement aNovelMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aExpert2",
                             1,
-                            currentNumberImages,
+                            currentNumberImages,1,
                             username);
                 }
             }
@@ -1871,20 +1887,20 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the achievement aSecretMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aExpert6",
                             1,
-                            maxProgress, username);
+                            maxProgress, 1, username);
                     //Upgrade the XP and AP of the achievement
                     changeUserStats(
                             username,
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
                     achievementObtained=1;
-                    upgradeAchievementMetaSecret();
+                    upgradeAchievementMetaExpert();
                 }
                 else{
                     //Upgrade the progress of achievement aSecretMeta
                     managerDBAchiements.upgradeAchievementObtained("aExpert6",
                             0,
-                            currentProgress, username);
+                            currentProgress,1, username);
                 }
 
 
@@ -1915,7 +1931,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the achievement aSecretMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aSecret5",
                             1,
-                            maxProgress, username);
+                            maxProgress,1,username);
                     //Upgrade the XP and AP of the achievement
                     changeUserStats(
                             username,
@@ -1929,7 +1945,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the progress of achievement aSecretMeta
                     managerDBAchiements.upgradeAchievementObtained("aSecret5",
                             0,
-                            currentProgress, username);
+                            currentProgress, 1,username);
                 }
 
 
@@ -2139,10 +2155,30 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
    * Desc: on click function to reload a new report after sending one
    * */
     public void onClickReloadInitialScreen(View v){
-        //Create a new intent and save the info on it
-        Intent i = new Intent(getApplicationContext(), HomeScreenActivity.class);
-        //Launch next activity
-        startActivity(i);
+        int C_FAST=1, C_ASSISTED=0;
+        String addr=tViewGPS.getText().toString();
+        String coord=tViewGPSCoord.getText().toString();
+        String city=tViewGPSCity.getText().toString();
+        //If it was a fast report, launch a new EmergencyActivity
+        if(fastReport){
+            Intent i = new Intent(getApplicationContext(), HomeScreenActivity.class);
+            i.putExtra("lAgainReport", C_FAST);
+            i.putExtra("GPSC", coord);
+            i.putExtra("GPSA", addr);
+            i.putExtra("GPSCY",city);
+            startActivity(i);
+        }
+        //If was an assisted report, launch EmMessage1
+        else{
+            Intent i = new Intent(getApplicationContext(), HomeScreenActivity.class);
+            i.putExtra("lAgainReport", C_ASSISTED);
+            i.putExtra("GPSC", coord);
+            i.putExtra("GPSA", addr);
+            i.putExtra("GPSCY",city);
+            startActivity(i);
+        }
+
+
 
     }
 

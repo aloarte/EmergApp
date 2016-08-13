@@ -506,7 +506,7 @@ public class AchievementsActivity extends AppCompatActivity {
         else {
             int obtainedAux=0;
             //String array to save all data recovered from the DDBB
-            String [][] data = new String [6][3];
+            String [][] data = new String [6][4];
             //Open the DDBB manager
             DBAchievementsManager managerDBAchievements = new DBAchievementsManager(this);
             //Select the users ordered by XP points
@@ -541,11 +541,15 @@ public class AchievementsActivity extends AppCompatActivity {
                     data[i][0] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS));
                     data[i][1] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS_MAX));
                     data[i][2] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_COMPLETED));
+                    data[i][3] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_DISPLAYED));
+
                 }
                 else{
                     data[i][0]="0";
                     data[i][1]="0";
                     data[i][2]="0";
+                    data[i][3]="0";
+
                 }
 
 

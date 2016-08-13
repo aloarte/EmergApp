@@ -219,58 +219,9 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     * */
     public void insertColorOnDDBB(int color){
         String username = sharedpreferences.getString("username", "default");
-        Long result=99L;
         if(username.compareTo("default")!=0){
             DBUserManager managerDB = new DBUserManager(this);
-            result=managerDB.upgradeUserColor(username, color);
-
-            DBTitlesManager titleDB = new DBTitlesManager(this);
-            DBAchievementsManager achievementsDB=new DBAchievementsManager(this);
-            DBAvatarsManager avatarsDB= new DBAvatarsManager(this);
-
-            int r1,r2,r3;
-            Cursor resultQuery= titleDB.selecttitle("tBegginer",username);
-            String titleid,Suser,s1;
-            //If the title exists
-            if(resultQuery.moveToFirst()==true) {
-
-                //Get the id to make the update
-                titleid = resultQuery.getString(resultQuery.getColumnIndex(DBTitlesManager.TT_NAME_ID));
-                Suser = resultQuery.getString(resultQuery.getColumnIndex(DBTitlesManager.TT_USER_NAME));
-                Log.d("ALR","TITULO " + titleid+" seleccionado, usuario: " +Suser);
-            }
-
-
-            resultQuery= achievementsDB.selectAchievement("aExpertMeta", username);
-            //If the title exists
-            if(resultQuery.moveToFirst()==true) {
-
-                //Get the id to make the update
-                titleid = resultQuery.getString(resultQuery.getColumnIndex(DBAchievementsManager.TA_NAME_ID));
-                s1      = resultQuery.getString(resultQuery.getColumnIndex(DBAchievementsManager.TA_NAME_ACHIEVEMENT));
-                r1      = resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_PROGRESS));
-                r2      = resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_REWARD_AP));
-                r3      = resultQuery.getInt(resultQuery.getColumnIndex(DBAchievementsManager.TA_REWARD_XP));
-                Suser = resultQuery.getString(resultQuery.getColumnIndex(DBAchievementsManager.TA_USER_NAME));
-                Log.d("ALR","LOGRO " + titleid+" seleccionado, usuario: " +Suser + " DATA:"+s1+","+r1+","+r2+","+r3);
-            }
-
-
-
-            resultQuery= titleDB.selecttitle("avInitial",username);
-            //If the title exists
-            if(resultQuery.moveToFirst()==true) {
-
-                //Get the id to make the update
-                titleid = resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_NAME_ID));
-                s1 =    resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_SOURCE));
-                Suser = resultQuery.getString(resultQuery.getColumnIndex(DBAvatarsManager.TAV_USER_NAME));
-                Log.d("ALR","AVATAR " + titleid+" seleccionado, usuario: " +Suser+" Source: "+s1);
-            }
-
-
-
-
+            managerDB.upgradeUserColor(username, color);
         }
     }
 
@@ -527,9 +478,13 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
     }
 
-    /*
-   * Desc: Upgrade into the database the points and level for the logged user
-   */
+
+    // ----------------- ACHIEVEMENTS------------
+
+
+    /**This methods are a copy from the methods in EmergencyActivity
+     * They perform the same function, but in another activity*/
+
     public void changeUserStats(String username,int ap,int xp){
 
         DBUserManager managerDB = new DBUserManager(this);
@@ -564,22 +519,26 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         switch(level){
             case "Traveler":
                 if(xpoints>=50){
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
                     managerDB.upgradeUserLevel(username,"Veteran");
                 }
                 break;
             case "Veteran":
                 if(xpoints>=150){
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
                     managerDB.upgradeUserLevel(username, "Champion");
-                    upgradeAchievementExpert("aExpert3");
                 }
                 break;
             case "Champion":
                 if(xpoints>=300){
-                    managerDB.upgradeUserLevel(username,"Hero");
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
+                    managerDB.upgradeUserLevel(username, "Hero");
+                    upgradeAchievementExpert("aExpert3");
                 }
                 break;
             case "Hero":
                 if(xpoints>=500){
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
                     managerDB.upgradeUserLevel(username,"Legend");
                 }
                 break;
@@ -591,9 +550,6 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    * Desc: Check from the DDBB if the user is in the top of the any ranking
-    * */
     public boolean checkUserIsInTopRanking(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -621,10 +577,6 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         return retValue;
     }
 
-
-
-    // ----------------- ACHIEVEMENTS------------
-
     public void upgradeAchievementExpert(String achievement){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -639,7 +591,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             //If the achievement is not obtained already
             if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
                 //Upgrade the achievement to obtained
-                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0, username);
+                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0,1, username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
                         username,
@@ -670,7 +622,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             //If the achievement is not obtained already
             if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
                 //Upgrade the achievement to obtained
-                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0, username);
+                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0, 1, username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
                         username,
@@ -705,7 +657,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                     //Upgrade the achievement aExpertMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aExpertMeta",
                             1,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)), username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)),1, username);
                     //Upgrade the XP and AP of the achievement
                     changeUserStats(
                             username,
@@ -717,14 +669,13 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                     //Upgrade the progress of achievement aExpertMeta
                     managerDBAchiements.upgradeAchievementObtained("aExpertMeta",
                             0,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1,1, username);
                 }
 
 
             }
         }
     }
-
 
     public void upgradeAchievementMetaSecret() {
         //Get sharedpreferences item and the username asociated
@@ -744,7 +695,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                     //Upgrade the achievement aSecretMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aSecretMeta",
                             1,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)), username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)),1, username);
                     //Upgrade the XP and AP of the achievement
                     changeUserStats(
                             username,
@@ -756,7 +707,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                     //Upgrade the progress of achievement aSecretMeta
                     managerDBAchiements.upgradeAchievementObtained("aSecretMeta",
                             0,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, 1,username);
                 }
 
 
