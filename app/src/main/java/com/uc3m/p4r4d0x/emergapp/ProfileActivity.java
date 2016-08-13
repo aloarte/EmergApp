@@ -470,7 +470,7 @@ public class ProfileActivity extends AppCompatActivity {
                         RadioButton rbBegginer = (RadioButton) findViewById(R.id.rbBegginerTitle);
                         changeTitleVisiblity(obtainedAux,rbBegginer);
                         break;
-                    case "tChampion":
+                    case "tHero":
                         RadioButton rbChampion = (RadioButton) findViewById(R.id.rbChampionTitle);
                         changeTitleVisiblity(obtainedAux,rbChampion);
                         break;

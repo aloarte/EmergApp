@@ -147,7 +147,7 @@ public class SignIn extends AppCompatActivity {
     public boolean insertUserTitles(String username){
         DBTitlesManager titleDB = new DBTitlesManager(this);
         return  titleDB.inserttitle("tBegginer", username,0) &
-                titleDB.inserttitle("tChampion", username,0) &
+                titleDB.inserttitle("tHero", username,0) &
                 titleDB.inserttitle("tTop", username,0) &
                 titleDB.inserttitle("tSeeker", username,0);
 
