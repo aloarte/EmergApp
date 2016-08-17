@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.uc3m.p4r4d0x.emergapp.R;
 
@@ -36,6 +37,8 @@ public class DBUserManager {
     public static final String TU_LOCATION1="loc1";
     public static final String TU_LOCATION2="loc2";
     public static final String TU_ACHIEVEMENTS_UNLOCKED="ach_unl";
+    public static final String TU_PROGRESS_UNLOCKED="progress";
+
 
 
 
@@ -62,7 +65,9 @@ public class DBUserManager {
             + TU_REPEAT_LOCATION+ " integer,"
             + TU_LOCATION1      + " text,"
             + TU_LOCATION2      + " text,"
-            + TU_ACHIEVEMENTS_UNLOCKED + " integer not null);";
+            + TU_ACHIEVEMENTS_UNLOCKED + " integer not null,"
+            + TU_PROGRESS_UNLOCKED + " integer not null);";
+
 
     ;
 
@@ -79,6 +84,8 @@ public class DBUserManager {
     }
 
     /*
+
+
     * Desc: Fills an ContentValue object with data
     * Param: Strings with user data
     * Ret: A filled ContentValues object
@@ -86,7 +93,8 @@ public class DBUserManager {
     public ContentValues generateCVUser( String name, String password, String email, String date,
                                      String level,int ap_points,int xp_points, String title, int color,int avatar,
                                      int modifTitle,int modifImage, int modifColor
-                                     ,String lastlocation,int timesRepeated ,String loc1,String loc2,int achievementsUnlocked){
+                                     ,String lastlocation,int timesRepeated ,String loc1,String loc2,
+                                         int achievementsUnlocked,int progress){
 
         ContentValues contentV = new ContentValues();
         contentV.put(TU_NAME,name);
@@ -107,6 +115,8 @@ public class DBUserManager {
         contentV.put(TU_LOCATION1,loc1);
         contentV.put(TU_LOCATION2,loc2);
         contentV.put(TU_ACHIEVEMENTS_UNLOCKED,achievementsUnlocked);
+        contentV.put(TU_PROGRESS_UNLOCKED,progress);
+
         return contentV;
     }
 
@@ -116,7 +126,7 @@ public class DBUserManager {
     * */
     public boolean insertUser(String name, String password, String email, String date){
         String level="Traveler",title="-",lastLocation="",loc1="",loc2="";
-        int APpoints=0,XPpoints=0, achievementUnlocked=0;
+        int APpoints=0,XPpoints=0, achievementUnlocked=0,progress=0;
         int color=0;
         int modifTitle=0, modifAvatar=0,modifColor=0;
         int repeatedLocation=0;
@@ -125,7 +135,7 @@ public class DBUserManager {
         retValue=db.insert(TABLE_NAME, null, generateCVUser(name, password, email, date,level,
                                                         APpoints,XPpoints,title,color,avatar,
                                                         modifTitle,modifAvatar,modifColor,
-                                                        lastLocation,repeatedLocation,loc1,loc2,achievementUnlocked));
+                                                        lastLocation,repeatedLocation,loc1,loc2,achievementUnlocked,progress));
         if(retValue==-1 || retValue==0){
             return false;
         }
@@ -171,14 +181,15 @@ public class DBUserManager {
     public long upgradeUser(String name, String password, String email, String date,
                         String level,int ap_points,int xp_points, String title, int color,int avatar,
                         int modifTitle,int modifImage, int modifColor,
-                            String lastLocation,int repeatedLocation,String loc1,String loc2,int achievementsUnlocked){
+                            String lastLocation,int repeatedLocation,String loc1,String loc2,
+                            int achievementsUnlocked,int progress){
 
         return db.update(
                 TABLE_NAME,
                 generateCVUser(name, password, email, date, level,
                         ap_points, xp_points, title, color, avatar,
                         modifTitle, modifImage, modifColor,
-                        lastLocation, repeatedLocation, loc1, loc2, achievementsUnlocked)
+                        lastLocation, repeatedLocation, loc1, loc2, achievementsUnlocked, progress)
                 , TU_NAME + " LIKE ? ", new String[]{name});
     }
 
@@ -207,11 +218,13 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_REPEAT_LOCATION)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION1)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED))
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))
+            );
+            Log.d("ALR","1MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","1MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","1MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
 
-
-
-                    );
         }
         return retValue;
 
@@ -242,9 +255,12 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_REPEAT_LOCATION)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION1)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED))
-
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))
             );
+            Log.d("ALR","2MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","2MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","2MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
         }
         return retValue;
 
@@ -275,9 +291,12 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_REPEAT_LOCATION)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION1)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED))
-
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))
             );
+            Log.d("ALR","3MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","3MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","3MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
         }
         return retValue;
     }
@@ -306,9 +325,12 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_REPEAT_LOCATION)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION1)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED))
-
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))
             );
+            Log.d("ALR","4MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","4MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","4MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
         }
         return retValue;
     }
@@ -337,9 +359,12 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_REPEAT_LOCATION)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION1)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED))
-
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))
             );
+            Log.d("ALR","5MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","5MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","5MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
         }
         return retValue;
 
@@ -370,9 +395,12 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_REPEAT_LOCATION)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION1)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED))
-
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))
             );
+            Log.d("ALR","6MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","6MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","6MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
         }
         return retValue;
 
@@ -403,9 +431,12 @@ public class DBUserManager {
                     timesLocation,
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION1)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED))
-
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))
             );
+            Log.d("ALR","7MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","7MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","7MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
         }
         return retValue;
 
@@ -436,9 +467,12 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_REPEAT_LOCATION)),
                     loc1,
                     loc2,
-                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED))
-
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))
             );
+            Log.d("ALR","8MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","8MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","8MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
         }
         return retValue;
 
@@ -469,12 +503,48 @@ public class DBUserManager {
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_REPEAT_LOCATION)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION1)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
-                    1
+                    1,
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))
             );
+            Log.d("ALR","9MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","9MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","9MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
         }
         return retValue;
+    }
 
+    public long upgradeUserProgressRewards(String username){
+        long retValue=-1;
+        Cursor resultQuery= selectUser(username);
 
+        //If the user exists
+        if(resultQuery.moveToFirst()==true) {
+            retValue=upgradeUser(
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_EMAIL)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_DATE)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_TITLE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AVATAR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LAST_LOCATION)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_REPEAT_LOCATION)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION1)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
+                    resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))+1
+            );
+            Log.d("ALR","10MT: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_TITLE)));
+            Log.d("ALR","10MA: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_AVATAR)));
+            Log.d("ALR","10MC: "+resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MODIFY_COLOR)));
+        }
+        return retValue;
     }
 
     /*
@@ -495,7 +565,8 @@ public class DBUserManager {
     public boolean insertFullFieldsUser(  String name, String password, String email
                                         , String date, String level,String title
                                         , int APpoints, int XPpoints, int color, int avatar
-                                        , int modifTitle ,int modifAvatar,int modifColor,int achievementUnlocked
+                                        , int modifTitle ,int modifAvatar,int modifColor,
+                                          int achievementUnlocked,int progressUnlocked
                                         ){
 
         String lastLocation="",loc1="",loc2="";
@@ -504,7 +575,7 @@ public class DBUserManager {
         retValue=db.insert(TABLE_NAME, null, generateCVUser(name, password, email, date,level,
                 APpoints,XPpoints,title,color,avatar,
                 modifTitle,modifAvatar,modifColor,
-                lastLocation,timesLocation,loc1,loc2,achievementUnlocked));
+                lastLocation,timesLocation,loc1,loc2,achievementUnlocked,progressUnlocked));
         if(retValue==-1 || retValue==0){
             return false;
         }

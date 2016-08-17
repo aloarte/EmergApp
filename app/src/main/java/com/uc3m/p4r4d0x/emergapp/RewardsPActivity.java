@@ -10,6 +10,8 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,49 +20,39 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.uc3m.p4r4d0x.emergapp.helpers.database.DBQuestsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
-import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class RewardsPActivity extends AppCompatActivity {
 
-    TextView tViewGPS, tViewGPSCoord,tViewGPSCity, tViewGPSStreet;
-    String   sGPSAddr, sGPSCoord ,sGPSCity, sGPSStreet;
     //Info to use shared preferences to have a session
     final String MyPREFERENCES = "userPreferences";
     SharedPreferences sharedpreferences;
 
-    /*
-     * Desc: method overrided from AppCompatActivity
-     *       this method is called when activity starts
-     *       Initialize all the neccessary parts of the main screen
-     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        setContentView(R.layout.activity_home_screen);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarH);
+        setContentView(R.layout.activity_rewards_p);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarRP);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        //Get the GPS position
-        getGPSposition();
-        //Load Toolbar
+        //Load the toolbar
         loadToolbar();
         //Load the color
         loadColor();
-        //check if this activity came from EmergencyActivity to make another report
-        checkResend();
 
-
+        //Load the progress
+        loadProgress();
     }
 
     /*
@@ -117,13 +109,163 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onBackPressed() {
     }
 
     /*
-     * Desc: load the data into the toolbar
-     * */
+  * Desc: load the progress of rewards
+  * */
+    public void loadProgress(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        DBUserManager managerDB                = new DBUserManager(this);
+        //Select the user
+        Cursor resultQuery                 = managerDB.selectUser(username);
+        //If the user exists
+        if(resultQuery.moveToFirst()) {
+            //Set the level
+            int userProgress = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED));
+            Log.d("ALR","LoadProgress: "+ userProgress);
+            for (int i = 0; i <= userProgress; i++) {
+                switch (i) {
+                    case 0:
+                        changeColorOnProgress(R.id.llSepTop1);
+                        break;
+                    case 1:
+                        changeColorOnProgress(R.id.llSepTop1);
+                        changeColorOnProgress(R.id.llSepBot1);
+                        changeCompletedReward(R.id.ivRewardCompleted1);
+                        break;
+                    case 2:
+                        changeColorOnProgress(R.id.llSepTop2);
+                        changeColorOnProgress(R.id.llSepBot2);
+                        changeCompletedReward(R.id.ivRewardCompleted2);
+                        break;
+                    case 3:
+                        changeColorOnProgress(R.id.llSepTop3);
+                        changeColorOnProgress(R.id.llSepBot3);
+                        changeCompletedReward(R.id.ivRewardCompleted3);
+                        break;
+                    case 4:
+                        changeColorOnProgress(R.id.llSepTop4);
+                        changeColorOnProgress(R.id.llSepBot4);
+                        changeCompletedReward(R.id.ivRewardCompleted4);
+                        break;
+                    case 5:
+                        changeColorOnProgress(R.id.llSepTop5);
+                        changeColorOnProgress(R.id.llSepBot5);
+                        changeCompletedReward(R.id.ivRewardCompleted5);
+                        break;
+                    case 6:
+                        changeColorOnProgress(R.id.llSepTop6);
+                        changeColorOnProgress(R.id.llSepBot6);
+                        changeCompletedReward(R.id.ivRewardCompleted6);
+                        break;
+                    case 7:
+                        changeColorOnProgress(R.id.llSepTop7);
+                        changeColorOnProgress(R.id.llSepBot7);
+                        changeCompletedReward(R.id.ivRewardCompleted7);
+                        break;
+                    case 8:
+                        changeColorOnProgress(R.id.llSepTop8);
+                        changeColorOnProgress(R.id.llSepBot8);
+                        changeCompletedReward(R.id.ivRewardCompleted8);
+                        break;
+                    case 9:
+                        changeColorOnProgress(R.id.llSepTop9);
+                        changeColorOnProgress(R.id.llSepBot9);
+                        changeCompletedReward(R.id.ivRewardCompleted9);
+                        break;
+                }
+            }
+        }
+    }
+
+    public void changeColorOnProgress(int idLinearLayout){
+        //Check if there is any user logged into the aplication checking shared preferences
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String primaryColor = sharedpreferences.getString("colorprimary", "default");
+        String secondaryColor = sharedpreferences.getString("colorsecondary", "default");
+
+        //if there is no color
+        if(primaryColor.compareTo("default")==0 || secondaryColor.compareTo("default")==0){
+            //Load default color
+        }
+        else{
+            LinearLayout llToColor = (LinearLayout) findViewById(idLinearLayout);
+            llToColor.setBackgroundColor(Color.parseColor(secondaryColor));
+        }
+
+    }
+
+    public void changeCompletedReward(int idImageView){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        DBUserManager managerDB                = new DBUserManager(this);
+        //Select the user
+        Cursor resultQuery                 = managerDB.selectUser(username);
+        //If the user exists
+        if(resultQuery.moveToFirst()==true) {
+            //Set the level
+            int color = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_COLOR));
+
+            int resourceID;
+            switch (color) {
+                //DefaultColor
+                case 0:
+                    resourceID = R.mipmap.doneicon_ereporter;
+                    break;
+                //Red
+                case 1:
+                    resourceID = R.mipmap.doneicon_red;
+                    break;
+                //Blue
+                case 2:
+                    resourceID = R.mipmap.doneicon_blue;
+                    break;
+                //Green
+                case 3:
+                    resourceID = R.mipmap.doneicon_green;
+                    break;
+                //Purple
+                case 4:
+                    resourceID = R.mipmap.doneicon_purple;
+                    break;
+                //Yellow
+                case 5:
+                    resourceID = R.mipmap.doneicon_yellow;
+                    break;
+                //Pink
+                case 6:
+                    resourceID = R.mipmap.doneicon_pink;
+                    break;
+                //Grey
+                case 7:
+                    resourceID = R.mipmap.doneicon_grey;
+                    break;
+                default:
+                    resourceID = R.mipmap.doneicon;
+                    break;
+            }
+
+            //Get the text view
+            ImageView ivDone;
+            ivDone = (ImageView) findViewById(idImageView);
+            //Set text to it
+            ivDone.setImageResource(resourceID);
+        }
+
+    }
+    /*
+    * Desc: load the user content into the toolbar
+    *
+    * */
     public void loadToolbar(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -195,7 +337,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     /*
-    * Desc: load the color on the toolbar and other elements
+    * Desc: load the selected color on the toolbar
     * */
     public void loadColor(){
 
@@ -210,50 +352,15 @@ public class HomeScreenActivity extends AppCompatActivity {
         else{
 
             //Load the new color
-            Toolbar t= (Toolbar) findViewById(R.id.toolbarH);
+            Toolbar t= (Toolbar) findViewById(R.id.toolbarRP);
             t.setBackgroundColor(Color.parseColor(primaryColor));
 
         }
     }
 
     /*
-        * Desc: on click function to logout from the aplication
-        * */
-    public void performLogout(){
-
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(HomeScreenActivity.this);
-        View layView = (LayoutInflater.from(HomeScreenActivity.this)).inflate(R.layout.confirm_logout, null);
-        alertBuilder.setView(layView);
-        alertBuilder.setCancelable(true)
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Remove from the shared preferences the username
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.remove("username");
-                        editor.remove("colorprimary");
-                        editor.remove("colorsecondary");
-                        editor.commit();
-
-                        Toast.makeText(getApplicationContext(), "Session Closed", Toast.LENGTH_SHORT).show();
-                        //Create and launch login activity
-                        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(myIntent);
-                    }
-                })
-        ;
-        Dialog dialog = alertBuilder.create();
-        dialog.show();
-    }
-
-    /*
-    * Desc: Check from the DDBB if the user can select his account configuration
-    * */
+* Desc: Check from the DDBB if the user can select his account configuration
+* */
     public boolean checkUnlockAcountConfiguration(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -275,169 +382,13 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         return retValue;
     }
-
     /*
-    * Desc: Calls GPS Service and prints in the TextView the result
-    * */
-    public void getGPSposition() {
+     * Desc: on click function to logout from the aplication
+     */
+    public void performLogout(){
 
-        //Get the TextView to show the address value
-        tViewGPS      = (TextView) findViewById(R.id.tvGPSEM1);
-        tViewGPSCoord = (TextView) findViewById(R.id.tvGPSCoordEM1);
-        tViewGPSCity = (TextView) findViewById(R.id.tvGPSCityEM1);
-        tViewGPSStreet = (TextView) findViewById(R.id.tvGPSStreetEM1);
-
-
-
-        //create service passing two TextViews as a param
-        GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS, this.tViewGPSCoord,this.tViewGPSCity, this.tViewGPSStreet);
-
-        //Try to get the location from GPS or network
-        if (sGPS.getLocation()) {
-            //If was successful call startFetchAddressService, who will obtain the address bassed on the location obtained
-            sGPS.startFetchAddressService();
-
-
-        } else {
-            //If the location couldnt get obtained
-            tViewGPS.setText(R.string.address_not_obtained);
-        }
-    }
-
-    /*
-    * Try to get in strings the GPS position
-    * Return true or false if is not obtained
-    * */
-    public boolean retrieveGPSPosition(){
-        sGPSCoord = (String) tViewGPSCoord.getText();
-        sGPSAddr  = (String) tViewGPS.getText();
-        sGPSCity  = (String) tViewGPSCity.getText();
-        sGPSStreet= (String) tViewGPSStreet.getText();
-
-
-        return (!sGPSAddr.isEmpty() && !sGPSCoord.isEmpty());
-
-
-    }
-
-    /*
-    * Desc: check if have to make another report and this activity came from a report
-    * */
-    public void checkResend(){
-        String sGPSCoord,sGPSAddr,sGPSCity, sGPSStreet;
-        int resendMessage=-1;
-        int C_FAST=1, C_ASSISTED=0;
-        //Get the extras
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            //recover the extras from EmergencyActivity
-            sGPSAddr        = extras.getString("GPSA");
-            sGPSCoord       = extras.getString("GPSC");
-            sGPSCity       = extras.getString("GPSCY");
-            sGPSStreet       = extras.getString("GPSST");
-
-            resendMessage   = extras.getInt("lAgainReport");
-            //Make a fast report again
-            if(resendMessage==C_FAST){
-                Intent i = new Intent(getApplicationContext(), EmergencyActivity.class);
-                //Set value to var popUp1
-                i.putExtra("popUp2", "");
-                i.putExtra("GPSC", sGPSCoord);
-                i.putExtra("GPSA", sGPSAddr);
-                i.putExtra("GPSCY", sGPSCity);
-                i.putExtra("GPSST", sGPSStreet);
-                //Launch intent
-                startActivity(i);
-
-            }
-            //Make an assisted report again
-            else if(resendMessage==C_ASSISTED){
-                Intent i = new Intent(getApplicationContext(), EmMessage1.class);
-                //Set value to gps position and address
-                i.putExtra("GPSC",sGPSCoord);
-                i.putExtra("GPSA",sGPSAddr);
-                i.putExtra("GPSCY",sGPSCity);
-                i.putExtra("GPSST", sGPSStreet);
-                //Launch intent
-                startActivity(i);
-            }
-        }
-   }
-
-
-    // ----------- ON CLICK METHODS --------------
-
-    /*
-    * Desc: on click function to change to AchievementsProgress activity
-    * */
-    public void onClickAssistedReport(View v){
-        //Check if the gps result is ready
-        if(retrieveGPSPosition()){
-            Intent i = new Intent(getApplicationContext(), EmMessage1.class);
-            //Set value to gps position and address
-            i.putExtra("GPSC",sGPSCoord);
-            i.putExtra("GPSA",sGPSAddr);
-            i.putExtra("GPSCY",sGPSCity);
-            i.putExtra("GPSST", sGPSStreet);
-            //Launch intent
-            startActivity(i);
-        }
-        //if is not ready, dont do anything when the button is pressed
-        else{}
-
-    }
-
-    /*
-    * Desc: on click function to change to AchievementsProgress activity
-    * */
-    public void onClickFastReport(View v){
-        //Check if the gps result is ready
-        if(retrieveGPSPosition()){
-            Intent i = new Intent(getApplicationContext(), EmergencyActivity.class);
-            //Set value to var popUp1
-            i.putExtra("popUp2","");
-            i.putExtra("GPSC",sGPSCoord);
-            i.putExtra("GPSA",sGPSAddr);
-            i.putExtra("GPSCY",sGPSCity);
-            i.putExtra("GPSST", sGPSStreet);
-            //Launch intent
-            startActivity(i);
-        }
-        //if is not ready, dont do anything when the button is pressed
-        else{}
-    }
-
-
-    /*
-    * Desc: on click function to change to Ranking activity
-    * */
-    public void onClickNavRanking(View v){
-        Intent myIntent= new Intent(getApplicationContext(), RankingActivity.class);
-        startActivity(myIntent);
-    }
-
-    /*
-    * Desc: on click function to change to Achievements activity
-    * */
-    public void onClickNavAchievements(View v){
-        Intent myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
-        startActivity(myIntent);
-    }
-
-    /*
-    * Desc: on click function to change to AchievementsProgress activity
-    * */
-    public void onClickNavAchievementsProgress(View v){
-        Intent myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
-        startActivity(myIntent);
-    }
-
-    /*
-    * Desc: on click function to logout
-    * */
-    public void onClickPerformLogout(View V){
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(HomeScreenActivity.this);
-        View layView = (LayoutInflater.from(HomeScreenActivity.this)).inflate(R.layout.confirm_logout, null);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(RewardsPActivity.this);
+        View layView = (LayoutInflater.from(RewardsPActivity.this)).inflate(R.layout.confirm_logout, null);
         alertBuilder.setView(layView);
         alertBuilder.setCancelable(true)
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -467,11 +418,31 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     /*
-   * Desc: on click function to logout
-   * */
+     * Desc: on click method to navegate from toolbar to profile activity
+     * */
+    public void onClickChangeProfileActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
+        startActivity(myIntent);
+    }
+
+    /*
+     * Desc: on click method to navegate from toolbar to acount configuration activity
+     * */
+    public void onClickChangeACActivity(View v){
+        if(checkUnlockAcountConfiguration()){
+            Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
+            startActivity(myIntent);
+        }
+        else{
+            Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
+        }
+    }
+    /*
+     * Desc: on click function to show quests
+     * */
     public void onClickShowQuest(){
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(HomeScreenActivity.this);
-        View layView = (LayoutInflater.from(HomeScreenActivity.this)).inflate(R.layout.quest_content, null);
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(RewardsPActivity.this);
+        View layView = (LayoutInflater.from(RewardsPActivity.this)).inflate(R.layout.quest_content, null);
         alertBuilder.setView(layView);
         final TextView questName = (TextView) layView.findViewById(R.id.tvQuestPopName);
         final TextView questDesc = (TextView) layView.findViewById(R.id.tvQuestPopDesc);
@@ -553,26 +524,4 @@ public class HomeScreenActivity extends AppCompatActivity {
         dialog.show();
 
     }
-
-    /*
-   * Desc: on click method to navegate from toolbar to profile activity
-   * */
-    public void onClickChangeProfileActivity(View v){
-        Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
-        startActivity(myIntent);
-    }
-
-    /*
-  * Desc: on click method to navegate from toolbar to acount configuration activity
-  * */
-    public void onClickChangeACActivity(View v){
-        if(checkUnlockAcountConfiguration()){
-            Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-            startActivity(myIntent);
-        }
-        else{
-            Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 }

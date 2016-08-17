@@ -235,7 +235,7 @@ public class LoginActivity extends AppCompatActivity {
     public void insertInitialValues(){
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
-        sharedpreferences.edit().putBoolean("first_time", true).commit();
+        //sharedpreferences.edit().putBoolean("first_time", true).commit();
         if (sharedpreferences.getBoolean("first_time", true)){
             insertExampleUsers();
             insertQuests();
@@ -248,11 +248,11 @@ public class LoginActivity extends AppCompatActivity {
 
             DBUserManager dbUser= new DBUserManager(this);
             boolean users=
-                            dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", "-"              , 65 , 40, 3,R.mipmap.avatar_hombre1, 1, 1, 1 ,1)&
-                            dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", "-"              , 100, 170, 5,R.mipmap.avatar_mujer1, 1, 1, 1,1) &
-                            dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth" , 325, 140, 2,R.mipmap.avatar_hombre2, 1, 1, 1,1) &
-                            dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", "-"              , 175, 160, 6,R.mipmap.avatar_mujer2, 1, 1, 1,1) &
-                            dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"    , 100, 100, 1,R.mipmap.avatar_hipster1, 1, 1, 1,1);
+                            dbUser.insertFullFieldsUser("AdminUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", "-"              , 65 , 40, 3,R.mipmap.avatar_hombre1, 1, 1, 1 ,1,10)&
+                            dbUser.insertFullFieldsUser("AdminUser2", "1234", "admin2@gmail.com", "10/10/2010", "Champion", "-"              , 100, 170, 5,R.mipmap.avatar_mujer1, 1, 1, 1,1,10) &
+                            dbUser.insertFullFieldsUser("AdminUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran", "Seeker of Truth" , 325, 140, 2,R.mipmap.avatar_hombre2, 1, 1, 1,1,10) &
+                            dbUser.insertFullFieldsUser("AdminUser4", "1234", "admin4@gmail.com", "10/10/2010", "Champion", "-"              , 175, 160, 6,R.mipmap.avatar_mujer2, 1, 1, 1,1,10) &
+                            dbUser.insertFullFieldsUser("AdminUser5", "1234", "admin5@gmail.com", "10/10/2010", "Veteran", "Top Reporter"    , 100, 100, 1,R.mipmap.avatar_hipster1, 1, 1, 1,1,10);
             boolean titles=
                             insertUserTitles("AdminUser1") & insertUserTitles("AdminUser2") &
                             insertUserTitles("AdminUser3") & insertUserTitles("AdminUser4") &

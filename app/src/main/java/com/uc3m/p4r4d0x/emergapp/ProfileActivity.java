@@ -296,8 +296,6 @@ public class ProfileActivity extends AppCompatActivity {
     *
     * */
     public void loadProfileInfo(){
-        //Load the avatar
-        loadUserAvatar();
         //Load the data
         loadUserData();
         //Check if the titles are unlocked and if so, load them
@@ -306,12 +304,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    * Desc: load the user avatar recovered from the DDBB
-    * */
-    public void loadUserAvatar(){
 
-    }
 
     /*
     * Desc: load the user data recovered from the DDBB including
@@ -444,7 +437,6 @@ public class ProfileActivity extends AppCompatActivity {
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String username                    = sharedpreferences.getString("username", "default");
 
-        Log.d("ALR","LoadTitlesInside");
         //Check the username
         if(username.compareTo("default")==0){
             //If is empty (error) do nothing
@@ -508,8 +500,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     /*
-    * Desc: Check from the DDBB if the user can select his account configuration
-    * */
+* Desc: Check from the DDBB if the user can select his account configuration
+* */
     public boolean checkUnlockAcountConfiguration(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -522,7 +514,7 @@ public class ProfileActivity extends AppCompatActivity {
         Cursor resultQuery = managerDBUser.selectUser(username);
         //Check if the title selection is unlocked
         if(resultQuery.moveToFirst()==true) {
-            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_TITLE)) == 1) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1) {
                 retValue = true;
             } else {
                 retValue = false;
@@ -531,7 +523,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         return retValue;
     }
-
     /*
         * Desc: on click function to logout from the aplication
         * */
@@ -608,16 +599,16 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     /*
-   * Desc: on click method to navegate from toolbar to profile activity
-   * */
+    * Desc: on click method to navegate from toolbar to profile activity
+    * */
     public void onClickChangeProfileActivity(View v){
         Intent myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
         startActivity(myIntent);
     }
 
     /*
-  * Desc: on click method to navegate from toolbar to acount configuration activity
-  * */
+     * Desc: on click method to navegate from toolbar to acount configuration activity
+     * */
     public void onClickChangeACActivity(View v){
         if(checkUnlockAcountConfiguration()){
             Intent myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
@@ -627,9 +618,10 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
         }
     }
+
     /*
- * Desc: on click function to show quests
- * */
+     * Desc: on click function to show quests
+     * */
     public void onClickShowQuest(){
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(ProfileActivity.this);
         View layView = (LayoutInflater.from(ProfileActivity.this)).inflate(R.layout.quest_content, null);

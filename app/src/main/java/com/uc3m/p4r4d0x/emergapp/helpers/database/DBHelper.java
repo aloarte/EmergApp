@@ -12,7 +12,7 @@ import android.util.Log;
 public class DBHelper extends SQLiteOpenHelper{
 
         private static final String DB_NAME ="eReporterDDBB.sqlite";
-        private static final int DB_SCHEME_VERSION =52;
+        private static final int DB_SCHEME_VERSION =56;
         public Context cntx;
 
         public DBHelper(Context context) {

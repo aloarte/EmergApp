@@ -51,6 +51,7 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_account_configuration">AccountConfigurationActivity</string>
     <string name="title_activity_quests">QuestsActivity</string>
+    <string name="title_activity_rewards_p">RewardsPActivity</string>
 
 
 </resources>

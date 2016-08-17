@@ -436,7 +436,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         Cursor resultQuery = managerDBUser.selectUser(username);
         //Check if the title selection is unlocked
         if(resultQuery.moveToFirst()==true) {
-            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_TITLE)) == 1) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1) {
                 retValue = true;
             } else {
                 retValue = false;

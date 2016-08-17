@@ -47,6 +47,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAchievementsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAvatarsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverGPSCoord;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
@@ -1089,7 +1090,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
            );
             //Check if by the points the user have upgrade his level
             checkLevelUp(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)), totalxpoints);
-           if(checkAchievementReleased()) {
+            checkRewardObtained(totalappoints);
+            if(checkAchievementReleased()) {
                //Check if the achievement is completed and if so, upgrade the achievement
                if (totalappoints >= 250) {
                    upgradeAchievementExpert("aExpert5");
@@ -1098,13 +1100,17 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                if (checkUserIsInTopRanking()) {
                    upgradeAchievementExpert("aExpert6");
                }
-           }
+            }
         }
 
         loadToolbar();
     }
 
 
+    /*
+    * Desc: check the current level with the xp points and set the next level if needed
+    * Param: String with level and int with the xppoints
+    * */
     public void checkLevelUp (String level, int xpoints){
         String username = sharedpreferences.getString("username", "default");
         DBUserManager managerDB = new DBUserManager(this);
@@ -1112,26 +1118,26 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         switch(level){
             case "Traveler":
                 if(xpoints>=50){
-                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_LONG).show();
                     managerDB.upgradeUserLevel(username,"Veteran");
                 }
                 break;
             case "Veteran":
                 if(xpoints>=150){
-                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_LONG).show();
                     managerDB.upgradeUserLevel(username, "Champion");
                 }
                 break;
             case "Champion":
                 if(xpoints>=300){
-                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_LONG).show();
                     managerDB.upgradeUserLevel(username,"Hero");
                     if(checkAchievementReleased())upgradeAchievementExpert("aExpert4");
                 }
                 break;
             case "Hero":
                 if(xpoints>=500){
-                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_LONG).show();
                     managerDB.upgradeUserLevel(username,"Legend");
                 }
                 break;
@@ -1143,6 +1149,107 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+    /*
+    * Desc: check the current level with the xp points and set the next level if needed
+    * Param: int with the appoints
+    * */
+    public void checkRewardObtained(int appoints){
+        String username = sharedpreferences.getString("username", "default");
+        DBUserManager managerUsersDB = new DBUserManager(this);
+        DBAvatarsManager managerAvatarsDB = new DBAvatarsManager(this);
+
+        //Select the user
+        Cursor resultQuery                 = managerUsersDB.selectUser(username);
+        //If the user exists
+        if(resultQuery.moveToFirst()) {
+            //Set the level
+            int userProgress = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED));
+            Log.d("ALR","CheckReward: "+ userProgress);
+
+            switch(userProgress){
+                case 0:
+                    if(appoints>=50){
+                        Toast.makeText(this, "Title change unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
+                                1,
+                                0,
+                                0
+                        );
+                        managerUsersDB.upgradeUserProgressRewards(username);
+
+                    }
+                    break;
+                case 1:
+                    if(appoints>=100){
+                        Toast.makeText(this, "Avatar change unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
+                                1,
+                                1,
+                                0
+                        );
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                case 2:
+                    if(appoints>=125){
+                        Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
+                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarMan2",1,username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                case 3:
+                    if(appoints>=150){
+                        Toast.makeText(this, "Color change unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
+                                1,
+                                1,
+                                1
+                        );
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                case 4:
+                    if(appoints>=175){
+                        Toast.makeText(this, "Avatar unlocked", Toast.LENGTH_LONG).show();
+                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarWoman2", 1, username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                case 5:
+                    if(appoints>=200){
+                        Toast.makeText(this, "New title unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                case 6:
+                    if(appoints>=225){
+                        Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
+                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarManHipster", 1, username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                case 7:
+                    if(appoints>=250){
+                        Toast.makeText(this, "New colors unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                case 8:
+                    if(appoints>=275){
+                        Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
+                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarWomanHipster", 1, username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+
+                default:
+                    break;
+
+
+            }
+        }
+
+    }
 
 
     /*
@@ -1403,9 +1510,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-
-
-
     /*
      * Desc: Check from the DDBB if the user has sent their last report 3 different locations
      * Param:the current location
@@ -1459,6 +1563,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
     }
+
+    /*
+     * Desc: Check if the quest is completed
+     * Param:the current city and street from the location
+     * */
     public void checkQuestCompleted(String street, String city){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -1524,8 +1633,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         }
     }
-
-
 
     /*
     * Desc: Check from the DDBB if the user can select his account configuration
