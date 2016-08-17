@@ -171,10 +171,11 @@ public class SignIn extends AppCompatActivity {
         achievementsExpert= achievementsDB.insertAchievement("aExpertMeta","Community Helper"                       ,10,100,50 ,0,1,username) &
                             achievementsDB.insertAchievement("aExpert1"   ,"Pictures Lover"                         ,10,10 ,10 ,0,1,username) &
                             achievementsDB.insertAchievement("aExpert2"   ,"Videos Lover"                           ,10,10 ,10 ,0,1,username) &
-                            achievementsDB.insertAchievement("aExpert3"   ,"Expert Reporter"                        ,0 ,25 ,0  ,0,1,username) &
-                            achievementsDB.insertAchievement("aExpert4"   ,"Hard Worker"                            ,0 ,0  ,20 ,0,1,username) &
-                            achievementsDB.insertAchievement("aExpert5"   ,"Top Reporter"                           ,0 ,10 ,10 ,0,1,username) &
-                            achievementsDB.insertAchievement("aExpert6"   ,"Reporting Anywhere"                     ,3 ,20 ,10 ,0,1,username) ;
+                            achievementsDB.insertAchievement("aExpert3"   ,"Quests Lover"                           ,5 ,10 ,10 ,0,1,username) &
+                            achievementsDB.insertAchievement("aExpert4"   ,"Expert Reporter"                        ,0 ,25 ,0  ,0,1,username) &
+                            achievementsDB.insertAchievement("aExpert5"   ,"Hard Worker"                            ,0 ,0  ,20 ,0,1,username) &
+                            achievementsDB.insertAchievement("aExpert6"   ,"Top Reporter"                           ,0 ,10 ,10 ,0,1,username) &
+                            achievementsDB.insertAchievement("aExpert7"   ,"Reporting Anywhere"                     ,3 ,20 ,10 ,0,1,username) ;
 
         achievementsSecret= achievementsDB.insertAchievement("aSecretMeta","Seeker of Truth"                        ,5 ,200,50 ,0,1,username) &
                             achievementsDB.insertAchievement("aSecret1"   ,"I give my best"                         ,0 ,10 ,0  ,0,0,username) &

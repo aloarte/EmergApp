@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.service.notification.NotificationListenerService;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -183,16 +185,19 @@ public class RankingActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.action_profile:
-                myIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                myIntent= new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(myIntent);
                 return true;
             case R.id.action_ranking:
-                myIntent = new Intent(getApplicationContext(), RankingActivity.class);
+                myIntent= new Intent(getApplicationContext(), RankingActivity.class);
                 startActivity(myIntent);
                 return true;
             case R.id.action_achievements:
-                myIntent = new Intent(getApplicationContext(), AchievementsActivity.class);
+                myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
+                return true;
+            case R.id.action_quest:
+                onClickShowQuest();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -494,5 +499,93 @@ public class RankingActivity extends AppCompatActivity {
         else{
             Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /*
+ * Desc: on click function to show quests
+ * */
+    public void onClickShowQuest(){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(RankingActivity.this);
+        View layView = (LayoutInflater.from(RankingActivity.this)).inflate(R.layout.quest_content, null);
+        alertBuilder.setView(layView);
+        final TextView questName = (TextView) layView.findViewById(R.id.tvQuestPopName);
+        final TextView questDesc = (TextView) layView.findViewById(R.id.tvQuestPopDesc);
+        final TextView questCity = (TextView) layView.findViewById(R.id.tvQuestPopCity);
+        final TextView questStreet = (TextView) layView.findViewById(R.id.tvQuestPopStreet);
+        final TextView questAP = (TextView) layView.findViewById(R.id.tvQuestPopAP);
+        final TextView questXP = (TextView) layView.findViewById(R.id.tvQuestPopXP);
+
+        LinearLayout llQuest = (LinearLayout) layView.findViewById(R.id.llQuestData);
+        LinearLayout llNoQuest = (LinearLayout) layView.findViewById(R.id.llNoQuest);
+
+
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        boolean isQuestS     = sharedpreferences.getBoolean("questB", false);
+        String questNameS    = sharedpreferences.getString("quest", "default");
+        String questDescS    = sharedpreferences.getString("questDesc", "default");
+        String questCityS    = sharedpreferences.getString("questCity", "default");
+        String questStreetS  = sharedpreferences.getString("questStreet", "default");
+        final int questAPS         = sharedpreferences.getInt("questAP", -1);
+        final int questXPS         = sharedpreferences.getInt("questXP", -1);
+
+        if(isQuestS) {
+            llQuest.setVisibility(View.VISIBLE);
+            llNoQuest.setVisibility(View.GONE);
+
+            if(questNameS.compareTo("Quest1")==0){
+                questName.setText("Report on locality");
+            }
+            else if(questNameS.compareTo("Quest2")==0){
+                questName.setText("Report event");
+            }
+            else{
+                questName.setText(questNameS);
+            }
+            questDesc.setText(questDescS);
+            questCity.setText(questCityS);
+            questStreet.setText(questStreetS);
+            questAP.setText(""+questAPS);
+            questXP.setText(""+questXPS);
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Abandon Quest", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Toast.makeText(this, "Quest 1 completed! Reward: " + questAPS + " AP, " + questXPS + " XP", Toast.LENGTH_SHORT).show();
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.remove("questB");
+                            editor.remove("quest");
+                            editor.remove("questDesc");
+                            editor.remove("questCity");
+                            editor.remove("questStreet");
+                            editor.remove("questAP");
+                            editor.remove("questXP");
+                            editor.commit();
+                        }
+                    })
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+        else{
+            llQuest.setVisibility(View.GONE);
+            llNoQuest.setVisibility(View.VISIBLE);
+
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+
+        Dialog dialog = alertBuilder.create();
+        dialog.show();
+
     }
 }

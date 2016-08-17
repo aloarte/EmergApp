@@ -115,9 +115,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     String[] toSendPicturesPath            = new String[]{"", "", "", ""};
     String[] toSendVideosPath              = new String[]{"", "", "", ""};
     String toSendGPSCoord                  = "";
-    String toSendGPSStreet                 = "";
+    String toSendGPSAddress                 = "";
     String toSendMessage                   = "";
     String toSendGPSCity                   = "";
+    String toSendGPSStreet                 = "";
+
 
 
 
@@ -125,7 +127,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     * Variables related with the elements used on the screen like buttons
     * */
     //Text views to get the GPS data and display the emergency message
-    TextView tViewGPS, tViewGPSCoord,tViewGPSCity, tvMessagePopUp1;
+    TextView tViewGPS, tViewGPSCoord,tViewGPSCity, tvMessagePopUp1,tViewGPSStreet;
 
     //ImageViews for buttons
     ImageView ivTakePhoto, ivTakeVideo, ivGallery;
@@ -340,7 +342,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         switch (item.getItemId()) {
             case R.id.action_close_session:
-                Toast.makeText(this, getText(R.string.action_close_session), Toast.LENGTH_SHORT).show();
                 performLogout();
                 return true;
             case R.id.action_acount_configuration:
@@ -363,6 +364,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             case R.id.action_achievements:
                 myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
+                return true;
+            case R.id.action_quest:
+                onClickShowQuest();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -469,7 +473,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         toSendGPSCoord=marker.getPosition().latitude+","+marker.getPosition().longitude;
 
         //Start the fetchAddressService to get the address into the TextViews.
-        startFetchAddressService(tViewGPS, tViewGPSCoord, tViewGPSCity, markerLocation);
+        startFetchAddressService(tViewGPS, tViewGPSCoord, tViewGPSCity,tViewGPSStreet, markerLocation);
 
         //Toast that a new location is selected
         Toast.makeText(getApplicationContext(), "Selected a new position", Toast.LENGTH_LONG).show();
@@ -662,7 +666,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         tViewGPS      = (TextView) findViewById(R.id.tvGPS);
         tViewGPSCoord = (TextView) findViewById(R.id.tvGPSCoord);
         tViewGPSCity  = (TextView) findViewById(R.id.tvGPSCity);
-
+        tViewGPSStreet  = (TextView) findViewById(R.id.tvGPSStreet);
 
         //Retrieve the information from the previous activity
         Bundle extras = getIntent().getExtras();
@@ -671,13 +675,15 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         if (extras != null) {
             //Get the string values
             String valueGPSAddress = extras.getString("GPSA");
-            String valueGPSCoord = extras.getString("GPSC");
-            String valueGPSCity = extras.getString("GPSCY");
+            String valueGPSCoord   = extras.getString("GPSC");
+            String valueGPSCity    = extras.getString("GPSCY");
+            String valueGPSStreet      = extras.getString("GPSST");
 
             //Put into text views
             tViewGPS.setText(valueGPSAddress);
             tViewGPSCoord.setText(valueGPSCoord);
             tViewGPSCity.setText(valueGPSCity);
+            tViewGPSStreet.setText(valueGPSStreet);
 
         }
     }
@@ -1077,16 +1083,22 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             int totalxpoints  = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)) + xp;
             int totalappoints = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS)) + ap;
            managerDB.upgradeUserAPXPpoints(
-                    username,
-                    totalappoints,
-                    totalxpoints
-                    );
+                   username,
+                   totalappoints,
+                   totalxpoints
+           );
             //Check if by the points the user have upgrade his level
-            checkLevelUp(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)),totalxpoints);
-            //Check if the achievement is completed and if so, upgrade the achievement
-            if(totalappoints>=250){upgradeAchievementExpert("aExpert4");}
-            //Check if the user is in the ranking and if so, upgrade the achievement
-            if(checkUserIsInTopRanking()){upgradeAchievementExpert("aExpert5");}
+            checkLevelUp(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)), totalxpoints);
+           if(checkAchievementReleased()) {
+               //Check if the achievement is completed and if so, upgrade the achievement
+               if (totalappoints >= 250) {
+                   upgradeAchievementExpert("aExpert5");
+               }
+               //Check if the user is in the ranking and if so, upgrade the achievement
+               if (checkUserIsInTopRanking()) {
+                   upgradeAchievementExpert("aExpert6");
+               }
+           }
         }
 
         loadToolbar();
@@ -1114,7 +1126,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 if(xpoints>=300){
                     Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
                     managerDB.upgradeUserLevel(username,"Hero");
-                    upgradeAchievementExpert("aExpert3");
+                    if(checkAchievementReleased())upgradeAchievementExpert("aExpert4");
                 }
                 break;
             case "Hero":
@@ -1141,10 +1153,10 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         //Get the string values for the message, the gps addres and the gps longitude&latitude
         toSendMessage= tvMessagePopUp1.getText().toString();
-        toSendGPSStreet= tViewGPS.getText().toString();
+        toSendGPSAddress= tViewGPS.getText().toString();
         toSendGPSCoord= tViewGPSCoord.getText().toString();
         toSendGPSCity= tViewGPSCity.getText().toString();
-
+        toSendGPSStreet= tViewGPSStreet.getText().toString();
 
         //Auxiliar string array for not sending selected videos
         String [] toSendVideosPathAux= new String []{"","","",""};
@@ -1222,23 +1234,27 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             upgradeAchievementNovel("aNovel4");
         }
 
-        upgradeAchievementExpertVideosLover(videosSended);
-        upgradeAchievementExpertImagesLover(imagesSended);
+
         upgradeAchievementNovel("aNovel5");
 
-        if(videosSended>1 && imagesSended>1 && textModified){
-            upgradeAchievementSecret("aSecret1");
-        }
-        if(imagesSended == 4){
-            upgradeAchievementSecret("aSecret2");
-        }
-        if(imagesSended>0 && videosSended>0 && noImageAditional && noVideosAditional){
-            upgradeAchievementSecret("aSecret3");
+        if(checkAchievementReleased()) {
+            if (videosSended > 1 && imagesSended > 1 && textModified) {
+                upgradeAchievementSecret("aSecret1");
+            }
+            if (imagesSended == 4) {
+                upgradeAchievementSecret("aSecret2");
+            }
+            if (imagesSended > 0 && videosSended > 0 && noImageAditional && noVideosAditional) {
+                upgradeAchievementSecret("aSecret3");
 
+            }
+            upgradeAchievementExpertVideosLover(videosSended);
+            upgradeAchievementExpertImagesLover(imagesSended);
+            checkUpdateSameLastLocation(toSendGPSCity);
+            checkUpdateDifferentLastLocation(toSendGPSCity);
         }
+        checkQuestCompleted(toSendGPSStreet,toSendGPSCity);
 
-        checkUpdateSameLastLocation(toSendGPSCity);
-        checkUpdateDifferentLastLocation(toSendGPSCity);
 
         mReceiverReady = new ResultReceiverSentReady(new android.os.Handler(),llAfterSendingMessage,rlSendMessage,rlReloadScreen,ivLoadingRotate,getApplicationContext(),R.animator.girar);
 
@@ -1246,7 +1262,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiverReady,ap,xp,achievementObtained);
 
         //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
-        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
+        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSAddress);
 
 
         //Re initializate deletedArrays
@@ -1259,10 +1275,10 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     * Desc: Start FetchAddress service, passing a ResultReceiverGPSCoord object to
     *       get the result value and the Location obtained by the change on the map marker
     * */
-    public void startFetchAddressService(TextView paramViewAddress, TextView paramViewCoord,TextView paramViewCity, Location locationG) {
+    public void startFetchAddressService(TextView paramViewAddress, TextView paramViewCoord,TextView paramViewCity,TextView paramViewStreet, Location locationG) {
 
         //Iniciate ResultReceiverGPSCoord object
-        mReceiverGPS = new ResultReceiverGPSCoord(new android.os.Handler(), paramViewAddress,paramViewCoord,paramViewCity);
+        mReceiverGPS = new ResultReceiverGPSCoord(new android.os.Handler(), paramViewAddress,paramViewCoord,paramViewCity,paramViewStreet);
 
         //Create the intent to start the FetchAddressService
         Intent intent = new Intent(getApplicationContext(), FetchAddressService.class);
@@ -1387,6 +1403,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+
+
+
     /*
      * Desc: Check from the DDBB if the user has sent their last report 3 different locations
      * Param:the current location
@@ -1397,7 +1416,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         String username                    = sharedpreferences.getString("username", "default");
         DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
         //Make que query
-        Cursor resultQueryAch = managerDBAchiements.selectAchievement("aExpert6", username);
+        Cursor resultQueryAch = managerDBAchiements.selectAchievement("aExpert7", username);
         //Check if the achievement selection is unlocked
         if(resultQueryAch.moveToFirst()) {
 
@@ -1440,6 +1459,73 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
     }
+    public void checkQuestCompleted(String street, String city){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        boolean isQuest     = sharedpreferences.getBoolean("questB", false);
+        String questName    = sharedpreferences.getString("quest", "default");
+        String questCity    = sharedpreferences.getString("questCity", "default");
+        String questStreet  = sharedpreferences.getString("questStreet", "default");
+        int questAP         = sharedpreferences.getInt("questAP", -1);
+        int questXP         = sharedpreferences.getInt("questXP", -1);
+
+        Log.d("ALR", "IQ: "+isQuest);
+        Log.d("ALR", "QN: "+questName);
+
+        //Check if all the fields are propperly filled
+        if(isQuest && questName.compareTo("defaul")!=1
+                && questCity.compareTo("defaul")!=1 && questStreet.compareTo("defaul")!=1
+                && questAP != -1 && questXP != -1){
+            Log.d("ALR", "QC: "+questCity);
+            Log.d("ALR", "QS: "+questStreet);
+
+
+            if(questName.compareTo("Quest1")==0) {
+                //If the street and city match with the report ubication, mission is completed
+                if (questCity.compareTo(city) == 0) {
+                    Toast.makeText(this, "Quest completed! Reward: " + questAP + " AP, " + questXP + " XP", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.remove("questB");
+                    editor.remove("quest");
+                    editor.remove("questDesc");
+                    editor.remove("questCity");
+                    editor.remove("questStreet");
+                    editor.remove("questAP");
+                    editor.remove("questXP");
+                    editor.commit();
+
+                    changeUserStats(username, questAP, questXP);
+                    upgradeAchievementExpertQuestsLover();
+                }
+            }
+            else if(questName.compareTo("Quest2")==0){
+                //If the street and city match with the report ubication, mission is completed
+                if ((questCity.compareTo(city) == 0) && (questStreet.compareTo(street) == 0)) {
+                    Toast.makeText(this, "Quest completed! Reward: " + questAP + " AP, " + questXP + " XP", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.remove("questB");
+                    editor.remove("quest");
+                    editor.remove("questDesc");
+                    editor.remove("questCity");
+                    editor.remove("questStreet");
+                    editor.remove("questAP");
+                    editor.remove("questXP");
+                    editor.commit();
+
+                    changeUserStats(username, questAP, questXP);
+                    upgradeAchievementExpertQuestsLover();
+            }
+        }
+
+        Log.d("ALR", "Street: " + street + " City: " + city);
+
+
+        }
+    }
+
+
 
     /*
     * Desc: Check from the DDBB if the user can select his account configuration
@@ -1474,7 +1560,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String username                    = sharedpreferences.getString("username", "default");
         boolean retValue=false;
-         DBUserManager managerDBUser = new DBUserManager(this);
+        DBUserManager managerDBUser = new DBUserManager(this);
         //Make the querys
         Cursor resultQueryAP = managerDBUser.selectUsersOrderedByAP();
         Cursor resultQueryXP = managerDBUser.selectUsersOrderedByXP();
@@ -1501,6 +1587,27 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     //-----------------------------------------------------------//
     //---------------------ACHIEVEMENTS METHODS------------------//
     //-----------------------------------------------------------//
+
+    public boolean checkAchievementReleased(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        boolean retValue=false;
+        DBUserManager managerDBUser = new DBUserManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBUser.selectUser(username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_ACHIEVEMENTS_UNLOCKED)) == 1) {
+                retValue = true;
+            } else {
+                retValue = false;
+            }
+        }
+        return retValue;
+
+    }
 
     /*
     * Desc: upgrade the novel achievement if is not already obtained
@@ -1633,6 +1740,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                             username,
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+
+                    DBUserManager managerDBUsers = new DBUserManager(this);
+                    managerDBUsers.upgradeUserAchievementsUnlocked(username);
                     achievementObtained=1;
 
 
@@ -1671,7 +1781,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     //Upgrade the achievement aExpertMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aExpertMeta",
                             1,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)),1, username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)), 1, username);
                     //Upgrade the XP and AP of the achievement
                     changeUserStats(
                             username,
@@ -1866,6 +1976,70 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     /*
+    * Desc: Upgrade VideosLover achievement
+    * param:a int with the number of videos sended
+    * */
+    public void upgradeAchievementExpertQuestsLover() {
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username = sharedpreferences.getString("username", "default");
+
+        DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aExpert3", username);
+        //Check if the title selection is unlocked
+        if (resultQuery.moveToFirst()) {
+            int currentNumberImages = resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1;
+            int maxNumberImages     = resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX));
+            //If is the last achievement to complet progress
+            if(currentNumberImages == maxNumberImages){
+                //Upgrade the achievement aExpert1 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aExpert3",
+                        1,
+                        0,1,
+                        username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaExpert();
+                achievementObtained=1;
+            }
+            else if(currentNumberImages > maxNumberImages){
+                //Upgrade the achievement aExpert1 to obtained
+                managerDBAchiements.upgradeAchievementObtained("aExpert3",
+                        1,
+                        (currentNumberImages-maxNumberImages),1,
+                        username);
+                //Upgrade the XP and AP of the achievement
+                changeUserStats(
+                        username,
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
+                        resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                upgradeAchievementMetaExpert();
+                achievementObtained=1;
+            }
+            else{
+                if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0) {
+                    //Upgrade the achievement to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aExpert3",
+                            0,
+                            currentNumberImages,1,
+                            username);
+                }
+                else{
+                    //Upgrade the achievement to obtained
+                    managerDBAchiements.upgradeAchievementObtained("aExpert3",
+                            1,
+                            currentNumberImages,1,
+                            username);
+                }
+            }
+        }
+    }
+
+    /*
     * Desc: Upgrade ReportingAnytwhere achievement
     * */
     public void upgradeAchievementExpertLocations() {
@@ -1875,7 +2049,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         DBAchievementsManager managerDBAchiements = new DBAchievementsManager(this);
         //Make que query
-        Cursor resultQuery = managerDBAchiements.selectAchievement("aExpert6", username);
+        Cursor resultQuery = managerDBAchiements.selectAchievement("aExpert7", username);
         //Check if the title selection is unlocked
         if (resultQuery.moveToFirst()) {
             int currentProgress= resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1;
@@ -1885,7 +2059,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 //If is the last achievement to complet progress
                 if(  currentProgress == maxProgress ){
                     //Upgrade the achievement aSecretMeta to obtained
-                    managerDBAchiements.upgradeAchievementObtained("aExpert6",
+                    managerDBAchiements.upgradeAchievementObtained("aExpert7",
                             1,
                             maxProgress, 1, username);
                     //Upgrade the XP and AP of the achievement
@@ -1898,7 +2072,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 }
                 else{
                     //Upgrade the progress of achievement aSecretMeta
-                    managerDBAchiements.upgradeAchievementObtained("aExpert6",
+                    managerDBAchiements.upgradeAchievementObtained("aExpert7",
                             0,
                             currentProgress,1, username);
                 }
@@ -2156,9 +2330,10 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
    * */
     public void onClickReloadInitialScreen(View v){
         int C_FAST=1, C_ASSISTED=0;
-        String addr=tViewGPS.getText().toString();
-        String coord=tViewGPSCoord.getText().toString();
-        String city=tViewGPSCity.getText().toString();
+        String addr   = tViewGPS.getText().toString();
+        String coord  = tViewGPSCoord.getText().toString();
+        String city   = tViewGPSCity.getText().toString();
+        String street = tViewGPSStreet.getText().toString();
         //If it was a fast report, launch a new EmergencyActivity
         if(fastReport){
             Intent i = new Intent(getApplicationContext(), HomeScreenActivity.class);
@@ -2166,6 +2341,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             i.putExtra("GPSC", coord);
             i.putExtra("GPSA", addr);
             i.putExtra("GPSCY",city);
+            i.putExtra("GPSST", street);
             startActivity(i);
         }
         //If was an assisted report, launch EmMessage1
@@ -2174,7 +2350,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             i.putExtra("lAgainReport", C_ASSISTED);
             i.putExtra("GPSC", coord);
             i.putExtra("GPSA", addr);
-            i.putExtra("GPSCY",city);
+            i.putExtra("GPSCY", city);
+            i.putExtra("GPSST", street);
             startActivity(i);
         }
 
@@ -2221,6 +2398,94 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         else{
             Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /*
+  * Desc: on click function to show quests
+  * */
+    public void onClickShowQuest(){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(EmergencyActivity.this);
+        View layView = (LayoutInflater.from(EmergencyActivity.this)).inflate(R.layout.quest_content, null);
+        alertBuilder.setView(layView);
+        final TextView questName = (TextView) layView.findViewById(R.id.tvQuestPopName);
+        final TextView questDesc = (TextView) layView.findViewById(R.id.tvQuestPopDesc);
+        final TextView questCity = (TextView) layView.findViewById(R.id.tvQuestPopCity);
+        final TextView questStreet = (TextView) layView.findViewById(R.id.tvQuestPopStreet);
+        final TextView questAP = (TextView) layView.findViewById(R.id.tvQuestPopAP);
+        final TextView questXP = (TextView) layView.findViewById(R.id.tvQuestPopXP);
+
+        LinearLayout llQuest = (LinearLayout) layView.findViewById(R.id.llQuestData);
+        LinearLayout llNoQuest = (LinearLayout) layView.findViewById(R.id.llNoQuest);
+
+
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        boolean isQuestS     = sharedpreferences.getBoolean("questB", false);
+        String questNameS    = sharedpreferences.getString("quest", "default");
+        String questDescS    = sharedpreferences.getString("questDesc", "default");
+        String questCityS    = sharedpreferences.getString("questCity", "default");
+        String questStreetS  = sharedpreferences.getString("questStreet", "default");
+        final int questAPS         = sharedpreferences.getInt("questAP", -1);
+        final int questXPS         = sharedpreferences.getInt("questXP", -1);
+
+        if(isQuestS) {
+            llQuest.setVisibility(View.VISIBLE);
+            llNoQuest.setVisibility(View.GONE);
+
+            if(questNameS.compareTo("Quest1")==0){
+                questName.setText("Report on locality");
+            }
+            else if(questNameS.compareTo("Quest2")==0){
+                questName.setText("Report event");
+            }
+            else{
+                questName.setText(questNameS);
+            }
+            questDesc.setText(questDescS);
+            questCity.setText(questCityS);
+            questStreet.setText(questStreetS);
+            questAP.setText(""+questAPS);
+            questXP.setText(""+questXPS);
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Abandon Quest", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Toast.makeText(this, "Quest 1 completed! Reward: " + questAPS + " AP, " + questXPS + " XP", Toast.LENGTH_SHORT).show();
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.remove("questB");
+                            editor.remove("quest");
+                            editor.remove("questDesc");
+                            editor.remove("questCity");
+                            editor.remove("questStreet");
+                            editor.remove("questAP");
+                            editor.remove("questXP");
+                            editor.commit();
+                        }
+                    })
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+        else{
+            llQuest.setVisibility(View.GONE);
+            llNoQuest.setVisibility(View.VISIBLE);
+
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+
+        Dialog dialog = alertBuilder.create();
+        dialog.show();
+
     }
 
 }

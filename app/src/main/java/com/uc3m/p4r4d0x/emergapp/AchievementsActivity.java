@@ -18,12 +18,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -186,9 +188,6 @@ public class AchievementsActivity extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
-                    //REMOVE THIS
-                    myIntent= new Intent(getApplicationContext(), AccountConfigurationActivity.class);
-                    startActivity(myIntent);
                 }
                 return true;
             case R.id.action_profile:
@@ -202,6 +201,9 @@ public class AchievementsActivity extends AppCompatActivity {
             case R.id.action_achievements:
                 myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
+                return true;
+            case R.id.action_quest:
+                onClickShowQuest();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -431,14 +433,14 @@ public class AchievementsActivity extends AppCompatActivity {
         else {
             int obtainedAux=0;
             //String array to save all data recovered from the DDBB
-            String [][] data = new String [7][3];
+            String [][] data = new String [8][3];
             //Open the DDBB manager
             DBAchievementsManager managerDBAchievements = new DBAchievementsManager(this);
             //Select the users ordered by XP points
             Cursor resultQuery;
             //iterate each user to save data into the array
             int i,color=-1;
-            for(i=0;i<7;i++){
+            for(i=0;i<8;i++){
                 switch (i){
                     case 0:
                         resultQuery = managerDBAchievements.selectAchievement("aExpertMeta",username);
@@ -460,6 +462,9 @@ public class AchievementsActivity extends AppCompatActivity {
                         break;
                     case 6:
                         resultQuery = managerDBAchievements.selectAchievement("aExpert6",username);
+                        break;
+                    case 7:
+                        resultQuery = managerDBAchievements.selectAchievement("aExpert7",username);
                         break;
                     default:
                         resultQuery = managerDBAchievements.selectAchievement("aExpertMeta",username);
@@ -484,7 +489,7 @@ public class AchievementsActivity extends AppCompatActivity {
                 color = resultQueryUser.getInt(resultQueryUser.getColumnIndex(DBUserManager.TU_COLOR));
             }
             //Set the data retrieved into the fragment view
-            achievementFragment.setArgumentsToFragment(data,i,color);
+            achievementFragment.setArgumentsToFragment(data,i,color,checkAchievementReleased());
 
         }
     }
@@ -561,7 +566,7 @@ public class AchievementsActivity extends AppCompatActivity {
                 color = resultQueryUser.getInt(resultQueryUser.getColumnIndex(DBUserManager.TU_COLOR));
             }
             //Set the data retrieved into the fragment view
-            achievementFragment.setArgumentsToFragment(data,i,color);
+            achievementFragment.setArgumentsToFragment(data,i,color,checkAchievementReleased());
 
         }
     }
@@ -583,7 +588,7 @@ public class AchievementsActivity extends AppCompatActivity {
         else {
             int obtainedAux=0;
             //String array to save all data recovered from the DDBB
-            String [][] data = new String [2][4];
+            String [][] data = new String [2][6];
             //Open the DDBB manager
             DBQuestsManager managerDBQuests = new DBQuestsManager(this);
             DBUserManager managerDB = new DBUserManager(this);
@@ -599,12 +604,17 @@ public class AchievementsActivity extends AppCompatActivity {
                     data[0][1] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_DESCRIPTION));
                     data[0][2] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBQuestsManager.TQ_XP_REWARD));
                     data[0][3] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBQuestsManager.TQ_AP_REWARD));
+                    data[0][4] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_INTERNAL_CITY));
+                    data[0][5] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_INTERNAL_STREET));
+
                 }
                 else {
                     data[0][0] = "-";
                     data[0][1] = "-";
                     data[0][2] = "-";
                     data[0][3] = "-";
+                    data[0][4] = "-";
+                    data[0][5] = "-";
                 }
 
                 resultQuery = managerDBQuests.selectQuest("Quest2", resultQueryUser.getString(resultQueryUser.getColumnIndex(DBUserManager.TU_LEVEL)));
@@ -613,18 +623,22 @@ public class AchievementsActivity extends AppCompatActivity {
                     data[1][1] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_DESCRIPTION));
                     data[1][2] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBQuestsManager.TQ_XP_REWARD));
                     data[1][3] = "" + resultQuery.getInt(resultQuery.getColumnIndex(DBQuestsManager.TQ_AP_REWARD));
+                    data[1][4] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_INTERNAL_CITY));
+                    data[1][5] = resultQuery.getString(resultQuery.getColumnIndex(DBQuestsManager.TQ_INTERNAL_STREET));
                 }
                 else {
                     data[1][0] = "-";
                     data[1][1] = "-";
                     data[1][2] = "-";
                     data[1][3] = "-";
+                    data[0][4] = "-";
+                    data[0][5] = "-";
                 }
                 achievementFragment.setArgumentsToFragment(data);
 
             }
             else{
-                achievementFragment.setArgumentsToFragment(new String[][]{{"","","",""},{"","","",""}});
+                achievementFragment.setArgumentsToFragment(new String[][]{{"","","","","",""},{"","","","","",""}});
             }
         }
     }
@@ -654,6 +668,26 @@ public class AchievementsActivity extends AppCompatActivity {
         return retValue;
     }
 
+    public boolean checkAchievementReleased(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        boolean retValue=false;
+        DBUserManager managerDBUser = new DBUserManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBUser.selectUser(username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_ACHIEVEMENTS_UNLOCKED)) == 1) {
+                retValue = true;
+            } else {
+                retValue = false;
+            }
+        }
+        return retValue;
+
+    }
     /*
    * Desc: on click method to navegate from toolbar to profile activity
    * */
@@ -673,5 +707,136 @@ public class AchievementsActivity extends AppCompatActivity {
         else{
             Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onClickStartQuest1(View v){
+        sharedpreferences = this.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        TextView tvStreet   = (TextView) findViewById(R.id.tvQuest1Street);
+        TextView tvCity     = (TextView) findViewById(R.id.tvQuest1City);
+        TextView tvDesc     = (TextView) findViewById(R.id.tvQuestContentQ1);
+        TextView tvAP       = (TextView) findViewById(R.id.tvQuestAPQ1);
+        TextView tvXP       = (TextView) findViewById(R.id.tvQuestXPQ1);
+
+        sharedpreferences.edit().putBoolean("questB", true).commit();
+        sharedpreferences.edit().putString("quest", "Quest1").commit();
+        sharedpreferences.edit().putString("questDesc", tvDesc.getText().toString()).commit();
+        sharedpreferences.edit().putString("questCity", tvCity.getText().toString()).commit();
+        sharedpreferences.edit().putString("questStreet", tvStreet.getText().toString()).commit();
+        sharedpreferences.edit().putInt("questAP", Integer.parseInt(tvAP.getText().toString())).commit();
+        sharedpreferences.edit().putInt("questXP", Integer.parseInt(tvXP.getText().toString())).commit();
+
+        Toast.makeText(this, "Quest selected", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    public void onClickStartQuest2(View v){
+        sharedpreferences = this.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        TextView tvStreet   = (TextView) findViewById(R.id.tvQuest2Street);
+        TextView tvCity     = (TextView) findViewById(R.id.tvQuest2City);
+        TextView tvDesc     = (TextView) findViewById(R.id.tvQuestContentDescriptionQ2);
+        TextView tvAP       = (TextView) findViewById(R.id.tvQuestAPQ2);
+        TextView tvXP       = (TextView) findViewById(R.id.tvQuestXPQ2);
+
+        sharedpreferences.edit().putBoolean ("questB"       , true).commit();
+        sharedpreferences.edit().putString("quest", "Quest2").commit();
+        sharedpreferences.edit().putString("questDesc", tvDesc.getText().toString()).commit();
+        sharedpreferences.edit().putString("questCity"    ,tvCity.getText().toString()).commit();
+        sharedpreferences.edit().putString("questStreet"  , tvStreet.getText().toString()).commit();
+        sharedpreferences.edit().putInt("questAP", Integer.parseInt(tvAP.getText().toString())).commit();
+        sharedpreferences.edit().putInt("questXP"      , Integer.parseInt(tvXP.getText().toString())).commit();
+
+        Toast.makeText(this, "Quest selected", Toast.LENGTH_SHORT).show();
+
+    }
+
+    /*
+ * Desc: on click function to show quests
+ * */
+    public void onClickShowQuest(){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(AchievementsActivity.this);
+        View layView = (LayoutInflater.from(AchievementsActivity.this)).inflate(R.layout.quest_content, null);
+        alertBuilder.setView(layView);
+        final TextView questName = (TextView) layView.findViewById(R.id.tvQuestPopName);
+        final TextView questDesc = (TextView) layView.findViewById(R.id.tvQuestPopDesc);
+        final TextView questCity = (TextView) layView.findViewById(R.id.tvQuestPopCity);
+        final TextView questStreet = (TextView) layView.findViewById(R.id.tvQuestPopStreet);
+        final TextView questAP = (TextView) layView.findViewById(R.id.tvQuestPopAP);
+        final TextView questXP = (TextView) layView.findViewById(R.id.tvQuestPopXP);
+
+        LinearLayout llQuest = (LinearLayout) layView.findViewById(R.id.llQuestData);
+        LinearLayout llNoQuest = (LinearLayout) layView.findViewById(R.id.llNoQuest);
+
+
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        boolean isQuestS     = sharedpreferences.getBoolean("questB", false);
+        String questNameS    = sharedpreferences.getString("quest", "default");
+        String questDescS    = sharedpreferences.getString("questDesc", "default");
+        String questCityS    = sharedpreferences.getString("questCity", "default");
+        String questStreetS  = sharedpreferences.getString("questStreet", "default");
+        final int questAPS         = sharedpreferences.getInt("questAP", -1);
+        final int questXPS         = sharedpreferences.getInt("questXP", -1);
+
+        if(isQuestS) {
+            llQuest.setVisibility(View.VISIBLE);
+            llNoQuest.setVisibility(View.GONE);
+
+            if(questNameS.compareTo("Quest1")==0){
+                questName.setText("Report on locality");
+            }
+            else if(questNameS.compareTo("Quest2")==0){
+                questName.setText("Report event");
+            }
+            else{
+                questName.setText(questNameS);
+            }
+            questDesc.setText(questDescS);
+            questCity.setText(questCityS);
+            questStreet.setText(questStreetS);
+            questAP.setText(""+questAPS);
+            questXP.setText(""+questXPS);
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Abandon Quest", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Toast.makeText(this, "Quest 1 completed! Reward: " + questAPS + " AP, " + questXPS + " XP", Toast.LENGTH_SHORT).show();
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.remove("questB");
+                            editor.remove("quest");
+                            editor.remove("questDesc");
+                            editor.remove("questCity");
+                            editor.remove("questStreet");
+                            editor.remove("questAP");
+                            editor.remove("questXP");
+                            editor.commit();
+                        }
+                    })
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+        else{
+            llQuest.setVisibility(View.GONE);
+            llNoQuest.setVisibility(View.VISIBLE);
+
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+
+        Dialog dialog = alertBuilder.create();
+        dialog.show();
+
     }
 }

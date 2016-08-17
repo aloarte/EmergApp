@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.uc3m.p4r4d0x.emergapp.R;
@@ -20,6 +22,7 @@ import com.uc3m.p4r4d0x.emergapp.R;
 public class AchievementFragment2 extends Fragment {
     View mView;
     String [][] data;
+    boolean achievements=false;
     int color=-1;
 
     int arraySize=0;
@@ -35,7 +38,8 @@ public class AchievementFragment2 extends Fragment {
     /*
     * Desc:  Set the data from Activity into the array
     * */
-    public void setArgumentsToFragment(String [][] data, int arraySize,int colorSelected){
+    public void setArgumentsToFragment(String [][] data, int arraySize,int colorSelected,boolean achievements){
+        this.achievements=achievements;
         this.color=colorSelected;
         this.arraySize=arraySize;
         this.data=data;
@@ -45,39 +49,52 @@ public class AchievementFragment2 extends Fragment {
     * */
     public void setArgumentsOntoViews(){
         //Iterate the array and write on the propper position
-        for(int i=0; i< arraySize && i< data.length;i++){
-            switch(i){
+        for (int i = 0; i < arraySize && i < data.length; i++) {
+            switch (i) {
                 //Community Helper
                 case 0:
-                    changeProgressText(data[i][0],data[i][1], R.id.tvProgressExpert1);
+                    changeProgressText(data[i][0], data[i][1], R.id.tvProgressExpert1);
                     changeImageAchievement(data[i][2], R.id.ivCompletedExpert1);
+                    setVisibilityLL(R.id.llExpertAchievement1);
                     break;
                 //Pictures Lover
                 case 1:
-                    changeProgressText(data[i][0],data[i][1], R.id.tvProgressExpert2);
+                    changeProgressText(data[i][0], data[i][1], R.id.tvProgressExpert2);
                     changeImageAchievement(data[i][2], R.id.ivCompletedExpert2);
+                    setVisibilityLL(R.id.llExpertAchievement2);
                     break;
                 //Videos Lover
                 case 2:
-                    changeProgressText(data[i][0],data[i][1], R.id.tvProgressExpert3);
+                    changeProgressText(data[i][0], data[i][1], R.id.tvProgressExpert3);
                     changeImageAchievement(data[i][2], R.id.ivCompletedExpert3);
+                    setVisibilityLL(R.id.llExpertAchievement3);
+                    break;
+                //Quests Lover
+                case 3:
+                    changeProgressText(data[i][0], data[i][1], R.id.tvProgressExpert4);
+                    changeImageAchievement(data[i][2], R.id.ivCompletedExpert4);
+                    setVisibilityLL(R.id.llExpertAchievement4);
                     break;
                 //Expert Reporter
-                case 3:
-                    changeImageAchievement(data[i][2], R.id.ivCompletedExpert4);
-                    break;
-                //Hard Worker
                 case 4:
                     changeImageAchievement(data[i][2], R.id.ivCompletedExpert5);
+                    setVisibilityLL(R.id.llExpertAchievement5);
                     break;
-                //Top Reporter
+                //Hard Worker
                 case 5:
                     changeImageAchievement(data[i][2], R.id.ivCompletedExpert6);
+                    setVisibilityLL(R.id.llExpertAchievement6);
+                    break;
+                //Top Reporter
+                case 6:
+                    changeImageAchievement(data[i][2], R.id.ivCompletedExpert7);
+                    setVisibilityLL(R.id.llExpertAchievement7);
                     break;
                 //Reporting Anywhere
-                case 6:
-                    changeProgressText(data[i][0],data[i][1], R.id.tvProgressExpert7);
-                    changeImageAchievement(data[i][2], R.id.ivCompletedExpert7);
+                case 7:
+                    changeProgressText(data[i][0], data[i][1], R.id.tvProgressExpert8);
+                    changeImageAchievement(data[i][2], R.id.ivCompletedExpert8);
+                    setVisibilityLL(R.id.llExpertAchievement8);
                     break;
 
             }
@@ -157,5 +174,15 @@ public class AchievementFragment2 extends Fragment {
         //Set text to it
         fragmentImageView.setImageResource(resourceID);
 
+    }
+
+    public void setVisibilityLL(int id) {
+        LinearLayout tr = (LinearLayout) mView.findViewById(id);
+        if (achievements) {
+            tr.setVisibility(View.VISIBLE);
+        }
+        else{
+            tr.setVisibility(View.GONE);
+        }
     }
 }

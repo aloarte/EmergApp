@@ -178,6 +178,9 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                 myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
                 return true;
+            case R.id.action_quest:
+                onClickShowQuest();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -482,6 +485,27 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     // ----------------- ACHIEVEMENTS------------
 
 
+    public boolean checkAchievementReleased(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        boolean retValue=false;
+        DBUserManager managerDBUser = new DBUserManager(this);
+        //Make que query
+        Cursor resultQuery = managerDBUser.selectUser(username);
+        //Check if the title selection is unlocked
+        if(resultQuery.moveToFirst()) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_ACHIEVEMENTS_UNLOCKED)) == 1) {
+                retValue = true;
+            } else {
+                retValue = false;
+            }
+        }
+        return retValue;
+
+    }
+
     /**This methods are a copy from the methods in EmergencyActivity
      * They perform the same function, but in another activity*/
 
@@ -494,7 +518,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
         //If the user exists
         if(resultQuery.moveToFirst()) {
-            int totalxpoints  = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)) + xp;
+            int totalxpoints = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)) + xp;
             int totalappoints = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS)) + ap;
             managerDB.upgradeUserAPXPpoints(
                     username,
@@ -502,13 +526,18 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                     totalxpoints
             );
             //Check if by the points the user have upgrade his level
-            checkLevelUp(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)),totalxpoints);
+            checkLevelUp(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)), totalxpoints);
             //Check if the achievement is completed and if so, upgrade the achievement
-            if(totalappoints>=250){upgradeAchievementExpert("aExpert4");}
-            //Check if the user is in the ranking and if so, upgrade the achievement
-            if(checkUserIsInTopRanking()){upgradeAchievementExpert("aExpert5");}
+            if (checkUserIsInTopRanking()) {
+                if (totalappoints >= 250) {
+                    upgradeAchievementExpert("aExpert5");
+                }
+                //Check if the user is in the ranking and if so, upgrade the achievement
+                if (checkUserIsInTopRanking()) {
+                    upgradeAchievementExpert("aExpert6");
+                }
+            }
         }
-
         loadToolbar();
     }
 
@@ -533,13 +562,14 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                 if(xpoints>=300){
                     Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
                     managerDB.upgradeUserLevel(username, "Hero");
-                    upgradeAchievementExpert("aExpert3");
                 }
                 break;
             case "Hero":
                 if(xpoints>=500){
                     Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
                     managerDB.upgradeUserLevel(username,"Legend");
+                    if(checkAchievementReleased())upgradeAchievementExpert("aExpert4");
+
                 }
                 break;
             case "Legend":
@@ -814,5 +844,93 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         else{
             Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /*
+ * Desc: on click function to show quests
+ * */
+    public void onClickShowQuest(){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(AccountConfigurationActivity.this);
+        View layView = (LayoutInflater.from(AccountConfigurationActivity.this)).inflate(R.layout.quest_content, null);
+        alertBuilder.setView(layView);
+        final TextView questName = (TextView) layView.findViewById(R.id.tvQuestPopName);
+        final TextView questDesc = (TextView) layView.findViewById(R.id.tvQuestPopDesc);
+        final TextView questCity = (TextView) layView.findViewById(R.id.tvQuestPopCity);
+        final TextView questStreet = (TextView) layView.findViewById(R.id.tvQuestPopStreet);
+        final TextView questAP = (TextView) layView.findViewById(R.id.tvQuestPopAP);
+        final TextView questXP = (TextView) layView.findViewById(R.id.tvQuestPopXP);
+
+        LinearLayout llQuest = (LinearLayout) layView.findViewById(R.id.llQuestData);
+        LinearLayout llNoQuest = (LinearLayout) layView.findViewById(R.id.llNoQuest);
+
+
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        boolean isQuestS     = sharedpreferences.getBoolean("questB", false);
+        String questNameS    = sharedpreferences.getString("quest", "default");
+        String questDescS    = sharedpreferences.getString("questDesc", "default");
+        String questCityS    = sharedpreferences.getString("questCity", "default");
+        String questStreetS  = sharedpreferences.getString("questStreet", "default");
+        final int questAPS         = sharedpreferences.getInt("questAP", -1);
+        final int questXPS         = sharedpreferences.getInt("questXP", -1);
+
+        if(isQuestS) {
+            llQuest.setVisibility(View.VISIBLE);
+            llNoQuest.setVisibility(View.GONE);
+
+            if(questNameS.compareTo("Quest1")==0){
+                questName.setText("Report on locality");
+            }
+            else if(questNameS.compareTo("Quest2")==0){
+                questName.setText("Report event");
+            }
+            else{
+                questName.setText(questNameS);
+            }
+            questDesc.setText(questDescS);
+            questCity.setText(questCityS);
+            questStreet.setText(questStreetS);
+            questAP.setText(""+questAPS);
+            questXP.setText(""+questXPS);
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Abandon Quest", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Toast.makeText(this, "Quest 1 completed! Reward: " + questAPS + " AP, " + questXPS + " XP", Toast.LENGTH_SHORT).show();
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.remove("questB");
+                            editor.remove("quest");
+                            editor.remove("questDesc");
+                            editor.remove("questCity");
+                            editor.remove("questStreet");
+                            editor.remove("questAP");
+                            editor.remove("questXP");
+                            editor.commit();
+                        }
+                    })
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+        else{
+            llQuest.setVisibility(View.GONE);
+            llNoQuest.setVisibility(View.VISIBLE);
+
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+
+        Dialog dialog = alertBuilder.create();
+        dialog.show();
+
     }
 }

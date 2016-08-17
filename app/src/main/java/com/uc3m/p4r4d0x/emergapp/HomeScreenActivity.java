@@ -18,17 +18,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBQuestsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
-    TextView tViewGPS, tViewGPSCoord,tViewGPSCity;
-    String   sGPSAddr, sGPSCoord ,sGPSCity;
+    TextView tViewGPS, tViewGPSCoord,tViewGPSCity, tViewGPSStreet;
+    String   sGPSAddr, sGPSCoord ,sGPSCity, sGPSStreet;
     //Info to use shared preferences to have a session
     final String MyPREFERENCES = "userPreferences";
     SharedPreferences sharedpreferences;
@@ -105,6 +108,9 @@ public class HomeScreenActivity extends AppCompatActivity {
             case R.id.action_achievements:
                 myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
+                return true;
+            case R.id.action_quest:
+                onClickShowQuest();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -279,10 +285,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         tViewGPS      = (TextView) findViewById(R.id.tvGPSEM1);
         tViewGPSCoord = (TextView) findViewById(R.id.tvGPSCoordEM1);
         tViewGPSCity = (TextView) findViewById(R.id.tvGPSCityEM1);
+        tViewGPSStreet = (TextView) findViewById(R.id.tvGPSStreetEM1);
+
 
 
         //create service passing two TextViews as a param
-        GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS, this.tViewGPSCoord,this.tViewGPSCity);
+        GPSService sGPS = new GPSService(getApplicationContext(), this.tViewGPS, this.tViewGPSCoord,this.tViewGPSCity, this.tViewGPSStreet);
 
         //Try to get the location from GPS or network
         if (sGPS.getLocation()) {
@@ -304,6 +312,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         sGPSCoord = (String) tViewGPSCoord.getText();
         sGPSAddr  = (String) tViewGPS.getText();
         sGPSCity  = (String) tViewGPSCity.getText();
+        sGPSStreet= (String) tViewGPSStreet.getText();
 
 
         return (!sGPSAddr.isEmpty() && !sGPSCoord.isEmpty());
@@ -315,7 +324,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     * Desc: check if have to make another report and this activity came from a report
     * */
     public void checkResend(){
-        String sGPSCoord,sGPSAddr,sGPSCity;
+        String sGPSCoord,sGPSAddr,sGPSCity, sGPSStreet;
         int resendMessage=-1;
         int C_FAST=1, C_ASSISTED=0;
         //Get the extras
@@ -325,6 +334,8 @@ public class HomeScreenActivity extends AppCompatActivity {
             sGPSAddr        = extras.getString("GPSA");
             sGPSCoord       = extras.getString("GPSC");
             sGPSCity       = extras.getString("GPSCY");
+            sGPSStreet       = extras.getString("GPSST");
+
             resendMessage   = extras.getInt("lAgainReport");
             //Make a fast report again
             if(resendMessage==C_FAST){
@@ -334,6 +345,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 i.putExtra("GPSC", sGPSCoord);
                 i.putExtra("GPSA", sGPSAddr);
                 i.putExtra("GPSCY", sGPSCity);
+                i.putExtra("GPSST", sGPSStreet);
                 //Launch intent
                 startActivity(i);
 
@@ -345,7 +357,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 i.putExtra("GPSC",sGPSCoord);
                 i.putExtra("GPSA",sGPSAddr);
                 i.putExtra("GPSCY",sGPSCity);
-
+                i.putExtra("GPSST", sGPSStreet);
                 //Launch intent
                 startActivity(i);
             }
@@ -366,7 +378,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             i.putExtra("GPSC",sGPSCoord);
             i.putExtra("GPSA",sGPSAddr);
             i.putExtra("GPSCY",sGPSCity);
-
+            i.putExtra("GPSST", sGPSStreet);
             //Launch intent
             startActivity(i);
         }
@@ -387,6 +399,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             i.putExtra("GPSC",sGPSCoord);
             i.putExtra("GPSA",sGPSAddr);
             i.putExtra("GPSCY",sGPSCity);
+            i.putExtra("GPSST", sGPSStreet);
             //Launch intent
             startActivity(i);
         }
@@ -451,6 +464,94 @@ public class HomeScreenActivity extends AppCompatActivity {
         ;
         Dialog dialog = alertBuilder.create();
         dialog.show();
+    }
+
+    /*
+   * Desc: on click function to logout
+   * */
+    public void onClickShowQuest(){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(HomeScreenActivity.this);
+        View layView = (LayoutInflater.from(HomeScreenActivity.this)).inflate(R.layout.quest_content, null);
+        alertBuilder.setView(layView);
+        final TextView questName = (TextView) layView.findViewById(R.id.tvQuestPopName);
+        final TextView questDesc = (TextView) layView.findViewById(R.id.tvQuestPopDesc);
+        final TextView questCity = (TextView) layView.findViewById(R.id.tvQuestPopCity);
+        final TextView questStreet = (TextView) layView.findViewById(R.id.tvQuestPopStreet);
+        final TextView questAP = (TextView) layView.findViewById(R.id.tvQuestPopAP);
+        final TextView questXP = (TextView) layView.findViewById(R.id.tvQuestPopXP);
+
+        LinearLayout llQuest = (LinearLayout) layView.findViewById(R.id.llQuestData);
+        LinearLayout llNoQuest = (LinearLayout) layView.findViewById(R.id.llNoQuest);
+
+
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        boolean isQuestS     = sharedpreferences.getBoolean("questB", false);
+        String questNameS    = sharedpreferences.getString("quest", "default");
+        String questDescS    = sharedpreferences.getString("questDesc", "default");
+        String questCityS    = sharedpreferences.getString("questCity", "default");
+        String questStreetS  = sharedpreferences.getString("questStreet", "default");
+        final int questAPS         = sharedpreferences.getInt("questAP", -1);
+        final int questXPS         = sharedpreferences.getInt("questXP", -1);
+
+        if(isQuestS) {
+            llQuest.setVisibility(View.VISIBLE);
+            llNoQuest.setVisibility(View.GONE);
+
+            if(questNameS.compareTo("Quest1")==0){
+                questName.setText("Report on locality");
+            }
+            else if(questNameS.compareTo("Quest2")==0){
+                questName.setText("Report event");
+            }
+            else{
+                questName.setText(questNameS);
+            }
+            questDesc.setText(questDescS);
+            questCity.setText(questCityS);
+            questStreet.setText(questStreetS);
+            questAP.setText(""+questAPS);
+            questXP.setText(""+questXPS);
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Abandon Quest", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Toast.makeText(this, "Quest 1 completed! Reward: " + questAPS + " AP, " + questXPS + " XP", Toast.LENGTH_SHORT).show();
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.remove("questB");
+                            editor.remove("quest");
+                            editor.remove("questDesc");
+                            editor.remove("questCity");
+                            editor.remove("questStreet");
+                            editor.remove("questAP");
+                            editor.remove("questXP");
+                            editor.commit();
+                        }
+                    })
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+        else{
+            llQuest.setVisibility(View.GONE);
+            llNoQuest.setVisibility(View.VISIBLE);
+
+            alertBuilder.setCancelable(true)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+            ;
+        }
+
+        Dialog dialog = alertBuilder.create();
+        dialog.show();
+
     }
 
     /*

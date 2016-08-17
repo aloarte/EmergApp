@@ -15,7 +15,7 @@ public class EmMessage1 extends AppCompatActivity {
 
     //Define constants to send info
     final int C_YES=1,C_NO=2;
-    String   sGPSAddr, sGPSCoord,sGPSCity;
+    String   sGPSAddr, sGPSCoord,sGPSCity, sGPSStreet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +28,10 @@ public class EmMessage1 extends AppCompatActivity {
         //Get the GPS position and the message info from the previous activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            sGPSAddr        = extras.getString("GPSA");
-            sGPSCoord       = extras.getString("GPSC");
+            sGPSAddr       = extras.getString("GPSA");
+            sGPSCoord      = extras.getString("GPSC");
             sGPSCity       = extras.getString("GPSCY");
+            sGPSStreet     = extras.getString("GPSST");
         }
     }
 
@@ -52,6 +53,7 @@ public class EmMessage1 extends AppCompatActivity {
         i.putExtra("GPSC", sGPSCoord);
         i.putExtra("GPSA", sGPSAddr);
         i.putExtra("GPSCY",sGPSCity);
+        i.putExtra("GPSST", sGPSStreet);
         //Launch intent
         startActivity(i);
     }
@@ -68,6 +70,7 @@ public class EmMessage1 extends AppCompatActivity {
         i.putExtra("GPSC",sGPSCoord);
         i.putExtra("GPSA",sGPSAddr);
         i.putExtra("GPSCY",sGPSCity);
+        i.putExtra("GPSST", sGPSStreet);
         //Launch intent
         startActivity(i);
     }

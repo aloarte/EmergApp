@@ -30,7 +30,7 @@ public class FetchAddressService extends IntentService {
     public Context sContext;
     double latitude=0,longitude=0;
     int accuracy;
-    String city="";
+    String city="",street="";
 
     //Default constructor (Neccesary for the AndroidManifest.xml)
     public FetchAddressService() {
@@ -115,6 +115,8 @@ public class FetchAddressService extends IntentService {
             ArrayList<String> addressFragments = new ArrayList<String>();
 
             city=address.getLocality();
+            street=address.getThoroughfare();
+
             // Fetch the address lines using getAddressLine,join in them, and send them to the thread.
             for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
                 addressFragments.add(address.getAddressLine(i));
@@ -139,6 +141,7 @@ public class FetchAddressService extends IntentService {
         bundle.putString(Constants.RESULT_DATA_KEY, message);
         bundle.putString(Constants.RESULT_DATA_KEY2,""+latitude+","+longitude+"");
         bundle.putString(Constants.RESULT_DATA_KEY3,city);
+        bundle.putString(Constants.RESULT_DATA_KEY4,street);
 
 
         //Send the values

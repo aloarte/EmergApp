@@ -25,6 +25,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_quest"
+        android:title="@string/action_quests"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_close_session"
         android:icon="@mipmap/logout"
         android:title="@string/action_close_session"

@@ -15,25 +15,27 @@ import com.uc3m.p4r4d0x.emergapp.R;
  */
 
 public class ResultReceiverGPSCoord extends ResultReceiver {
-        private Receiver mReceiver=null;
-        private String address="";
-        private String gpsCoord="0,0";
-        private String gpsCity="";
-        private String errorMessage="";
-        private TextView GPSAddressView;
-        private TextView GPSCoordView;
-        private TextView GPSCityView;
-
+    private Receiver mReceiver=null;
+    private String address="";
+    private String gpsCoord="0,0";
+    private String gpsCity="";
+    private String gpsStreet="";
+    private String errorMessage="";
+    private TextView GPSAddressView;
+    private TextView GPSCoordView;
+    private TextView GPSCityView;
+    private TextView GPSStreetView;
 
     /*
     * Param: Handler and the TextViews for printing the address and the latitude and longitude
     * Desc: Main Constructor
     * */
-    public ResultReceiverGPSCoord(android.os.Handler handler, TextView addrView, TextView GPSView,TextView city) {
+    public ResultReceiverGPSCoord(android.os.Handler handler, TextView addrView, TextView GPSView,TextView city,TextView street) {
         super(handler);
         GPSAddressView=addrView;
         GPSCoordView=GPSView;
         GPSCityView=city;
+        GPSStreetView=street;
     }
 
     /*
@@ -63,6 +65,8 @@ public class ResultReceiverGPSCoord extends ResultReceiver {
                 address = resultData.getString(Constants.RESULT_DATA_KEY);
                 gpsCoord=resultData.getString(Constants.RESULT_DATA_KEY2);
                 gpsCity =resultData.getString(Constants.RESULT_DATA_KEY3);
+                gpsStreet =resultData.getString(Constants.RESULT_DATA_KEY4);
+
 
                 //Print the addres on the TextView
                 setView(true,resultCode);
@@ -90,6 +94,7 @@ public class ResultReceiverGPSCoord extends ResultReceiver {
             //Display the address on the textView
             GPSAddressView.setText(address);
             GPSCityView.setText(gpsCity);
+            GPSStreetView.setText(gpsStreet);
 
         }
         else{

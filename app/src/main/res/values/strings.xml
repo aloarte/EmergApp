@@ -44,11 +44,13 @@
     <string name="action_profile">Profile</string>
     <string name="action_ranking">Ranking</string>
     <string name="action_achievements">Achievements</string>
+    <string name="action_quests">Quests</string>
     <string name="title_activity_home_screen">HomeScreenActivity</string>
     <string name="title_activity_ranking">RankingActivity</string>
     <string name="title_activity_achievements">AchievementsActivity</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_account_configuration">AccountConfigurationActivity</string>
+    <string name="title_activity_quests">QuestsActivity</string>
 
 
 </resources>

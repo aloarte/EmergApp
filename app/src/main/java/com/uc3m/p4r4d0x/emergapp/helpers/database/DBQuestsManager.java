@@ -20,7 +20,8 @@ public class DBQuestsManager {
     public static final String TQ_NAME= "name";
     public static final String TQ_TYPE= "type";
     public static final String TQ_DESCRIPTION="description";
-    public static final String TQ_INTERNAL_DESCRIPTION="intdescription";
+    public static final String TQ_INTERNAL_CITY="intcity";
+    public static final String TQ_INTERNAL_STREET="intstreet";
     public static final String TQ_LEVEL="level";
     public static final String TQ_AP_REWARD="apreward";
     public static final String TQ_XP_REWARD="xpreward";
@@ -37,7 +38,8 @@ public class DBQuestsManager {
             + TQ_NAME                 + " text not null,"
             + TQ_TYPE                 + " text not null, "
             + TQ_DESCRIPTION          + " text not null,"
-            + TQ_INTERNAL_DESCRIPTION + " text not null,"
+            + TQ_INTERNAL_CITY        + " text not null,"
+            + TQ_INTERNAL_STREET        + " text not null,"
             + TQ_LEVEL                + " text not null,"
             + TQ_AP_REWARD            + " integer not null,"
             + TQ_XP_REWARD            + " integer not null);";
@@ -59,7 +61,7 @@ public class DBQuestsManager {
     * Ret: A filled ContentValues object
     * */
     public ContentValues generateCVUser( String nameId, String name,String type, String description,
-                                         String internalDesc,String level,
+                                         String intCity,String intStreet,String level,
                                          int ap_points,int xp_points){
 
         ContentValues contentV = new ContentValues();
@@ -67,7 +69,8 @@ public class DBQuestsManager {
         contentV.put(TQ_NAME,name);
         contentV.put(TQ_TYPE,type);
         contentV.put(TQ_DESCRIPTION,description);
-        contentV.put(TQ_INTERNAL_DESCRIPTION,internalDesc);
+        contentV.put(TQ_INTERNAL_CITY,intCity);
+        contentV.put(TQ_INTERNAL_STREET,intStreet);
         contentV.put(TQ_LEVEL,level);
         contentV.put(TQ_AP_REWARD,ap_points);
         contentV.put(TQ_XP_REWARD,xp_points);
@@ -79,11 +82,11 @@ public class DBQuestsManager {
     * Param: quest data
     * */
     public boolean insertQuest(String nameId, String name, String type,String description,
-                              String internalDesc,String level,
+                               String intCity,String intStreet,String level,
                               int ap_points,int xp_points){
 
         long retValue=0;
-        retValue=db.insert(TABLE_NAME, null, generateCVUser(nameId, name,type, description, internalDesc,
+        retValue=db.insert(TABLE_NAME, null, generateCVUser(nameId, name,type, description, intCity,intStreet,
                                                             level,  ap_points,xp_points));
         if(retValue==-1 || retValue==0){
             return false;
@@ -103,6 +106,15 @@ public class DBQuestsManager {
         return db.rawQuery("SELECT * from " + TABLE_NAME + " where " + TQ_TYPE  + "=\"" + questId + "\""
                                                          + " and "   + TQ_LEVEL + "=\"" + level   + "\""
                                                          + "ORDER BY RANDOM() LIMIT 1;", null);
+    }
+
+    /*
+    * Desc: Select from the database a quest
+    * Param: quest id
+    * Ret: Cursor object with the information
+    * */
+    public Cursor selectSingleQuest(String questId){
+        return db.rawQuery("SELECT * from " + TABLE_NAME + " where " + TQ_TYPE  + "=\"" + questId + "\";", null);
     }
 
 

@@ -22,6 +22,7 @@ import com.uc3m.p4r4d0x.emergapp.R;
 public class AchievementFragment3 extends Fragment {
     View mView;
     String [][] data;
+    boolean achievements;
 
     int arraySize=0;
     int color=-1;
@@ -37,10 +38,12 @@ public class AchievementFragment3 extends Fragment {
     /*
     * Desc:  Set the data from Activity into the array
     * */
-    public void setArgumentsToFragment(String [][] data, int arraySize,int colorSelected){
+    public void setArgumentsToFragment(String [][] data, int arraySize,int colorSelected,boolean achievements){
         this.arraySize=arraySize;
         this.color=colorSelected;
         this.data=data;
+        this.achievements=achievements;
+
     }
     /*
     * Desc:  Using the data obtained from the activity, change the TextViews with the data retrieved from DDBB
@@ -48,81 +51,76 @@ public class AchievementFragment3 extends Fragment {
     public void setArgumentsOntoViews(){
         int displayed=-1;
         LinearLayout auxLL;
-
         //Iterate the array and write on the propper position
-        for(int i=0; i< arraySize && i< data.length;i++){
-            displayed=Integer.parseInt(data[i][3]);
-            switch(i){
+        for (int i = 0; i < arraySize && i < data.length; i++) {
+            displayed = Integer.parseInt(data[i][3]);
+            switch (i) {
                 //Seeker of Truth
                 case 0:
-                    auxLL= (LinearLayout) mView.findViewById(R.id.llSecretAchievement1);
-                    if(displayed!=0){
+                    auxLL = (LinearLayout) mView.findViewById(R.id.llSecretAchievement1);
+                    if (displayed != 0) {
                         auxLL.setVisibility(View.VISIBLE);
-                        changeProgressText(data[i][0],data[i][1], R.id.tvProgressSecret1);
+                        changeProgressText(data[i][0], data[i][1], R.id.tvProgressSecret1);
                         changeImageAchievement(data[i][2], R.id.ivCompletedSecret1);
-                    }
-                    else{
+                    } else {
                         auxLL.setVisibility(View.GONE);
                     }
-
+                    setVisibilityLL(R.id.llSecretAchievement1);
                     break;
                 //I give my best
                 case 1:
-                    auxLL= (LinearLayout) mView.findViewById(R.id.llSecretAchievement2);
-                    if(displayed!=0){
+                    auxLL = (LinearLayout) mView.findViewById(R.id.llSecretAchievement2);
+                    if (displayed != 0) {
                         auxLL.setVisibility(View.VISIBLE);
                         changeImageAchievement(data[i][2], R.id.ivCompletedSecret2);
-                    }
-                    else{
+                    } else {
                         auxLL.setVisibility(View.GONE);
                     }
                     break;
                 //An image is worth more than 1000 words
                 case 2:
-                    auxLL= (LinearLayout) mView.findViewById(R.id.llSecretAchievement3);
-                    if(displayed!=0){
+                    auxLL = (LinearLayout) mView.findViewById(R.id.llSecretAchievement3);
+                    if (displayed != 0) {
                         auxLL.setVisibility(View.VISIBLE);
                         changeImageAchievement(data[i][2], R.id.ivCompletedSecret3);
-                    }
-                    else{
+                    } else {
                         auxLL.setVisibility(View.GONE);
                     }
                     break;
                 //As fast as I can
                 case 3:
-                    auxLL= (LinearLayout) mView.findViewById(R.id.llSecretAchievement4);
-                    if(displayed!=0){
+                    auxLL = (LinearLayout) mView.findViewById(R.id.llSecretAchievement4);
+                    if (displayed != 0) {
                         auxLL.setVisibility(View.VISIBLE);
                         changeImageAchievement(data[i][2], R.id.ivCompletedSecret4);
-                    }
-                    else{
+                    } else {
                         auxLL.setVisibility(View.GONE);
                     }
                     break;
                 //Personal image is allways the first
                 case 4:
-                    auxLL= (LinearLayout) mView.findViewById(R.id.llSecretAchievement5);
-                    if(displayed!=0){
+                    auxLL = (LinearLayout) mView.findViewById(R.id.llSecretAchievement5);
+                    if (displayed != 0) {
                         auxLL.setVisibility(View.VISIBLE);
                         changeImageAchievement(data[i][2], R.id.ivCompletedSecret5);
-                    }
-                    else{
+                    } else {
                         auxLL.setVisibility(View.GONE);
                     }
                     break;
                 //First my neighborhood
                 case 5:
-                    auxLL= (LinearLayout) mView.findViewById(R.id.llSecretAchievement6);
-                    if(displayed!=0){
+                    auxLL = (LinearLayout) mView.findViewById(R.id.llSecretAchievement6);
+                    if (displayed != 0) {
                         auxLL.setVisibility(View.VISIBLE);
                         changeProgressText(data[i][0], data[i][1], R.id.tvProgressSecret6);
-                        changeImageAchievement(data[i][2], R.id.ivCompletedSecret6);                    }
-                    else{
+                        changeImageAchievement(data[i][2], R.id.ivCompletedSecret6);
+                    } else {
                         auxLL.setVisibility(View.GONE);
                     }
                     break;
             }
         }
+
     }
 
     /*
@@ -196,5 +194,15 @@ public class AchievementFragment3 extends Fragment {
         //Set text to it
         fragmentImageView.setImageResource(resourceID);
 
+    }
+
+    public void setVisibilityLL(int id) {
+        LinearLayout tr = (LinearLayout) mView.findViewById(id);
+        if (achievements) {
+            tr.setVisibility(View.VISIBLE);
+        }
+        else{
+            tr.setVisibility(View.GONE);
+        }
     }
 }
