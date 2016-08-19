@@ -149,6 +149,7 @@ public class SignIn extends AppCompatActivity {
         return  titleDB.inserttitle("tBegginer", username,0) &
                 titleDB.inserttitle("tHero", username,0) &
                 titleDB.inserttitle("tTop", username,0) &
+                titleDB.inserttitle("tWorker", username,0) &
                 titleDB.inserttitle("tSeeker", username,0);
 
     }
@@ -177,7 +178,7 @@ public class SignIn extends AppCompatActivity {
                             achievementsDB.insertAchievement("aExpert6"   ,"Top Reporter"                           ,0 ,10 ,10 ,0,1,username) &
                             achievementsDB.insertAchievement("aExpert7"   ,"Reporting Anywhere"                     ,3 ,20 ,10 ,0,1,username) ;
 
-        achievementsSecret= achievementsDB.insertAchievement("aSecretMeta","Seeker of Truth"                        ,5 ,200,50 ,0,1,username) &
+        achievementsSecret= achievementsDB.insertAchievement("aSecretMeta","Seeker of Truth"                        ,5 ,100,50 ,0,1,username) &
                             achievementsDB.insertAchievement("aSecret1"   ,"I give my best"                         ,0 ,10 ,0  ,0,0,username) &
                             achievementsDB.insertAchievement("aSecret2"   ,"An image is worth more than 1000 words" ,0 ,10 ,0  ,0,0,username) &
                             achievementsDB.insertAchievement("aSecret3"   ,"As fast as I can"                       ,0 ,10 ,0  ,0,0,username) &

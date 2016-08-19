@@ -48,6 +48,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.uc3m.p4r4d0x.emergapp.helpers.Constants;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAchievementsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAvatarsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBTitlesManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverGPSCoord;
 import com.uc3m.p4r4d0x.emergapp.receivers.ResultReceiverSentReady;
@@ -366,6 +367,10 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
                 return true;
+            case R.id.action_rewards:
+                myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
+                startActivity(myIntent);
+                return true;
             case R.id.action_quest:
                 onClickShowQuest();
                 return true;
@@ -500,8 +505,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             //onActivityResult for taking a photo
             if (requestCode == C_PHOTO) {
                 //Obtains the image. Parse with a bundle and a bitmap
-
-                bitMapPictures[2] = BitmapFactory.decodeFile(toSendPicturesPath[2]);
+                BitmapFactory.Options o = new BitmapFactory.Options();
+                o.inSampleSize=8;
+                bitMapPictures[2] = BitmapFactory.decodeFile(toSendPicturesPath[2],o);
 
                 //Set the new image (bitmapped) to the imageView
                 imageViewsPictures[2].setVisibility(View.VISIBLE);
@@ -592,6 +598,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 try {
                     InputStream openInputStream = getContentResolver().openInputStream(photoLocation);
                     //Take a stream of data and convert in to a bitmap
+
                     bitMapPictures[3] = BitmapFactory.decodeStream(openInputStream);
 
                     //Assign this image to our image view
@@ -750,7 +757,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                             imageFile1 = new File(toSendPicturesPath[0]);
                             if (imageFile1.exists()) {
                                 //Build a bit map and set this bit map into the image view
-                                bitMapPictures[0] = BitmapFactory.decodeFile(toSendPicturesPath[0]);
+                                BitmapFactory.Options o = new BitmapFactory.Options();
+                                o.inSampleSize=8;
+                                bitMapPictures[0] = BitmapFactory.decodeFile(toSendPicturesPath[0],o);
                                 imageViewsPictures[0].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[0], 120, 120, false));
                                 //Set if the image in the position 1 is obtained
                                 obtainedImages[0] = true;
@@ -766,7 +775,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                             imageFile2 = new File(toSendPicturesPath[1]);
                             if (imageFile2.exists()) {
                                 //Build a bit map and set this bit map into the image view
-                                bitMapPictures[1] = BitmapFactory.decodeFile(toSendPicturesPath[1]);
+                                BitmapFactory.Options o = new BitmapFactory.Options();
+                                o.inSampleSize=8;
+                                bitMapPictures[1] = BitmapFactory.decodeFile(toSendPicturesPath[1],o);
                                 imageViewsPictures[1].setImageBitmap(Bitmap.createScaledBitmap(bitMapPictures[1], 120, 120, false));
 
                                 //Set if the image in the position 2 is obtained
@@ -1099,6 +1110,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                //Check if the user is in the ranking and if so, upgrade the achievement
                if (checkUserIsInTopRanking()) {
                    upgradeAchievementExpert("aExpert6");
+
                }
             }
         }
@@ -1133,6 +1145,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     Toast.makeText(this, "Level Up!", Toast.LENGTH_LONG).show();
                     managerDB.upgradeUserLevel(username,"Hero");
                     if(checkAchievementReleased())upgradeAchievementExpert("aExpert4");
+                    //Unlock title "tHero"
+                    DBTitlesManager managerDBTitles = new DBTitlesManager(this);
+                    managerDBTitles.upgradeTitleObtained("tHero", 1, username);
+                    Toast.makeText(this,"New title unlocked!", Toast.LENGTH_LONG).show();
+
                 }
                 break;
             case "Hero":
@@ -1155,18 +1172,21 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     * */
     public void checkRewardObtained(int appoints){
         String username = sharedpreferences.getString("username", "default");
-        DBUserManager managerUsersDB = new DBUserManager(this);
+        //Get the managers for the DDBB
+        DBUserManager managerUsersDB      = new DBUserManager(this);
         DBAvatarsManager managerAvatarsDB = new DBAvatarsManager(this);
+        DBTitlesManager managerTitlesDB   = new DBTitlesManager(this);
 
         //Select the user
         Cursor resultQuery                 = managerUsersDB.selectUser(username);
         //If the user exists
         if(resultQuery.moveToFirst()) {
-            //Set the level
+            //Get the progress achieved by the user
             int userProgress = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED));
-            Log.d("ALR","CheckReward: "+ userProgress);
 
+            //Switch the progress
             switch(userProgress){
+                //Nothing unlocked yet
                 case 0:
                     if(appoints>=50){
                         Toast.makeText(this, "Title change unlocked!", Toast.LENGTH_LONG).show();
@@ -1179,6 +1199,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
                     }
                     break;
+                //1 element unlocked
                 case 1:
                     if(appoints>=100){
                         Toast.makeText(this, "Avatar change unlocked!", Toast.LENGTH_LONG).show();
@@ -1190,6 +1211,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         managerUsersDB.upgradeUserProgressRewards(username);
                     }
                     break;
+                //2 element unlocked
                 case 2:
                     if(appoints>=125){
                         Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
@@ -1197,7 +1219,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         managerUsersDB.upgradeUserProgressRewards(username);
                     }
                     break;
+                //3 element unlocked
                 case 3:
+
                     if(appoints>=150){
                         Toast.makeText(this, "Color change unlocked!", Toast.LENGTH_LONG).show();
                         managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
@@ -1208,6 +1232,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         managerUsersDB.upgradeUserProgressRewards(username);
                     }
                     break;
+                //4 element unlocked
                 case 4:
                     if(appoints>=175){
                         Toast.makeText(this, "Avatar unlocked", Toast.LENGTH_LONG).show();
@@ -1215,12 +1240,15 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         managerUsersDB.upgradeUserProgressRewards(username);
                     }
                     break;
+                //5 element unlocked
                 case 5:
                     if(appoints>=200){
-                        Toast.makeText(this, "New title unlocked!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "New colors unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserMoreColors(username);
                         managerUsersDB.upgradeUserProgressRewards(username);
                     }
                     break;
+                //6 element unlocked
                 case 6:
                     if(appoints>=225){
                         Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
@@ -1228,12 +1256,15 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         managerUsersDB.upgradeUserProgressRewards(username);
                     }
                     break;
+                //7 element unlocked
                 case 7:
                     if(appoints>=250){
-                        Toast.makeText(this, "New colors unlocked!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "New title unlocked!", Toast.LENGTH_LONG).show();
+                        managerTitlesDB.upgradeTitleObtained("tWorker", 1, username);
                         managerUsersDB.upgradeUserProgressRewards(username);
                     }
                     break;
+                //8 element unlocked
                 case 8:
                     if(appoints>=275){
                         Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
@@ -1375,7 +1406,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         //Re initializate deletedArrays
         deletedImages=new boolean[4];
         deletedVideos=new boolean[4];
-
+        //Delete the bitmaps and uris used to free memory
+        for(int j=0;j<4;j++) {
+            bitMapPictures[j] = null;
+            uriVideos[j]=null;
+        }
     }
 
     /*
@@ -1580,15 +1615,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         int questAP         = sharedpreferences.getInt("questAP", -1);
         int questXP         = sharedpreferences.getInt("questXP", -1);
 
-        Log.d("ALR", "IQ: "+isQuest);
-        Log.d("ALR", "QN: "+questName);
-
         //Check if all the fields are propperly filled
         if(isQuest && questName.compareTo("defaul")!=1
                 && questCity.compareTo("defaul")!=1 && questStreet.compareTo("defaul")!=1
                 && questAP != -1 && questXP != -1){
-            Log.d("ALR", "QC: "+questCity);
-            Log.d("ALR", "QS: "+questStreet);
+
 
 
             if(questName.compareTo("Quest1")==0) {
@@ -1628,7 +1659,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             }
         }
 
-        Log.d("ALR", "Street: " + street + " City: " + city);
 
 
         }
@@ -1734,7 +1764,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             //If the achievement is not obtained already
             if(resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_COMPLETED))==0){
                 //Upgrade the achievement to obtained
-                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0,1, username);
+                managerDBAchiements.upgradeAchievementObtained(achievement, 1, 0, 1, username);
                 //Upgrade the XP and AP of the achievement
                 changeUserStats(
                         username,
@@ -1777,6 +1807,12 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                         resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
                 upgradeAchievementMetaExpert();
                 achievementObtained=1;
+                if(achievement.compareTo("aExpert6")==0){
+                    //Unlock title "top reporter"
+                    DBTitlesManager managerDBTitles = new DBTitlesManager(this);
+                    managerDBTitles.upgradeTitleObtained("tTop", 1, username);
+                    Toast.makeText(this,"New title unlocked!", Toast.LENGTH_LONG).show();
+                }
             }
 
         }
@@ -1848,8 +1884,14 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
 
+                    //Unlock the rest of achievements
                     DBUserManager managerDBUsers = new DBUserManager(this);
                     managerDBUsers.upgradeUserAchievementsUnlocked(username);
+                    //Unlock title "begginer"
+                    DBTitlesManager managerDBTitles = new DBTitlesManager(this);
+                    managerDBTitles.upgradeTitleObtained("tBegginer",1,username);
+                    Toast.makeText(this,"New title unlocked!", Toast.LENGTH_LONG).show();
+
                     achievementObtained=1;
 
 
@@ -1937,6 +1979,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                             username,
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                    //Unlock title "seeker of truth"
+                    DBTitlesManager managerDBTitles = new DBTitlesManager(this);
+                    managerDBTitles.upgradeTitleObtained("tSeeker", 1, username);
+                    Toast.makeText(this,"New title unlocked!", Toast.LENGTH_LONG).show();
+
 
                 }
                 else{

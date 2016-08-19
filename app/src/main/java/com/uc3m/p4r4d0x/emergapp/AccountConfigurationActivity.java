@@ -85,52 +85,13 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         loadToolbar();
         //Load the color
         loadColor();
-
-
-        loadAvatars();
-
-
-
-        llArray[0] = (LinearLayout) findViewById(R.id.llAvatar1);
-        llArray[1] = (LinearLayout) findViewById(R.id.llAvatar2);
-        llArray[2] = (LinearLayout) findViewById(R.id.llAvatar3);
-        llArray[3] = (LinearLayout) findViewById(R.id.llAvatar4);
-        llArray[4] = (LinearLayout) findViewById(R.id.llAvatar5);
-        llArray[5] = (LinearLayout) findViewById(R.id.llAvatar6);
-
-        //Get the spinner
-        colorOptionsSpinner = (Spinner) findViewById(R.id.spinnerAccountConfiguration);
-
-        //Build an array list with the elements to fill the spinner
-        ArrayList<ItemSpinnerData> alSpinnerData= new ArrayList<>();
-        //Add all the elements
-        alSpinnerData.add(new ItemSpinnerData("Default",R.drawable.defaultsquare));
-        alSpinnerData.add(new ItemSpinnerData("Red",R.drawable.redsquare));
-        alSpinnerData.add(new ItemSpinnerData("Blue",R.drawable.bluesquare));
-        alSpinnerData.add(new ItemSpinnerData("Green",R.drawable.greensquare));
-        alSpinnerData.add(new ItemSpinnerData("Purple",R.drawable.purplesquare));
-        alSpinnerData.add(new ItemSpinnerData("Yellow",R.drawable.yellowsquare));
-        alSpinnerData.add(new ItemSpinnerData("Pink",R.drawable.pinksquare));
-        alSpinnerData.add(new ItemSpinnerData("Grey",R.drawable.greysquare));
+        //Load account configuration items
+        loadAcountConfiguration();
 
 
 
-        //Build the spinner adapter using the array list
-        SpinnerAdapter adapter = new SpinnerAdapter (this,R.layout.spinner_layout,R.id.tvSpinnerAccountConfiguration,alSpinnerData);
-        //Set the adapter to the spinner to set the info in the spinner
-        colorOptionsSpinner.setAdapter(adapter);
 
-        colorOptionsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                colorSelected=((TextView)view.findViewById(R.id.tvSpinnerAccountConfiguration)).getText().toString();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
     /*
     * Desc: method overrided from AppCompatActivity
@@ -178,6 +139,10 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                 myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
                 return true;
+            case R.id.action_rewards:
+                myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
+                startActivity(myIntent);
+                return true;
             case R.id.action_quest:
                 onClickShowQuest();
                 return true;
@@ -185,7 +150,6 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
     public void onBackPressed() {
     }
@@ -359,6 +323,38 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         }
     }
 
+
+    /*
+     * Desc: load the activity info for the account configuration
+     *
+     * */
+    public void loadAcountConfiguration(){
+        //Load the data
+        loadAcountConfigurationData();
+
+        //Check if the titles are unlocked and if so, load them
+        if(checkUnlockSelectColors()){
+            loadColorsToSelect();
+        }
+    }
+
+    /*
+     * Desc: load the avatars data
+     *
+     * */
+    public void loadAcountConfigurationData(){
+        llArray[0] = (LinearLayout) findViewById(R.id.llAvatar1);
+        llArray[1] = (LinearLayout) findViewById(R.id.llAvatar2);
+        llArray[2] = (LinearLayout) findViewById(R.id.llAvatar3);
+        llArray[3] = (LinearLayout) findViewById(R.id.llAvatar4);
+        llArray[4] = (LinearLayout) findViewById(R.id.llAvatar5);
+        llArray[5] = (LinearLayout) findViewById(R.id.llAvatar6);
+
+        //Load the avatar checking all the avatars selected
+        loadAvatars();
+
+    }
+
     /*
     * Load the avatars unlocked by the user
     * */
@@ -368,7 +364,6 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String username                    = sharedpreferences.getString("username", "default");
 
-        Log.d("ALR","LoadTitlesInside");
         //Check the username
         if(username.compareTo("default")==0){
             //If is empty (error) do nothing
@@ -422,8 +417,98 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     }
 
     /*
-    * Desc: Check from the DDBB if the user can select his account configuration
+     * Desc: Check from the DDBB if the user can select color changes
+     * */
+    public boolean checkUnlockSelectColors(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        boolean retValue=false;
+        Log.d("ALR","LoadTitles");
+        //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else {
+            //Get the linear layout
+            LinearLayout llSelectColors = (LinearLayout) findViewById(R.id.llProfileColorSelector);
+            //Get the database manager
+            DBUserManager managerDBUser = new DBUserManager(this);
+            //Make que query
+            Cursor resultQuery = managerDBUser.selectUser(username);
+            //Check if the title selection is unlocked
+            if(resultQuery.moveToFirst()==true) {
+                if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_COLOR)) == 1) {
+                    llSelectColors.setVisibility(View.VISIBLE);
+                    retValue = true;
+                } else {
+                    llSelectColors.setVisibility(View.INVISIBLE);
+                    retValue = false;
+                }
+            }
+        }
+        return retValue;
+    }
+
+    /*
+    * Desc: Load the colors unlocked to change interface colors
     * */
+    public void loadColorsToSelect(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+        DBUserManager managerDBUser = new DBUserManager(this);
+        //Make a query to know if the user have all the colors unlocked
+        Cursor resultQuery = managerDBUser.selectUser(username);
+        boolean moreColorsUnlocked=false;
+        if(resultQuery.moveToFirst()) {
+            //Check if the extra color selection is unlocked
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MORECOLORS_UNLOCKED)) == 1){
+                moreColorsUnlocked=true;
+            }
+        }
+
+        //Get the spinner
+        colorOptionsSpinner = (Spinner) findViewById(R.id.spinnerAccountConfiguration);
+
+        //Build an array list with the elements to fill the spinner
+        ArrayList<ItemSpinnerData> alSpinnerData= new ArrayList<>();
+        //Add all the elements
+        alSpinnerData.add(new ItemSpinnerData("Default",R.drawable.defaultsquare));
+        alSpinnerData.add(new ItemSpinnerData("Red",R.drawable.redsquare));
+        alSpinnerData.add(new ItemSpinnerData("Blue",R.drawable.bluesquare));
+        alSpinnerData.add(new ItemSpinnerData("Green",R.drawable.greensquare));
+        //Check if the extra colors are unlocked
+        if(moreColorsUnlocked) {
+            alSpinnerData.add(new ItemSpinnerData("Purple", R.drawable.purplesquare));
+            alSpinnerData.add(new ItemSpinnerData("Yellow", R.drawable.yellowsquare));
+            alSpinnerData.add(new ItemSpinnerData("Pink", R.drawable.pinksquare));
+            alSpinnerData.add(new ItemSpinnerData("Grey", R.drawable.greysquare));
+        }
+
+
+        //Build the spinner adapter using the array list
+        SpinnerAdapter adapter = new SpinnerAdapter (this,R.layout.spinner_layout,R.id.tvSpinnerAccountConfiguration,alSpinnerData);
+        //Set the adapter to the spinner to set the info in the spinner
+        colorOptionsSpinner.setAdapter(adapter);
+
+        colorOptionsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                colorSelected=((TextView)view.findViewById(R.id.tvSpinnerAccountConfiguration)).getText().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    /*
+     * Desc: Check from the DDBB if the user can select his account configuration
+     * */
     public boolean checkUnlockAcountConfiguration(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -434,8 +519,8 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         DBUserManager managerDBUser = new DBUserManager(this);
         //Make que query
         Cursor resultQuery = managerDBUser.selectUser(username);
-        //Check if the title selection is unlocked
-        if(resultQuery.moveToFirst()==true) {
+        //Check if the avatar selection is unlocked
+        if(resultQuery.moveToFirst()) {
             if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1) {
                 retValue = true;
             } else {
@@ -447,10 +532,10 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     }
 
     /*
-   * Desc: Change the visibility on the button if the avatar is obtained
-   * Par: int 1 obtained 0 not obtained, and the radio button view
-   *
-   * */
+    * Desc: Change the visibility on the button if the avatar is obtained
+    * Par: int 1 obtained 0 not obtained, and the radio button view
+    *
+    * */
     public void changeAvatarVisiblity(int obtained, View titleRadioButton){
         //If the title was obtained
         if(obtained==1){
@@ -463,7 +548,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
     }
 
     /*
-    * Desc: change the color of a selected image
+    * Desc: change the color of a selected image avatar to show that its selected
     * */
     public void markImageViewAvatar(int idLinearLayoutAvatar){
 
@@ -484,6 +569,10 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
     // ----------------- ACHIEVEMENTS------------
 
+
+    /**This methods are a copy from the methods in EmergencyActivity
+     * They perform the same function, but in another activity
+     * */
 
     public boolean checkAchievementReleased(){
         //Get sharedpreferences item and the username asociated
@@ -506,9 +595,6 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
     }
 
-    /**This methods are a copy from the methods in EmergencyActivity
-     * They perform the same function, but in another activity*/
-
     public void changeUserStats(String username,int ap,int xp){
 
         DBUserManager managerDB = new DBUserManager(this);
@@ -518,7 +604,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
         //If the user exists
         if(resultQuery.moveToFirst()) {
-            int totalxpoints = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)) + xp;
+            int totalxpoints  = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_XP_POINTS)) + xp;
             int totalappoints = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_AP_POINTS)) + ap;
             managerDB.upgradeUserAPXPpoints(
                     username,
@@ -527,17 +613,24 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             );
             //Check if by the points the user have upgrade his level
             checkLevelUp(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)), totalxpoints);
-            //Check if the achievement is completed and if so, upgrade the achievement
-            if (checkUserIsInTopRanking()) {
+            checkRewardObtained(totalappoints);
+            if(checkAchievementReleased()) {
+                //Check if the achievement is completed and if so, upgrade the achievement
                 if (totalappoints >= 250) {
                     upgradeAchievementExpert("aExpert5");
                 }
                 //Check if the user is in the ranking and if so, upgrade the achievement
                 if (checkUserIsInTopRanking()) {
                     upgradeAchievementExpert("aExpert6");
+                    //Unlock title "top reporter"
+                    DBTitlesManager managerDBTitles = new DBTitlesManager(this);
+                    managerDBTitles.upgradeTitleObtained("tTop", 1, username);
+                    Toast.makeText(this,"New title unlocked", Toast.LENGTH_LONG).show();
+
                 }
             }
         }
+
         loadToolbar();
     }
 
@@ -548,28 +641,32 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         switch(level){
             case "Traveler":
                 if(xpoints>=50){
-                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_LONG).show();
                     managerDB.upgradeUserLevel(username,"Veteran");
                 }
                 break;
             case "Veteran":
                 if(xpoints>=150){
-                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_LONG).show();
                     managerDB.upgradeUserLevel(username, "Champion");
                 }
                 break;
             case "Champion":
                 if(xpoints>=300){
-                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
-                    managerDB.upgradeUserLevel(username, "Hero");
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_LONG).show();
+                    managerDB.upgradeUserLevel(username,"Hero");
+                    if(checkAchievementReleased())upgradeAchievementExpert("aExpert4");
+                    //Unlock title "tHero"
+                    DBTitlesManager managerDBTitles = new DBTitlesManager(this);
+                    managerDBTitles.upgradeTitleObtained("tBegginer", 1, username);
+                    Toast.makeText(this,"New title unlocked", Toast.LENGTH_LONG).show();
+
                 }
                 break;
             case "Hero":
                 if(xpoints>=500){
-                    Toast.makeText(this, "Level Up!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Level Up!", Toast.LENGTH_LONG).show();
                     managerDB.upgradeUserLevel(username,"Legend");
-                    if(checkAchievementReleased())upgradeAchievementExpert("aExpert4");
-
                 }
                 break;
             case "Legend":
@@ -578,6 +675,118 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    public void checkRewardObtained(int appoints){
+        String username = sharedpreferences.getString("username", "default");
+        //Get the managers for the DDBB
+        DBUserManager managerUsersDB      = new DBUserManager(this);
+        DBAvatarsManager managerAvatarsDB = new DBAvatarsManager(this);
+        DBTitlesManager managerTitlesDB   = new DBTitlesManager(this);
+
+        //Select the user
+        Cursor resultQuery                 = managerUsersDB.selectUser(username);
+        //If the user exists
+        if(resultQuery.moveToFirst()) {
+            //Get the progress achieved by the user
+            int userProgress = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED));
+
+            //Switch the progress
+            switch(userProgress){
+                //Nothing unlocked yet
+                case 0:
+                    if(appoints>=50){
+                        Toast.makeText(this, "Title change unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
+                                1,
+                                0,
+                                0
+                        );
+                        managerUsersDB.upgradeUserProgressRewards(username);
+
+                    }
+                    break;
+                //1 element unlocked
+                case 1:
+                    if(appoints>=100){
+                        Toast.makeText(this, "Avatar change unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
+                                1,
+                                1,
+                                0
+                        );
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                //2 element unlocked
+                case 2:
+                    if(appoints>=125){
+                        Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
+                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarMan2",1,username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                //3 element unlocked
+                case 3:
+
+                    if(appoints>=150){
+                        Toast.makeText(this, "Color change unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
+                                1,
+                                1,
+                                1
+                        );
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                //4 element unlocked
+                case 4:
+                    if(appoints>=175){
+                        Toast.makeText(this, "Avatar unlocked", Toast.LENGTH_LONG).show();
+                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarWoman2", 1, username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                //5 element unlocked
+                case 5:
+                    if(appoints>=200){
+                        Toast.makeText(this, "New colors unlocked!", Toast.LENGTH_LONG).show();
+                        managerUsersDB.upgradeUserMoreColors(username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                //6 element unlocked
+                case 6:
+                    if(appoints>=225){
+                        Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
+                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarManHipster", 1, username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                //7 element unlocked
+                case 7:
+                    if(appoints>=250){
+                        Toast.makeText(this, "New title unlocked!", Toast.LENGTH_LONG).show();
+                        managerTitlesDB.upgradeTitleObtained("tWorker", 1, username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+                //8 element unlocked
+                case 8:
+                    if(appoints>=275){
+                        Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
+                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarWomanHipster", 1, username);
+                        managerUsersDB.upgradeUserProgressRewards(username);
+                    }
+                    break;
+
+                default:
+                    break;
+
+
+            }
+        }
+
     }
 
     public boolean checkUserIsInTopRanking(){
@@ -627,6 +836,8 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                         username,
                         resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
                         resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                Toast.makeText(this,"Achievement completed", Toast.LENGTH_LONG).show();
+
                 upgradeAchievementMetaExpert();
                 achievementObtained=1;
 
@@ -659,6 +870,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                         resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
                         resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
                 upgradeAchievementMetaSecret();
+                Toast.makeText(this,"Achievement completed", Toast.LENGTH_LONG).show();
                 achievementObtained=1;
 
 
@@ -693,6 +905,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                             username,
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                    Toast.makeText(this,"Achievement completed", Toast.LENGTH_LONG).show();
 
                 }
                 else{
@@ -725,19 +938,29 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                     //Upgrade the achievement aSecretMeta to obtained
                     managerDBAchiements.upgradeAchievementObtained("aSecretMeta",
                             1,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)),1, username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS_MAX)),
+                            1,
+                            username);
                     //Upgrade the XP and AP of the achievement
                     changeUserStats(
                             username,
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_AP)),
                             resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_REWARD_XP)));
+                    //Unlock title "seeker of truth"
+                    DBTitlesManager managerDBTitles = new DBTitlesManager(this);
+                    managerDBTitles.upgradeTitleObtained("tSeeker", 1, username);
+                    Toast.makeText(this,"Achievement completed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"New title unlocked", Toast.LENGTH_LONG).show();
+
 
                 }
                 else{
                     //Upgrade the progress of achievement aSecretMeta
                     managerDBAchiements.upgradeAchievementObtained("aSecretMeta",
                             0,
-                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1, 1,username);
+                            resultQuery.getInt(resultQuery.getColumnIndex(managerDBAchiements.TA_PROGRESS))+1,
+                            1,
+                            username);
                 }
 
 
@@ -820,7 +1043,6 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             DBUserManager managerDB = new DBUserManager(this);
             managerDB.upgradeUserAvatar(username, avatarImageSelected);
             upgradeAchievementSecret("aSecret4");
-            Toast.makeText(this,"Achievement completed", Toast.LENGTH_LONG).show();
             loadToolbar();
         }
     }

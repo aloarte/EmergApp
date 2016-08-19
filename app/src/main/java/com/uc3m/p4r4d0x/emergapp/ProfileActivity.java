@@ -180,6 +180,10 @@ public class ProfileActivity extends AppCompatActivity {
                 myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
                 return true;
+            case R.id.action_rewards:
+                myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
+                startActivity(myIntent);
+                return true;
             case R.id.action_quest:
                 onClickShowQuest();
                 return true;
@@ -187,7 +191,6 @@ public class ProfileActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -401,7 +404,6 @@ public class ProfileActivity extends AppCompatActivity {
         String username                    = sharedpreferences.getString("username", "default");
 
         boolean retValue=false;
-        Log.d("ALR","LoadTitles");
         //Check the username
         if(username.compareTo("default")==0){
             //If is empty (error) do nothing
@@ -458,7 +460,6 @@ public class ProfileActivity extends AppCompatActivity {
                 obtainedAux  = resultQuery.getInt(resultQuery.getColumnIndex(DBTitlesManager.TT_OBTAINED));
 
 
-                Log.d("ALR","LoadTitles: "+nameTitleAux+" , "+obtainedAux);
                 //Switch by the title name, get the view and perform the view change
                 switch (nameTitleAux){
                     case "tBegginer":
@@ -476,6 +477,10 @@ public class ProfileActivity extends AppCompatActivity {
                     case "tSeeker":
                         RadioButton rbSeekerOfTruth = (RadioButton) findViewById(R.id.rbSeekerOfTruthTitle);
                         changeTitleVisiblity(obtainedAux,rbSeekerOfTruth);
+                        break;
+                    case "tWorker":
+                        RadioButton rbHardWorker = (RadioButton) findViewById(R.id.rbHardWorkerTitle);
+                        changeTitleVisiblity(obtainedAux,rbHardWorker);
                         break;
                 }
             }

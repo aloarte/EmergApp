@@ -126,7 +126,7 @@ public class DBTitlesManager {
         Cursor resultQuery= selecttitle(nameId,nameUser);
 
         //If the title exists
-        if(resultQuery.moveToFirst()==true) {
+        if(resultQuery.moveToFirst()) {
             retValue=upgradetitle(
                     resultQuery.getString(resultQuery.getColumnIndex(DBTitlesManager.TT_NAME_ID)),
                     titleObtained,

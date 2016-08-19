@@ -25,6 +25,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_rewards"
+        android:title="@string/action_rewards"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_quest"
         android:title="@string/action_quests"
         app:showAsAction="never" />

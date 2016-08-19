@@ -109,6 +109,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                 myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
                 return true;
+            case R.id.action_rewards:
+                myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
+                startActivity(myIntent);
+                return true;
             case R.id.action_quest:
                 onClickShowQuest();
                 return true;

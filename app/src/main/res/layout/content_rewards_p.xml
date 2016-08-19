@@ -432,18 +432,18 @@
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:gravity="center"
-                        android:text="Unlock title &quot;Hard Worker&quot; "
                         android:id="@+id/tvDescReward6"
                         android:textIsSelectable="false"
                         android:textStyle="normal"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:text="Aditional colors" />
 
                     <ImageView
                         android:layout_width="62dp"
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardImage6"
                         android:layout_marginLeft="10dp"
-                        android:src="@mipmap/new_title"
+                        android:src="@mipmap/new_colors"
                         android:padding="2dp" />
 
                     <ImageView
@@ -581,7 +581,7 @@
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:gravity="center"
-                        android:text="Aditional colors"
+                        android:text="Unlock title &quot;Hard Worker&quot; "
                         android:id="@+id/tvDescReward8"
                         android:textIsSelectable="false"
                         android:textStyle="normal"
@@ -592,7 +592,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardImage8"
                         android:layout_marginLeft="10dp"
-                        android:src="@mipmap/new_colors"
+                        android:src="@mipmap/new_title"
                         android:padding="2dp" />
 
                     <ImageView

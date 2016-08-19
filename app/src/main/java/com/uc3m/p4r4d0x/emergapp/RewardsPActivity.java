@@ -101,6 +101,10 @@ public class RewardsPActivity extends AppCompatActivity {
                 myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
                 startActivity(myIntent);
                 return true;
+            case R.id.action_rewards:
+                myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
+                startActivity(myIntent);
+                return true;
             case R.id.action_quest:
                 onClickShowQuest();
                 return true;
@@ -129,7 +133,6 @@ public class RewardsPActivity extends AppCompatActivity {
         if(resultQuery.moveToFirst()) {
             //Set the level
             int userProgress = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED));
-            Log.d("ALR","LoadProgress: "+ userProgress);
             for (int i = 0; i <= userProgress; i++) {
                 switch (i) {
                     case 0:
