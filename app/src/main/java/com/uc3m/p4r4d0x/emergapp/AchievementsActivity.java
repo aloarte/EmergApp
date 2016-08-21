@@ -203,7 +203,7 @@ public class AchievementsActivity extends AppCompatActivity {
                 startActivity(myIntent);
                 return true;
             case R.id.action_rewards:
-                myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
+                myIntent= new Intent(getApplicationContext(), RewardsSActivity.class);
                 startActivity(myIntent);
                 return true;
             case R.id.action_quest:
@@ -648,8 +648,8 @@ public class AchievementsActivity extends AppCompatActivity {
     }
 
     /*
-    * Desc: Check from the DDBB if the user can select his account configuration
-    * */
+     * Desc: Check from the DDBB if the user can select his account configuration
+     * */
     public boolean checkUnlockAcountConfiguration(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -660,9 +660,12 @@ public class AchievementsActivity extends AppCompatActivity {
         DBUserManager managerDBUser = new DBUserManager(this);
         //Make que query
         Cursor resultQuery = managerDBUser.selectUser(username);
-        //Check if the title selection is unlocked
-        if(resultQuery.moveToFirst()==true) {
-            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1) {
+        //Check if the avatar selection is unlocked
+        if(resultQuery.moveToFirst()) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1
+                    ||
+                    resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_COLOR)) == 1
+                    ) {
                 retValue = true;
             } else {
                 retValue = false;

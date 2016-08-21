@@ -140,7 +140,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                 startActivity(myIntent);
                 return true;
             case R.id.action_rewards:
-                myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
+                myIntent= new Intent(getApplicationContext(), RewardsSActivity.class);
                 startActivity(myIntent);
                 return true;
             case R.id.action_quest:
@@ -329,10 +329,12 @@ public class AccountConfigurationActivity extends AppCompatActivity {
      *
      * */
     public void loadAcountConfiguration(){
-        //Load the data
-        loadAcountConfigurationData();
+        if(checkUnlockAvatarSelection()){
+            //Load the data
+            loadAcountConfigurationData();
+        }
 
-        //Check if the titles are unlocked and if so, load them
+        //Check if the color are unlocked and if so, load them
         if(checkUnlockSelectColors()){
             loadColorsToSelect();
         }
@@ -425,7 +427,6 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         String username                    = sharedpreferences.getString("username", "default");
 
         boolean retValue=false;
-        Log.d("ALR","LoadTitles");
         //Check the username
         if(username.compareTo("default")==0){
             //If is empty (error) do nothing
@@ -440,6 +441,40 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             //Check if the title selection is unlocked
             if(resultQuery.moveToFirst()==true) {
                 if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_COLOR)) == 1) {
+                    llSelectColors.setVisibility(View.VISIBLE);
+                    retValue = true;
+                } else {
+                    llSelectColors.setVisibility(View.INVISIBLE);
+                    retValue = false;
+                }
+            }
+        }
+        return retValue;
+    }
+
+    /*
+     * Desc: Check from the DDBB if the user can select color changes
+     * */
+    public boolean checkUnlockAvatarSelection(){
+        //Get sharedpreferences item and the username asociated
+        sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String username                    = sharedpreferences.getString("username", "default");
+
+        boolean retValue=false;
+        //Check the username
+        if(username.compareTo("default")==0){
+            //If is empty (error) do nothing
+        }
+        else {
+            //Get the linear layout
+            LinearLayout llSelectColors = (LinearLayout) findViewById(R.id.llProfileAvatarImage);
+            //Get the database manager
+            DBUserManager managerDBUser = new DBUserManager(this);
+            //Make que query
+            Cursor resultQuery = managerDBUser.selectUser(username);
+            //Check if the title selection is unlocked
+            if(resultQuery.moveToFirst()==true) {
+                if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1) {
                     llSelectColors.setVisibility(View.VISIBLE);
                     retValue = true;
                 } else {
@@ -521,7 +556,10 @@ public class AccountConfigurationActivity extends AppCompatActivity {
         Cursor resultQuery = managerDBUser.selectUser(username);
         //Check if the avatar selection is unlocked
         if(resultQuery.moveToFirst()) {
-            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1
+                    ||
+                    resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_COLOR)) == 1
+                    ) {
                 retValue = true;
             } else {
                 retValue = false;
@@ -613,7 +651,6 @@ public class AccountConfigurationActivity extends AppCompatActivity {
             );
             //Check if by the points the user have upgrade his level
             checkLevelUp(resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LEVEL)), totalxpoints);
-            checkRewardObtained(totalappoints);
             if(checkAchievementReleased()) {
                 //Check if the achievement is completed and if so, upgrade the achievement
                 if (totalappoints >= 250) {
@@ -658,7 +695,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
                     if(checkAchievementReleased())upgradeAchievementExpert("aExpert4");
                     //Unlock title "tHero"
                     DBTitlesManager managerDBTitles = new DBTitlesManager(this);
-                    managerDBTitles.upgradeTitleObtained("tBegginer", 1, username);
+                    managerDBTitles.upgradeTitleObtained("tHero", 1, username);
                     Toast.makeText(this,"New title unlocked", Toast.LENGTH_LONG).show();
 
                 }
@@ -676,120 +713,7 @@ public class AccountConfigurationActivity extends AppCompatActivity {
 
         }
     }
-
-    public void checkRewardObtained(int appoints){
-        String username = sharedpreferences.getString("username", "default");
-        //Get the managers for the DDBB
-        DBUserManager managerUsersDB      = new DBUserManager(this);
-        DBAvatarsManager managerAvatarsDB = new DBAvatarsManager(this);
-        DBTitlesManager managerTitlesDB   = new DBTitlesManager(this);
-
-        //Select the user
-        Cursor resultQuery                 = managerUsersDB.selectUser(username);
-        //If the user exists
-        if(resultQuery.moveToFirst()) {
-            //Get the progress achieved by the user
-            int userProgress = resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED));
-
-            //Switch the progress
-            switch(userProgress){
-                //Nothing unlocked yet
-                case 0:
-                    if(appoints>=50){
-                        Toast.makeText(this, "Title change unlocked!", Toast.LENGTH_LONG).show();
-                        managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
-                                1,
-                                0,
-                                0
-                        );
-                        managerUsersDB.upgradeUserProgressRewards(username);
-
-                    }
-                    break;
-                //1 element unlocked
-                case 1:
-                    if(appoints>=100){
-                        Toast.makeText(this, "Avatar change unlocked!", Toast.LENGTH_LONG).show();
-                        managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
-                                1,
-                                1,
-                                0
-                        );
-                        managerUsersDB.upgradeUserProgressRewards(username);
-                    }
-                    break;
-                //2 element unlocked
-                case 2:
-                    if(appoints>=125){
-                        Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
-                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarMan2",1,username);
-                        managerUsersDB.upgradeUserProgressRewards(username);
-                    }
-                    break;
-                //3 element unlocked
-                case 3:
-
-                    if(appoints>=150){
-                        Toast.makeText(this, "Color change unlocked!", Toast.LENGTH_LONG).show();
-                        managerUsersDB.upgradeUserUnlockTitleAvatarColor(username,
-                                1,
-                                1,
-                                1
-                        );
-                        managerUsersDB.upgradeUserProgressRewards(username);
-                    }
-                    break;
-                //4 element unlocked
-                case 4:
-                    if(appoints>=175){
-                        Toast.makeText(this, "Avatar unlocked", Toast.LENGTH_LONG).show();
-                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarWoman2", 1, username);
-                        managerUsersDB.upgradeUserProgressRewards(username);
-                    }
-                    break;
-                //5 element unlocked
-                case 5:
-                    if(appoints>=200){
-                        Toast.makeText(this, "New colors unlocked!", Toast.LENGTH_LONG).show();
-                        managerUsersDB.upgradeUserMoreColors(username);
-                        managerUsersDB.upgradeUserProgressRewards(username);
-                    }
-                    break;
-                //6 element unlocked
-                case 6:
-                    if(appoints>=225){
-                        Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
-                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarManHipster", 1, username);
-                        managerUsersDB.upgradeUserProgressRewards(username);
-                    }
-                    break;
-                //7 element unlocked
-                case 7:
-                    if(appoints>=250){
-                        Toast.makeText(this, "New title unlocked!", Toast.LENGTH_LONG).show();
-                        managerTitlesDB.upgradeTitleObtained("tWorker", 1, username);
-                        managerUsersDB.upgradeUserProgressRewards(username);
-                    }
-                    break;
-                //8 element unlocked
-                case 8:
-                    if(appoints>=275){
-                        Toast.makeText(this, "Avatar unlocked!", Toast.LENGTH_LONG).show();
-                        managerAvatarsDB.upgradeAvatarUnlocked("avAvatarWomanHipster", 1, username);
-                        managerUsersDB.upgradeUserProgressRewards(username);
-                    }
-                    break;
-
-                default:
-                    break;
-
-
-            }
-        }
-
-    }
-
-    public boolean checkUserIsInTopRanking(){
+ public boolean checkUserIsInTopRanking(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String username                    = sharedpreferences.getString("username", "default");

@@ -191,7 +191,7 @@
                 android:layout_width="264dp"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Progress"
+                android:text="Reward shop"
                 android:id="@+id/tvNavAchievementProgress"
                 android:gravity="center|center_horizontal"
                 android:layout_weight="0.67"

@@ -109,8 +109,8 @@
                 android:value="com.uc3m.p4r4d0x.emergapp.HomeScreenActivity" />
         </activity>
         <activity
-            android:name=".RewardsPActivity"
-            android:label="@string/title_activity_rewards_p"
+            android:name=".RewardsSActivity"
+            android:label="@string/title_activity_rewards_s"
             android:parentActivityName=".HomeScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

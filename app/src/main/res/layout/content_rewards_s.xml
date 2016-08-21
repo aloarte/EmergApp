@@ -1,16 +1,790 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_rewards_s"
-    tools:context="com.uc3m.p4r4d0x.emergapp.RewardsSActivity">
+    tools:context="com.uc3m.p4r4d0x.emergapp.RewardsSActivity"
+    tools:showIn="@layout/activity_rewards_s">
 
-</RelativeLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:weightSum="1"
+        android:background="#4db6ac"
+        android:id="@+id/llHeaderRewardS">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.67"
+            android:layout_margin="5dp"
+            android:id="@+id/llRewardSAPstatus">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="right"
+                android:id="@+id/llRewardAPStatusData">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="400"
+                    android:id="@+id/tvRewardCurrentAP"
+                    android:gravity="right"
+                    android:textStyle="bold"
+                    android:textAlignment="gravity"
+                    android:textSize="10dp"
+                    android:textIsSelectable="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="-75"
+                    android:id="@+id/tvRewardElementAP"
+                    android:gravity="right"
+                    android:textAlignment="gravity"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="325"
+                    android:id="@+id/tvRewardTotalAP"
+                    android:gravity="right"
+                    android:textSize="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="20dp"
+                android:layout_height="40dp"
+                android:gravity="right"
+                android:id="@+id/llRewardAPStatusstring">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="AP"
+                    android:id="@+id/tvRewardCurrentAPString"
+                    android:gravity="right"
+                    android:textStyle="bold"
+                    android:textAlignment="gravity"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="AP"
+                    android:id="@+id/tvRewardElementAPString"
+                    android:gravity="right"
+                    android:textAlignment="gravity"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="AP"
+                    android:id="@+id/tvRewardTotalAPString"
+                    android:gravity="right"
+                    android:textSize="10dp"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/ivRewardBuy"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/ic_buy_shop"
+            android:padding="2dp"
+            android:onClick="onClickPurchaseElement" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imageView8"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/ic_delete_shop"
+            android:padding="2dp"
+            android:onClick="onClickDeleteSelectionShop" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:fadeScrollbars="false">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/llRewardS1"
+                android:visibility="visible"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/bReward1"
+                    android:onClick="onClickSelectItemToStore" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llRewardContent1"
+                    android:gravity="center_horizontal"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="5dp">
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardImage1"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/change_avatar"
+                        android:padding="2dp" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="75 AP"
+                        android:id="@+id/tvRewardValue1"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="Change avatar images"
+                        android:id="@+id/tvDescReward1"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardCompleted1"
+                        android:layout_marginLeft="10dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/notdoneicon" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/llRewardS2"
+                android:visibility="visible"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/bReward2"
+                    android:padding="2dp"
+                    android:onClick="onClickSelectItemToStore" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llRewardContent2"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp" >
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardImage2"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/change_colors"
+                        android:padding="2dp" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="75 AP"
+                        android:id="@+id/tvRewardValue2"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="Change interface colors"
+                        android:id="@+id/tvDescReward2"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardCompleted2"
+                        android:layout_marginLeft="10dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/notdoneicon" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/llRewardS3"
+                android:visibility="visible"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/bReward3"
+                    android:onClick="onClickSelectItemToStore" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llRewardContent3"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardImage3"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/change_titles"
+                        android:padding="2dp" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="50 AP"
+                        android:id="@+id/tvRewardValue3"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="Change titles"
+                        android:id="@+id/tvDescReward3"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardCompleted3"
+                        android:layout_marginLeft="10dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/notdoneicon" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/llRewardS4"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/bReward4"
+                    android:onClick="onClickSelectItemToStore" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llRewardContent4"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp" >
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardImage4"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/new_colors"
+                        android:padding="2dp" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="50 AP"
+                        android:id="@+id/tvRewardValue4"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:id="@+id/tvDescReward4"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp"
+                        android:text="Aditional colors" />
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardCompleted4"
+                        android:layout_marginLeft="10dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/notdoneicon" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/llRewardS5"
+                android:visibility="gone"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/bReward5"
+                    android:onClick="onClickSelectItemToStore" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llRewardContent5"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp" >
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardImage5"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/avatar_hombre1" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="20 AP"
+                        android:id="@+id/tvRewardValue5"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="Avatar image"
+                        android:id="@+id/tvDescReward5"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardCompleted5"
+                        android:layout_marginLeft="10dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/notdoneicon" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/llRewardS6"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/bReward6"
+                    android:onClick="onClickSelectItemToStore" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llRewardContent6"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp" >
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardImage6"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/avatar_mujer1" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="20 AP"
+                        android:id="@+id/tvRewardValue6"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="Avatar image"
+                        android:id="@+id/tvDescReward6"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardCompleted6"
+                        android:layout_marginLeft="10dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/notdoneicon" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/llRewardS7"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/bReward7"
+                    android:onClick="onClickSelectItemToStore" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llRewardContent7"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp" >
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardImage7"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/avatar_hipster1" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="30 AP"
+                        android:id="@+id/tvRewardValue7"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="Avatar image"
+                        android:id="@+id/tvDescReward7"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardCompleted7"
+                        android:layout_marginLeft="10dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/notdoneicon" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/llRewardS8"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/bReward8"
+                    android:nestedScrollingEnabled="false"
+                    android:onClick="onClickSelectItemToStore" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llRewardContent8"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp" >
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardImage8"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/avatar_hipster2" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="30 AP"
+                        android:id="@+id/tvRewardValue8"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="Avatar image"
+                        android:id="@+id/tvDescReward8"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardCompleted8"
+                        android:layout_marginLeft="10dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/notdoneicon" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:id="@+id/llRewardS9"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/bReward9"
+                    android:onClick="onClickSelectItemToStore" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llRewardContent9"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:touchscreenBlocksFocus="false">
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardImage9"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/new_title"
+                        android:padding="2dp" />
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="40 AP"
+                        android:id="@+id/tvRewardValue9"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:gravity="center"
+                        android:text="Unlock title &quot;Hard Worker&quot; "
+                        android:id="@+id/tvDescReward9"
+                        android:textIsSelectable="false"
+                        android:textStyle="normal"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:id="@+id/ivRewardCompleted9"
+                        android:layout_marginLeft="10dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/notdoneicon" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

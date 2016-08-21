@@ -110,7 +110,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 startActivity(myIntent);
                 return true;
             case R.id.action_rewards:
-                myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
+                myIntent= new Intent(getApplicationContext(), RewardsSActivity.class);
                 startActivity(myIntent);
                 return true;
             case R.id.action_quest:
@@ -256,8 +256,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     /*
-    * Desc: Check from the DDBB if the user can select his account configuration
-    * */
+      * Desc: Check from the DDBB if the user can select his account configuration
+      * */
     public boolean checkUnlockAcountConfiguration(){
         //Get sharedpreferences item and the username asociated
         sharedpreferences                  = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -268,9 +268,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         DBUserManager managerDBUser = new DBUserManager(this);
         //Make que query
         Cursor resultQuery = managerDBUser.selectUser(username);
-        //Check if the title selection is unlocked
-        if(resultQuery.moveToFirst()==true) {
-            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1) {
+        //Check if the avatar selection is unlocked
+        if(resultQuery.moveToFirst()) {
+            if (resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_AVATAR)) == 1
+                    ||
+                    resultQuery.getInt(resultQuery.getColumnIndex(managerDBUser.TU_MODIFY_COLOR)) == 1
+                    ) {
                 retValue = true;
             } else {
                 retValue = false;
@@ -432,7 +435,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     * Desc: on click function to change to AchievementsProgress activity
     * */
     public void onClickNavAchievementsProgress(View v){
-        Intent myIntent= new Intent(getApplicationContext(), RewardsPActivity.class);
+        Intent myIntent= new Intent(getApplicationContext(), RewardsSActivity.class);
         startActivity(myIntent);
     }
 
