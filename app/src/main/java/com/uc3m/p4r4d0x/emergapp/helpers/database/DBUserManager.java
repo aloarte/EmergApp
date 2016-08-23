@@ -38,7 +38,10 @@ public class DBUserManager {
     public static final String TU_LOCATION2="loc2";
     public static final String TU_ACHIEVEMENTS_UNLOCKED="ach_unl";
     public static final String TU_PROGRESS_UNLOCKED="progress";
+    public static final String TU_ELEMENTS_UNLOCKED="elementsunlocked";
+    public static final String TU_ELEMENTS_UNLOCKED_VIEW="elementsunlockedview";
     public static final String TU_MORECOLORS_UNLOCKED="morecolors";
+
 
     //Sql sentence for building the table Users
     public static final String CREATE_TABLE = "create table "+TABLE_NAME+" ("
@@ -62,6 +65,8 @@ public class DBUserManager {
             + TU_LOCATION2      + " text,"
             + TU_ACHIEVEMENTS_UNLOCKED + " integer not null,"
             + TU_PROGRESS_UNLOCKED + " integer not null,"
+            + TU_ELEMENTS_UNLOCKED + " text not null,"
+            + TU_ELEMENTS_UNLOCKED_VIEW + " text not null,"
             + TU_MORECOLORS_UNLOCKED + " integer not null);";
 
 
@@ -90,7 +95,8 @@ public class DBUserManager {
                                      String level,int ap_points,int xp_points, String title, int color,int avatar,
                                      int modifTitle,int modifImage, int modifColor
                                      ,String lastlocation,int timesRepeated ,String loc1,String loc2,
-                                         int achievementsUnlocked,int progress,int morecolors){
+                                         int achievementsUnlocked,int progress,String elementsUnlocked,String elementsUnlockedViews,
+                                         int morecolors){
 
         ContentValues contentV = new ContentValues();
         contentV.put(TU_NAME,name);
@@ -112,6 +118,8 @@ public class DBUserManager {
         contentV.put(TU_LOCATION2,loc2);
         contentV.put(TU_ACHIEVEMENTS_UNLOCKED,achievementsUnlocked);
         contentV.put(TU_PROGRESS_UNLOCKED,progress);
+        contentV.put(TU_ELEMENTS_UNLOCKED,elementsUnlocked);
+        contentV.put(TU_ELEMENTS_UNLOCKED_VIEW,elementsUnlockedViews);
         contentV.put(TU_MORECOLORS_UNLOCKED,morecolors);
 
 
@@ -126,14 +134,16 @@ public class DBUserManager {
         String level="Traveler",title="-",lastLocation="",loc1="",loc2="";
         int APpoints=0,XPpoints=0, achievementUnlocked=0,progress=0;
         int color=0;
-        int modifTitle=0, modifAvatar=0,modifColor=0,morecolors=0;
+        int modifTitle = 0, modifAvatar = 0, modifColor = 0, morecolors = 0;
         int repeatedLocation=0;
         int avatar= R.mipmap.avatar_noavatar;
+        String elementsUnlocked="000000000",elementsUnlockedViews="000000000";
         long retValue=0;
         retValue=db.insert(TABLE_NAME, null, generateCVUser(name, password, email, date,level,
                                                         APpoints,XPpoints,title,color,avatar,
                                                         modifTitle,modifAvatar,modifColor,
-                                                        lastLocation,repeatedLocation,loc1,loc2,achievementUnlocked,progress,morecolors));
+                                                        lastLocation,repeatedLocation,loc1,loc2,achievementUnlocked,progress,
+                                                        elementsUnlocked,elementsUnlockedViews,morecolors));
         if(retValue==-1 || retValue==0){
             return false;
         }
@@ -180,25 +190,27 @@ public class DBUserManager {
                         String level,int ap_points,int xp_points, String title, int color,int avatar,
                         int modifTitle,int modifImage, int modifColor,
                             String lastLocation,int repeatedLocation,String loc1,String loc2,
-                            int achievementsUnlocked,int progress,int morecolors){
+                            int achievementsUnlocked,int progress,String elementsUnlocked,
+                            String elementsUnlockedViews      ,int morecolors){
 
         return db.update(
                 TABLE_NAME,
                 generateCVUser(name, password, email, date, level,
                         ap_points, xp_points, title, color, avatar,
                         modifTitle, modifImage, modifColor,
-                        lastLocation, repeatedLocation, loc1, loc2, achievementsUnlocked, progress, morecolors)
+                        lastLocation, repeatedLocation, loc1, loc2, achievementsUnlocked,
+                        progress, elementsUnlocked,elementsUnlockedViews,morecolors)
                 , TU_NAME + " LIKE ? ", new String[]{name});
     }
 
 
     public long upgradeUserColor(String username,int color){
         long retValue=-1;
-        Cursor resultQuery= selectUser(username);
+        Cursor resultQuery = selectUser(username);
 
         //If the user exists
-        if(resultQuery.moveToFirst()==true) {
-            retValue=upgradeUser(
+        if(resultQuery.moveToFirst() == true) {
+            retValue = upgradeUser(
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_EMAIL)),
@@ -218,6 +230,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
 
             );
@@ -229,11 +243,11 @@ public class DBUserManager {
 
     public long upgradeUserAvatar(String username,int avatar){
         long retValue=-1;
-        Cursor resultQuery= selectUser(username);
+        Cursor resultQuery = selectUser(username);
 
         //If the user exists
-        if(resultQuery.moveToFirst()==true) {
-            retValue=upgradeUser(
+        if(resultQuery.moveToFirst() == true) {
+            retValue = upgradeUser(
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_EMAIL)),
@@ -253,6 +267,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
             );
         }
@@ -263,11 +279,11 @@ public class DBUserManager {
 
     public long upgradeUserTitle(String username,String title){
         long retValue=-1;
-        Cursor resultQuery= selectUser(username);
+        Cursor resultQuery = selectUser(username);
 
         //If the user exists
-        if(resultQuery.moveToFirst()==true) {
-            retValue=upgradeUser(
+        if(resultQuery.moveToFirst() == true) {
+            retValue = upgradeUser(
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_EMAIL)),
@@ -287,6 +303,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
             );
         }
@@ -319,6 +337,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
             );
         }
@@ -331,7 +351,7 @@ public class DBUserManager {
 
         //If the user exists
         if(resultQuery.moveToFirst()==true) {
-            retValue=upgradeUser(
+            retValue= upgradeUser(
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_EMAIL)),
@@ -351,6 +371,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
             );
         }
@@ -359,9 +381,9 @@ public class DBUserManager {
 
     }
 
-    public long upgradeUserUnlockTitleAvatarColor(String username,int unlockT, int unlockA, int unlockC){
-        long retValue=-1;
-        Cursor resultQuery= selectUser(username);
+    public long upgradeUserUnlockTitleAvatarColor(String username,int unlockT, int unlockA, int unlockC) {
+        long retValue = -1;
+        Cursor resultQuery = selectUser(username);
 
         //If the user exists
         if(resultQuery.moveToFirst()==true) {
@@ -385,6 +407,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
             );
         }
@@ -419,6 +443,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
             );
         }
@@ -453,6 +479,8 @@ public class DBUserManager {
                     loc2,
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
             );
         }
@@ -487,6 +515,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     1,
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
             );
         }
@@ -519,6 +549,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED))+1,
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_MORECOLORS_UNLOCKED))
             );
         }
@@ -530,7 +562,7 @@ public class DBUserManager {
         Cursor resultQuery= selectUser(username);
 
         //If the user exists
-        if(resultQuery.moveToFirst()==true) {
+        if (resultQuery.moveToFirst() == true) {
             retValue=upgradeUser(
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_NAME)),
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_PASSWORD)),
@@ -551,6 +583,8 @@ public class DBUserManager {
                     resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_LOCATION2)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_ACHIEVEMENTS_UNLOCKED)),
                     resultQuery.getInt(resultQuery.getColumnIndex(DBUserManager.TU_PROGRESS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED)),
+                    resultQuery.getString(resultQuery.getColumnIndex(DBUserManager.TU_ELEMENTS_UNLOCKED_VIEW)),
                     1
             );
         }
@@ -576,7 +610,8 @@ public class DBUserManager {
                                         , String date, String level,String title
                                         , int APpoints, int XPpoints, int color, int avatar
                                         , int modifTitle ,int modifAvatar,int modifColor,
-                                          int achievementUnlocked,int progressUnlocked,int morecolors
+                                          int achievementUnlocked,int progressUnlocked,int morecolors,
+                                          String elementsUnlocked,String elementsUnlockedViews
                                         ){
 
         String lastLocation="",loc1="",loc2="";
@@ -585,7 +620,8 @@ public class DBUserManager {
         retValue=db.insert(TABLE_NAME, null, generateCVUser(name, password, email, date,level,
                 APpoints,XPpoints,title,color,avatar,
                 modifTitle,modifAvatar,modifColor,
-                lastLocation,timesLocation,loc1,loc2,achievementUnlocked,progressUnlocked,morecolors));
+                lastLocation,timesLocation,loc1,loc2,achievementUnlocked,progressUnlocked,
+                elementsUnlocked,elementsUnlockedViews,morecolors));
         if(retValue==-1 || retValue==0){
             return false;
         }
