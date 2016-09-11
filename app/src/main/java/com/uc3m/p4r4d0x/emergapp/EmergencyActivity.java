@@ -199,6 +199,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         //Load the color
         loadColor();
 
+        loadNotificationQuests();
+
         //ON CLICK LISTENER for the alert dialog screen to modify the message
         //Get the default message with the answer in the previous boxes
         tvMessagePopUp1.getText();
@@ -1283,8 +1285,13 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         //Iniciate the mail sender service
         MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiverReady,ap,xp,achievementObtained);
 
+        //Get the destiny mail to send the report
+        String maiToReport = sharedpreferences.getString("email_to_report", "albrathojaverde@gmail.com");
+
+
         //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
-        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSAddress);
+        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSAddress,maiToReport);
+
 
 
         //Re initializate deletedArrays
@@ -1522,6 +1529,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
                     changeUserStats(username, questAP, questXP);
                     upgradeAchievementExpertQuestsLover();
+                    questNotification();
+
                 }
             }
             else if(questName.compareTo("Quest2")==0){
@@ -1540,12 +1549,71 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
                     changeUserStats(username, questAP, questXP);
                     upgradeAchievementExpertQuestsLover();
-            }
+                    questNotification();
+
+                }
         }
 
 
 
         }
+    }
+
+    /*
+   * Desc: load the notification icon for the quests
+   * */
+    public void loadNotificationQuests(){
+        //Get the number of notifications
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int notifNumber   = sharedpreferences.getInt("quest_notifications", 0);
+        boolean isQuestS  = sharedpreferences.getBoolean("questB", false);
+
+        //Get the element to change it
+        ImageView ivNotif = (ImageView) findViewById(R.id.ivQuestNotification);
+
+        switch(notifNumber){
+            case 0:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+            case 1:
+                ivNotif.setImageResource(R.mipmap.ic_quests_1);
+                break;
+            case 2:
+                ivNotif.setImageResource(R.mipmap.ic_quests_2);
+                break;
+            default:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+        }
+
+        LinearLayout llImageProfile = (LinearLayout) findViewById(R.id.llImageProfile);
+        LinearLayout llQuestActive = (LinearLayout) findViewById(R.id.llQuestActive);
+        if(isQuestS){
+            llImageProfile.setVisibility(View.GONE);
+            llQuestActive.setVisibility(View.VISIBLE);
+        }
+        else{
+            llImageProfile.setVisibility(View.VISIBLE);
+            llQuestActive.setVisibility(View.GONE);
+        }
+    }
+
+    /*
+    * Desc: put into the shared preferences quest notification one notif less
+    * */
+    public void questNotification(){
+        //Get the number of notifications
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int notifNumber=sharedpreferences.getInt("quest_notifications",0);
+        if(notifNumber==0){
+
+        }
+        else{
+            sharedpreferences.edit().putInt("quest_notifications",notifNumber-1).commit();
+        }
+
+        loadNotificationQuests();
+
     }
 
     /*
@@ -2439,6 +2507,20 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         else{
             Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    /*
+* Desc: on click method to navegate from toolbar to achievements activity
+* */
+    public void onClickChangeQuestActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
+        startActivity(myIntent);
+
+    }
+
+    public void onClickShowQuest(View v){
+        onClickShowQuest();
     }
 
     /*

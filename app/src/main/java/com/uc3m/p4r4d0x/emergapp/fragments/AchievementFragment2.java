@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -48,6 +50,8 @@ public class AchievementFragment2 extends Fragment {
     * Desc:  Using the data obtained from the activity, change the TextViews with the data retrieved from DDBB
     * */
     public void setArgumentsOntoViews(){
+        setVisibilityWholeLayout();
+
         //Iterate the array and write on the propper position
         for (int i = 0; i < arraySize && i < data.length; i++) {
             switch (i) {
@@ -118,6 +122,10 @@ public class AchievementFragment2 extends Fragment {
 
     }
 
+    /*
+   * Desc:  change the image achievement to completed
+   * Param: id of the text view
+   * */
     public void changeImageAchievement(String achievementUnlocked, int idTextView)
     {
         int isAchievementUnlocked=Integer.parseInt(achievementUnlocked);
@@ -176,6 +184,10 @@ public class AchievementFragment2 extends Fragment {
 
     }
 
+    /*
+       * Desc:  change the visibility of the layout of each achievement
+       * Param: int with the id of the achievement
+       * */
     public void setVisibilityLL(int id) {
         LinearLayout tr = (LinearLayout) mView.findViewById(id);
         if (achievements) {
@@ -184,5 +196,24 @@ public class AchievementFragment2 extends Fragment {
         else{
             tr.setVisibility(View.GONE);
         }
+    }
+
+    /*
+    * Desc: Change the whole visibility of the screen if the novel achievements are completed
+    * */
+    public void setVisibilityWholeLayout(){
+        RelativeLayout rl   = (RelativeLayout) mView.findViewById(R.id.rlUnlockedExpertAchievements);
+        ScrollView sv       = (ScrollView) mView.findViewById(R.id.svExpert);
+
+        if (achievements) {
+            rl.setVisibility(View.GONE);
+            sv.setVisibility(View.VISIBLE);
+        }
+        else{
+            rl.setVisibility(View.VISIBLE);
+            sv.setVisibility(View.GONE);
+
+        }
+
     }
 }

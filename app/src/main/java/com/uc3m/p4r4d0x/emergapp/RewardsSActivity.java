@@ -58,6 +58,8 @@ public class RewardsSActivity extends AppCompatActivity {
         //Load the color
         loadColor();
 
+        loadNotificationQuests();
+
         llElementsOnShop[0]= (LinearLayout) findViewById(R.id.llRewardS1);
         llElementsOnShop[1]= (LinearLayout) findViewById(R.id.llRewardS2);
         llElementsOnShop[2]= (LinearLayout) findViewById(R.id.llRewardS3);
@@ -422,6 +424,45 @@ public class RewardsSActivity extends AppCompatActivity {
             Toolbar t= (Toolbar) findViewById(R.id.toolbarRS);
             t.setBackgroundColor(Color.parseColor(primaryColor));
 
+        }
+    }
+
+    /*
+  * Desc: load the notification icon for the quests
+  * */
+    public void loadNotificationQuests(){
+        //Get the number of notifications
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int notifNumber   = sharedpreferences.getInt("quest_notifications", 0);
+        boolean isQuestS  = sharedpreferences.getBoolean("questB", false);
+
+        //Get the element to change it
+        ImageView ivNotif = (ImageView) findViewById(R.id.ivQuestNotification);
+
+        switch(notifNumber){
+            case 0:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+            case 1:
+                ivNotif.setImageResource(R.mipmap.ic_quests_1);
+                break;
+            case 2:
+                ivNotif.setImageResource(R.mipmap.ic_quests_2);
+                break;
+            default:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+        }
+
+        LinearLayout llImageProfile = (LinearLayout) findViewById(R.id.llImageProfile);
+        LinearLayout llQuestActive = (LinearLayout) findViewById(R.id.llQuestActive);
+        if(isQuestS){
+            llImageProfile.setVisibility(View.GONE);
+            llQuestActive.setVisibility(View.VISIBLE);
+        }
+        else{
+            llImageProfile.setVisibility(View.VISIBLE);
+            llQuestActive.setVisibility(View.GONE);
         }
     }
 
@@ -1005,6 +1046,13 @@ public class RewardsSActivity extends AppCompatActivity {
             Toast.makeText(this, "This feature is locked", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void onClickShowQuest(View v){
+        onClickShowQuest();
+    }
+
+
+
     /*
      * Desc: on click function to show quests
      * */
@@ -1090,6 +1138,15 @@ public class RewardsSActivity extends AppCompatActivity {
 
         Dialog dialog = alertBuilder.create();
         dialog.show();
+
+    }
+
+    /*
+* Desc: on click method to navegate from toolbar to achievements activity
+* */
+    public void onClickChangeQuestActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
+        startActivity(myIntent);
 
     }
 

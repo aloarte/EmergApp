@@ -51,7 +51,7 @@ public class MailSenderService extends Service {
     * */
     public int sendMessage(final String toSendMessage, final String[] toSendPicturesLocation,
                            final String[] toSendvideosLocation,final String toSendGPSCoord,
-                           final String toSendGPSStreet){
+                           final String toSendGPSStreet, final String destinyMail){
             new AsyncTask<Void, Void, Void>() {
                 String statusMessage = "";
                 int errorCode =-1;
@@ -69,7 +69,7 @@ public class MailSenderService extends Service {
 
                     try {
                         //Send the mail, giving all the parameters to the method
-                        sender.sendMail("Emergency Report!", "The info sended is the next: \n", "albrathojaverde@gmail.com", "albrathojaverde@gmail.com",
+                        sender.sendMail("Emergency Report!", "The info sended is the next: \n", destinyMail, destinyMail,
                                 toSendMessage, toSendPicturesLocation, toSendvideosLocation, toSendGPSCoord, toSendGPSStreet);
 
 

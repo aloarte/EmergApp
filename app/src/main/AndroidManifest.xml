@@ -42,11 +42,11 @@
         <activity
             android:name=".EmergencyActivity"
             android:label="@string/title_activity_emergency"
-            android:parentActivityName=".LoginActivity"
+            android:parentActivityName=".HomeScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.uc3m.p4r4d0x.emergapp.LoginActivity" />
+                android:value="com.uc3m.p4r4d0x.emergapp.HomeScreenActivity" />
         </activity>
         <activity
             android:name=".SignIn"

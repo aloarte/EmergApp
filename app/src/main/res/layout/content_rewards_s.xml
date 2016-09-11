@@ -203,8 +203,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardCompleted1"
                         android:layout_marginLeft="10dp"
-                        android:padding="15dp"
-                        android:src="@mipmap/notdoneicon" />
+                        android:padding="15dp" />
 
                 </LinearLayout>
 
@@ -276,8 +275,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardCompleted2"
                         android:layout_marginLeft="10dp"
-                        android:padding="15dp"
-                        android:src="@mipmap/notdoneicon" />
+                        android:padding="15dp" />
 
                 </LinearLayout>
 
@@ -348,8 +346,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardCompleted3"
                         android:layout_marginLeft="10dp"
-                        android:padding="15dp"
-                        android:src="@mipmap/notdoneicon" />
+                        android:padding="15dp" />
 
                 </LinearLayout>
 
@@ -420,8 +417,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardCompleted4"
                         android:layout_marginLeft="10dp"
-                        android:padding="15dp"
-                        android:src="@mipmap/notdoneicon" />
+                        android:padding="15dp" />
 
                 </LinearLayout>
 
@@ -491,8 +487,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardCompleted5"
                         android:layout_marginLeft="10dp"
-                        android:padding="15dp"
-                        android:src="@mipmap/notdoneicon" />
+                        android:padding="15dp" />
 
                 </LinearLayout>
 
@@ -562,8 +557,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardCompleted6"
                         android:layout_marginLeft="10dp"
-                        android:padding="15dp"
-                        android:src="@mipmap/notdoneicon" />
+                        android:padding="15dp" />
 
                 </LinearLayout>
 
@@ -633,8 +627,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardCompleted7"
                         android:layout_marginLeft="10dp"
-                        android:padding="15dp"
-                        android:src="@mipmap/notdoneicon" />
+                        android:padding="15dp" />
 
                 </LinearLayout>
 
@@ -705,8 +698,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardCompleted8"
                         android:layout_marginLeft="10dp"
-                        android:padding="15dp"
-                        android:src="@mipmap/notdoneicon" />
+                        android:padding="15dp" />
 
                 </LinearLayout>
 
@@ -778,8 +770,7 @@
                         android:layout_height="62dp"
                         android:id="@+id/ivRewardCompleted9"
                         android:layout_marginLeft="10dp"
-                        android:padding="15dp"
-                        android:src="@mipmap/notdoneicon" />
+                        android:padding="15dp" />
 
                 </LinearLayout>
             </LinearLayout>
