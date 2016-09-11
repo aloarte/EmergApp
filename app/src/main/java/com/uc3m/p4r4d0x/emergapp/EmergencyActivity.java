@@ -851,20 +851,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             tvToolbarUser.setText(username);
 
         }
-        DBManager managerDB                = new DBManager(this);
-        //Select the user
-        Cursor resultQuery                 = managerDB.selectUser(username);
-        //If the user exists
-        if(resultQuery.moveToFirst()==true){
-            //Get the password by searching first the column index
-            int level                      = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_LEVEL));
-            int points                     = resultQuery.getInt(resultQuery.getColumnIndex(DBManager.FN_POINTS));
-            TextView tvToolbarLevelNumber  = (TextView) findViewById(R.id.tvToolbarLevelNumber);
-            tvToolbarLevelNumber.setText(""+level);
-            TextView tvToolbarPointsNumber = (TextView) findViewById(R.id.tvToolbarPointsNumber);
-            tvToolbarPointsNumber.setText(""+points);
 
-        }
     }
 
     /*
@@ -1017,9 +1004,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
 
         //Iniciate the mail sender service
         MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiverReady);
+//Get the destiny mail to send the report
+        String maiToReport = sharedpreferences.getString("email_to_report", "albrathojaverde@gmail.com");
 
         //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
-        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet);
+        sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet,maiToReport);
 
         //Re initializate deletedArrays
         deletedImages=new boolean[4];

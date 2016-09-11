@@ -49,46 +49,46 @@ public class MailSenderService extends Service {
     * */
     public int sendMessage(final String toSendMessage, final String[] toSendPicturesLocation,
                            final String[] toSendvideosLocation,final String toSendGPSCoord,
-                           final String toSendGPSStreet){
-            new AsyncTask<Void, Void, Void>() {
-                String statusMessage = "";
-                int errorCode =-1;
+                           final String toSendGPSStreet, final String destinyMail){
+        new AsyncTask<Void, Void, Void>() {
+            String statusMessage = "";
+            int errorCode =-1;
 
-                @Override
-                protected void onPreExecute()
-                {}
+            @Override
+            protected void onPreExecute()
+            {}
 
-                @Override
-                protected Void doInBackground(Void... params)
-                {
-                    //Create a new GMailSender with the sender address and its password
-                    GMailSender sender = new GMailSender("ereporteruc3m@gmail.com", "3r3p0rt3ruc3m");
-                    //GMailSender sender = new GMailSender("eReporter@outlook.com", "3r3p0rt3ruc3m");
+            @Override
+            protected Void doInBackground(Void... params)
+            {
+                //Create a new GMailSender with the sender address and its password
+                GMailSender sender = new GMailSender("ereporteruc3m@gmail.com", "3r3p0rt3ruc3m");
+                //GMailSender sender = new GMailSender("eReporter@outlook.com", "3r3p0rt3ruc3m");
 
-                    try {
-                        //Send the mail, giving all the parameters to the method
-                        sender.sendMail("Emergency Report!", "The info sended is the next: \n", "albrathojaverde@gmail.com", "albrathojaverde@gmail.com",
-                                toSendMessage, toSendPicturesLocation, toSendvideosLocation, toSendGPSCoord, toSendGPSStreet);
-
-
-                        errorCode=1;
-                        statusMessage="Message sended";
-                        deliverResultToReceiver(errorCode, statusMessage);
+                try {
+                    //Send the mail, giving all the parameters to the method
+                    sender.sendMail("Emergency Report!", "The info sended is the next: \n", destinyMail, destinyMail,
+                            toSendMessage, toSendPicturesLocation, toSendvideosLocation, toSendGPSCoord, toSendGPSStreet);
 
 
-                    } catch (Exception e) {
-                        errorCode=2;
-                        statusMessage="Fail in sending";
-                        deliverResultToReceiver(errorCode, statusMessage);
-                        e.printStackTrace();
-                    }
-                    return null;
+                    errorCode=1;
+                    statusMessage="Message sended";
+                    deliverResultToReceiver(errorCode, statusMessage);
+
+
+                } catch (Exception e) {
+                    errorCode=2;
+                    statusMessage="Fail in sending";
+                    deliverResultToReceiver(errorCode, statusMessage);
+                    e.printStackTrace();
                 }
+                return null;
+            }
 
-                @Override
-                protected void onPostExecute(Void res)
-                {}
-            }.execute();
+            @Override
+            protected void onPostExecute(Void res)
+            {}
+        }.execute();
 
 
         return 0;
