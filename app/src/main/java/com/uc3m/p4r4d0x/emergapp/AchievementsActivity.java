@@ -125,6 +125,9 @@ public class AchievementsActivity extends AppCompatActivity {
         //Load the toolbar
         loadToolbar();
 
+        loadNotificationQuests();
+
+
         //FOR THE TAB LAYOUT
         //Get the viewPager
         viewPagerAchievements = (ViewPager) findViewById(R.id.viewPagerAchievements);
@@ -288,6 +291,45 @@ public class AchievementsActivity extends AppCompatActivity {
             ImageView fragmentImageView = (ImageView) findViewById(R.id.ivLogoToolbar);
             //Set text to it
             fragmentImageView.setImageResource(avatar);
+        }
+    }
+
+    /*
+  * Desc: load the notification icon for the quests
+  * */
+    public void loadNotificationQuests(){
+        //Get the number of notifications
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int notifNumber   = sharedpreferences.getInt("quest_notifications", 0);
+        boolean isQuestS  = sharedpreferences.getBoolean("questB", false);
+
+        //Get the element to change it
+        ImageView ivNotif = (ImageView) findViewById(R.id.ivQuestNotification);
+
+        switch(notifNumber){
+            case 0:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+            case 1:
+                ivNotif.setImageResource(R.mipmap.ic_quests_1);
+                break;
+            case 2:
+                ivNotif.setImageResource(R.mipmap.ic_quests_2);
+                break;
+            default:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+        }
+
+        LinearLayout llImageProfile = (LinearLayout) findViewById(R.id.llImageProfile);
+        LinearLayout llQuestActive = (LinearLayout) findViewById(R.id.llQuestActive);
+        if(isQuestS){
+            llImageProfile.setVisibility(View.GONE);
+            llQuestActive.setVisibility(View.VISIBLE);
+        }
+        else{
+            llImageProfile.setVisibility(View.VISIBLE);
+            llQuestActive.setVisibility(View.GONE);
         }
     }
 
@@ -615,8 +657,8 @@ public class AchievementsActivity extends AppCompatActivity {
                 else {
                     data[0][0] = "-";
                     data[0][1] = "-";
-                    data[0][2] = "-";
-                    data[0][3] = "-";
+                    data[0][2] = "0";
+                    data[0][3] = "0";
                     data[0][4] = "-";
                     data[0][5] = "-";
                 }
@@ -633,8 +675,8 @@ public class AchievementsActivity extends AppCompatActivity {
                 else {
                     data[1][0] = "-";
                     data[1][1] = "-";
-                    data[1][2] = "-";
-                    data[1][3] = "-";
+                    data[1][2] = "0";
+                    data[1][3] = "0";
                     data[0][4] = "-";
                     data[0][5] = "-";
                 }
@@ -730,6 +772,8 @@ public class AchievementsActivity extends AppCompatActivity {
         sharedpreferences.edit().putInt("questAP", Integer.parseInt(tvAP.getText().toString())).commit();
         sharedpreferences.edit().putInt("questXP", Integer.parseInt(tvXP.getText().toString())).commit();
 
+        loadNotificationQuests();
+
         Toast.makeText(this, "Quest selected", Toast.LENGTH_SHORT).show();
 
 
@@ -752,8 +796,13 @@ public class AchievementsActivity extends AppCompatActivity {
         sharedpreferences.edit().putInt("questAP", Integer.parseInt(tvAP.getText().toString())).commit();
         sharedpreferences.edit().putInt("questXP"      , Integer.parseInt(tvXP.getText().toString())).commit();
 
+        loadNotificationQuests();
         Toast.makeText(this, "Quest selected", Toast.LENGTH_SHORT).show();
 
+    }
+
+    public void onClickShowQuest(View v){
+        onClickShowQuest();
     }
 
     /*
@@ -815,6 +864,8 @@ public class AchievementsActivity extends AppCompatActivity {
                             editor.remove("questAP");
                             editor.remove("questXP");
                             editor.commit();
+                            loadNotificationQuests();
+
                         }
                     })
                     .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
@@ -841,6 +892,15 @@ public class AchievementsActivity extends AppCompatActivity {
 
         Dialog dialog = alertBuilder.create();
         dialog.show();
+
+    }
+
+    /*
+* Desc: on click method to navegate from toolbar to achievements activity
+* */
+    public void onClickChangeQuestActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
+        startActivity(myIntent);
 
     }
 }

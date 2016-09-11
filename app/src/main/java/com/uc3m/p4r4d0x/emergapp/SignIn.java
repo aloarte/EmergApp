@@ -1,6 +1,7 @@
 package com.uc3m.p4r4d0x.emergapp;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.uc3m.p4r4d0x.emergapp.fragments.DatePickerFragment;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAchievementsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBAvatarsManager;
+import com.uc3m.p4r4d0x.emergapp.helpers.database.DBQuestsManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBTitlesManager;
 import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 
@@ -205,6 +207,8 @@ public class SignIn extends AppCompatActivity {
 
     }
 
+
+
     /*
     * Desc: onClickLister for button bSignIn
     *       Insert a new user in de DDBB and swap to another activity
@@ -219,6 +223,7 @@ public class SignIn extends AppCompatActivity {
 
 
     }
+
     /*
     * Desc: onClickListener for button to set a date
     * */

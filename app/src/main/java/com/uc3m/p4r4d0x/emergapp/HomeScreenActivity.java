@@ -60,6 +60,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         //check if this activity came from EmergencyActivity to make another report
         checkResend();
 
+        checkFirstTimeHome();
+
+        loadNotificationQuests();
+
+
 
     }
 
@@ -220,6 +225,46 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
 
+
+    /*
+   * Desc: load the notification icon for the quests
+   * */
+    public void loadNotificationQuests(){
+        //Get the number of notifications
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int notifNumber   = sharedpreferences.getInt("quest_notifications", 0);
+        boolean isQuestS  = sharedpreferences.getBoolean("questB", false);
+
+        //Get the element to change it
+        ImageView ivNotif = (ImageView) findViewById(R.id.ivQuestNotification);
+
+        switch(notifNumber){
+            case 0:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+            case 1:
+                ivNotif.setImageResource(R.mipmap.ic_quests_1);
+                break;
+            case 2:
+                ivNotif.setImageResource(R.mipmap.ic_quests_2);
+                break;
+            default:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+        }
+
+        LinearLayout llImageProfile = (LinearLayout) findViewById(R.id.llImageProfile);
+        LinearLayout llQuestActive = (LinearLayout) findViewById(R.id.llQuestActive);
+        if(isQuestS){
+            llImageProfile.setVisibility(View.GONE);
+            llQuestActive.setVisibility(View.VISIBLE);
+        }
+        else{
+            llImageProfile.setVisibility(View.VISIBLE);
+            llQuestActive.setVisibility(View.GONE);
+        }
+    }
+
     /*
         * Desc: on click function to logout from the aplication
         * */
@@ -330,7 +375,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void checkResend(){
         String sGPSCoord,sGPSAddr,sGPSCity, sGPSStreet;
         int resendMessage=-1;
-        int C_FAST=1, C_ASSISTED=0;
+        int C_FAST=1, C_ASSISTED=2;
         //Get the extras
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -341,6 +386,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             sGPSStreet       = extras.getString("GPSST");
 
             resendMessage   = extras.getInt("lAgainReport");
+
             //Make a fast report again
             if(resendMessage==C_FAST){
                 Intent i = new Intent(getApplicationContext(), EmergencyActivity.class);
@@ -350,6 +396,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 i.putExtra("GPSA", sGPSAddr);
                 i.putExtra("GPSCY", sGPSCity);
                 i.putExtra("GPSST", sGPSStreet);
+                Log.d("ALR", "1");
                 //Launch intent
                 startActivity(i);
 
@@ -362,12 +409,38 @@ public class HomeScreenActivity extends AppCompatActivity {
                 i.putExtra("GPSA",sGPSAddr);
                 i.putExtra("GPSCY",sGPSCity);
                 i.putExtra("GPSST", sGPSStreet);
+                Log.d("ALR","2");
                 //Launch intent
                 startActivity(i);
             }
         }
    }
 
+    /*
+    * desc: check if its the first time in home screen to set the new quests
+    * */
+    public void checkFirstTimeHome(){
+        /*Log.d("ALR","here");
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            //If its the first time
+            int firstTime = extras.getInt("firstTime");
+            if(firstTime == 1){
+                Log.d("ALR","FT");
+                //Modify the shared preferences notifier to 2
+                sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                sharedpreferences.edit().putInt("quest_notifications", 2).commit();
+                getIntent().putExtra("firstTime",2);
+
+            }
+        }
+        //if extras == null is not the first time
+        else{
+
+        }
+        */
+    }
 
     // ----------- ON CLICK METHODS --------------
 
@@ -470,6 +543,10 @@ public class HomeScreenActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public void onClickShowQuest(View v){
+        onClickShowQuest();
+    }
+
     /*
    * Desc: on click function to logout
    * */
@@ -529,6 +606,8 @@ public class HomeScreenActivity extends AppCompatActivity {
                             editor.remove("questAP");
                             editor.remove("questXP");
                             editor.commit();
+                            loadNotificationQuests();
+
                         }
                     })
                     .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
@@ -579,4 +658,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
 
+    /*
+* Desc: on click method to navegate from toolbar to achievements activity
+* */
+    public void onClickChangeQuestActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
+        startActivity(myIntent);
+
+    }
 }

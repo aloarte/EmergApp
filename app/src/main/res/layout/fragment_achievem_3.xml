@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadeScrollbars="false"
-        android:id="@+id/scrollView" >
+        android:id="@+id/svSecret"
+        android:visibility="gone">
 
 
         <LinearLayout
@@ -556,4 +557,23 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:id="@+id/rlUnlockedSecretAchievements">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complete the achievement &quot;First Steps&quot; to unlock Secret Achievements"
+            android:id="@+id/tvNotUnlocked"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginBottom="200dp" />
+    </RelativeLayout>
+
 </LinearLayout>

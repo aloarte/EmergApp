@@ -115,6 +115,7 @@ public class RankingActivity extends AppCompatActivity {
         //Load the toolbar
         loadToolbar();
 
+        loadNotificationQuests();
 
 
         //FOR THE TAB LAYOUT
@@ -334,6 +335,45 @@ public class RankingActivity extends AppCompatActivity {
     }
 
     /*
+  * Desc: load the notification icon for the quests
+  * */
+    public void loadNotificationQuests(){
+        //Get the number of notifications
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int notifNumber   = sharedpreferences.getInt("quest_notifications", 0);
+        boolean isQuestS  = sharedpreferences.getBoolean("questB", false);
+
+        //Get the element to change it
+        ImageView ivNotif = (ImageView) findViewById(R.id.ivQuestNotification);
+
+        switch(notifNumber){
+            case 0:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+            case 1:
+                ivNotif.setImageResource(R.mipmap.ic_quests_1);
+                break;
+            case 2:
+                ivNotif.setImageResource(R.mipmap.ic_quests_2);
+                break;
+            default:
+                ivNotif.setImageResource(R.mipmap.ic_quests);
+                break;
+        }
+
+        LinearLayout llImageProfile = (LinearLayout) findViewById(R.id.llImageProfile);
+        LinearLayout llQuestActive = (LinearLayout) findViewById(R.id.llQuestActive);
+        if(isQuestS){
+            llImageProfile.setVisibility(View.GONE);
+            llQuestActive.setVisibility(View.VISIBLE);
+        }
+        else{
+            llImageProfile.setVisibility(View.VISIBLE);
+            llQuestActive.setVisibility(View.GONE);
+        }
+    }
+
+    /*
     * Desc: get the data from the DDBB to fill propperly the rank textViews
     * param: the rank fragment class to set on it the data
     * */
@@ -505,6 +545,10 @@ public class RankingActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickShowQuest(View v){
+        onClickShowQuest();
+    }
+
     /*
  * Desc: on click function to show quests
  * */
@@ -564,6 +608,8 @@ public class RankingActivity extends AppCompatActivity {
                             editor.remove("questAP");
                             editor.remove("questXP");
                             editor.commit();
+                            loadNotificationQuests();
+
                         }
                     })
                     .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
@@ -590,6 +636,15 @@ public class RankingActivity extends AppCompatActivity {
 
         Dialog dialog = alertBuilder.create();
         dialog.show();
+
+    }
+
+    /*
+* Desc: on click method to navegate from toolbar to achievements activity
+* */
+    public void onClickChangeQuestActivity(View v){
+        Intent myIntent= new Intent(getApplicationContext(), AchievementsActivity.class);
+        startActivity(myIntent);
 
     }
 }
