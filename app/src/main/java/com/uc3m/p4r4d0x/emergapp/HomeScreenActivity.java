@@ -375,7 +375,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void checkResend(){
         String sGPSCoord,sGPSAddr,sGPSCity, sGPSStreet;
         int resendMessage=-1;
-        int C_FAST=1, C_ASSISTED=0;
+        int C_FAST=1, C_ASSISTED=2;
         //Get the extras
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
