@@ -177,15 +177,15 @@ public class LoginActivity extends AppCompatActivity {
 
         DBUserManager dbUser= new DBUserManager(this);
         boolean users=
-                        dbUser.insertFullFieldsUser("TestUser1", "1234", "admin1@gmail.com", "10/10/2010", "Traveler", "-"              , 50 , 65, 3,R.mipmap.avatar_hombre1  , 1, 0, 0 ,1,1 ,1,"000000000","000000000")&
-                        dbUser.insertFullFieldsUser("TestUser2", "1234", "admin2@gmail.com", "10/10/2010", "Veteran" , "-"              , 125, 100, 5,R.mipmap.avatar_mujer1  , 1, 1, 0 ,1,4 ,1 ,"110000000","110000000") &
-                        dbUser.insertFullFieldsUser("TestUser3", "1234", "admin3@gmail.com", "10/10/2010", "Veteran" , "Seeker of Truth", 150, 325, 2,R.mipmap.avatar_hombre2 , 1, 1, 1 ,1,5 ,1,"111000000","111000000") &
-                        dbUser.insertFullFieldsUser("TestUser4", "1234", "admin4@gmail.com", "10/10/2010", "Hero"    , "-"              , 200, 175, 6,R.mipmap.avatar_mujer2  , 1, 1, 1 ,1,7 ,1 ,"111110000","111110000") &
-                        dbUser.insertFullFieldsUser("AdminUser", "1234", "admin5@gmail.com", "10/10/2010", "Legend"  , "Top Reporter"   , 320, 500, 1,R.mipmap.avatar_hipster1, 1, 1, 1 ,1,10,1,"111111111","111111111");
+                        dbUser.insertFullFieldsUser("TestUser1", "1234", "admin1@gmail.com", "10/10/2010", "Veteran", "Begginer"              , 50 , 65, 0,R.mipmap.avatar_noavatar  , 1, 0, 0 ,1,1 ,0,"000000000","000000000")&
+                        dbUser.insertFullFieldsUser("TestUser2", "1234", "admin2@gmail.com", "10/10/2010", "Veteran" , "-"              , 125, 100, 0,R.mipmap.avatar_hombre1  , 1, 1, 0 ,1,3 ,0 ,"110000000","110000000") &
+                        dbUser.insertFullFieldsUser("TestUser3", "1234", "admin3@gmail.com", "10/10/2010", "Hero" , "-", 180, 325, 3,R.mipmap.avatar_hombre2 , 1, 1, 1 ,1,5 ,0,"111000000","111000000") &
+                        dbUser.insertFullFieldsUser("TestUser4", "1234", "admin4@gmail.com", "10/10/2010", "Hero"    , "Hero"              , 215, 375, 4,R.mipmap.avatar_mujer2  , 1, 1, 1 ,1,6 ,1 ,"111110000","111110000") &
+                        dbUser.insertFullFieldsUser("AdminUser", "1234", "admin5@gmail.com", "10/10/2010", "Legend"  , "Top Reporter"   , 320, 750, 7,R.mipmap.avatar_hipster1, 1, 1, 1 ,1,9 ,1,"111111111","111111111");
         boolean titles=
-                insertUserTitles("TestUser1") & insertUserTitles("TestUser2") &
-                        insertUserTitles("TestUser3") & insertUserTitles("TestUser4") &
-                        insertUserTitles("AdminUser") ;
+                insertUserTitles("TestUser1",2) & insertUserTitles("TestUser2",2) &
+                        insertUserTitles("TestUser3",3) & insertUserTitles("TestUser4",3) &
+                        insertUserTitles("AdminUser",1) ;
 
         boolean achievements=
                 insertUserAchievementsWithNovelCompleted("TestUser1") & insertUserAchievementsWithNovelCompleted("TestUser2") &
@@ -193,9 +193,9 @@ public class LoginActivity extends AppCompatActivity {
                         insertUserAchievementsCompleted("AdminUser") ;
 
         boolean avatars=
-                insertUserAvatars("TestUser1") & insertUserAvatars("TestUser2") &
-                        insertUserAvatars("TestUser3") & insertUserAvatars("TestUser4") &
-                        insertUserAvatars("AdminUser") ;
+                insertUserAvatars("TestUser1",2) & insertUserAvatars("TestUser2",2) &
+                        insertUserAvatars("TestUser3",3) & insertUserAvatars("TestUser4",3) &
+                        insertUserAvatars("AdminUser",1) ;
 
 
 
@@ -210,13 +210,36 @@ public class LoginActivity extends AppCompatActivity {
      * Param: an String with the name of the user for calling the DDBB
      * Ret value: true or false if anything fails
      * */
-    public boolean insertUserTitles(String username){
+    public boolean insertUserTitles(String username, int typeOfUser){
         DBTitlesManager titleDB = new DBTitlesManager(this);
-        return  titleDB.inserttitle("tBegginer", username,1) &
-                titleDB.inserttitle("tHero", username,1) &
-                titleDB.inserttitle("tTop", username,1) &
-                titleDB.inserttitle("tWorker", username,1) &
-                titleDB.inserttitle("tSeeker", username,1);
+        boolean bValueRet=false;
+        switch(typeOfUser){
+            //All unlocked
+            case 1:
+                bValueRet = titleDB.inserttitle("tBegginer", username,1) &
+                        titleDB.inserttitle("tHero", username,1) &
+                        titleDB.inserttitle("tTop", username,1) &
+                        titleDB.inserttitle("tWorker", username,1) &
+                        titleDB.inserttitle("tSeeker", username,1);
+                break;
+            //Just novel unlocked
+            case 2:
+                bValueRet = titleDB.inserttitle("tBegginer", username,1) &
+                        titleDB.inserttitle("tHero", username,0) &
+                        titleDB.inserttitle("tTop", username,0) &
+                        titleDB.inserttitle("tWorker", username,0) &
+                        titleDB.inserttitle("tSeeker", username,0);
+                break;
+            case 3:
+                //Top title and hero title
+                bValueRet = titleDB.inserttitle("tBegginer", username,1) &
+                        titleDB.inserttitle("tHero", username,1) &
+                        titleDB.inserttitle("tTop", username,1) &
+                        titleDB.inserttitle("tWorker", username,0) &
+                        titleDB.inserttitle("tSeeker", username,0);
+                break;
+        }
+        return  bValueRet;
 
     }
 
@@ -297,14 +320,40 @@ public class LoginActivity extends AppCompatActivity {
      * Param: an String with the name of the user for calling the DDBB
      * Ret value: true or false if anything fails
      * */
-    public boolean insertUserAvatars(String username){
+    public boolean insertUserAvatars(String username,int typeOfUser){
         DBAvatarsManager avatarDB = new  DBAvatarsManager(this);
-        return  avatarDB.insertAvatar("avAvatarMan1"        , R.mipmap.avatar_hombre1  ,1, username) &
-                avatarDB.insertAvatar("avAvatarWoman1"      , R.mipmap.avatar_mujer1  , 1, username) &
-                avatarDB.insertAvatar("avAvatarMan2"        , R.mipmap.avatar_hombre2 , 1, username) &
-                avatarDB.insertAvatar("avAvatarWoman2"      , R.mipmap.avatar_mujer2  , 1, username) &
-                avatarDB.insertAvatar("avAvatarManHipster"  , R.mipmap.avatar_hipster1, 1, username) &
-                avatarDB.insertAvatar("avAvatarWomanHipster", R.mipmap.avatar_hipster2, 1, username);
+        boolean bValueRet=false;
+        switch(typeOfUser){
+            //All completed
+            case 1:
+                bValueRet=avatarDB.insertAvatar("avAvatarMan1"        , R.mipmap.avatar_hombre1  ,1, username) &
+                        avatarDB.insertAvatar("avAvatarWoman1"      , R.mipmap.avatar_mujer1  , 1, username) &
+                        avatarDB.insertAvatar("avAvatarMan2"        , R.mipmap.avatar_hombre2 , 1, username) &
+                        avatarDB.insertAvatar("avAvatarWoman2"      , R.mipmap.avatar_mujer2  , 1, username) &
+                        avatarDB.insertAvatar("avAvatarManHipster"  , R.mipmap.avatar_hipster1, 1, username) &
+                        avatarDB.insertAvatar("avAvatarWomanHipster", R.mipmap.avatar_hipster2, 1, username);
+                break;
+            //1 avatar
+            case 2:
+                bValueRet=avatarDB.insertAvatar("avAvatarMan1"        , R.mipmap.avatar_hombre1  ,1, username) &
+                        avatarDB.insertAvatar("avAvatarWoman1"      , R.mipmap.avatar_mujer1  , 1, username) &
+                        avatarDB.insertAvatar("avAvatarMan2"        , R.mipmap.avatar_hombre2 , 1, username) &
+                        avatarDB.insertAvatar("avAvatarWoman2"      , R.mipmap.avatar_mujer2  , 0, username) &
+                        avatarDB.insertAvatar("avAvatarManHipster"  , R.mipmap.avatar_hipster1, 0, username) &
+                        avatarDB.insertAvatar("avAvatarWomanHipster", R.mipmap.avatar_hipster2, 0, username);
+                break;
+            //2 avatars
+            case 3:
+                bValueRet=avatarDB.insertAvatar("avAvatarMan1"        , R.mipmap.avatar_hombre1  ,1, username) &
+                        avatarDB.insertAvatar("avAvatarWoman1"      , R.mipmap.avatar_mujer1  , 1, username) &
+                        avatarDB.insertAvatar("avAvatarMan2"        , R.mipmap.avatar_hombre2 , 1, username) &
+                        avatarDB.insertAvatar("avAvatarWoman2"      , R.mipmap.avatar_mujer2  , 1, username) &
+                        avatarDB.insertAvatar("avAvatarManHipster"  , R.mipmap.avatar_hipster1, 0, username) &
+                        avatarDB.insertAvatar("avAvatarWomanHipster", R.mipmap.avatar_hipster2, 0, username);
+                break;
+
+        }
+        return  bValueRet;
 
     }
 
