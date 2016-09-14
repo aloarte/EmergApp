@@ -1526,6 +1526,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     editor.remove("questAP");
                     editor.remove("questXP");
                     editor.commit();
+                    loadNotificationQuests();
 
                     changeUserStats(username, questAP, questXP);
                     upgradeAchievementExpertQuestsLover();
@@ -1544,6 +1545,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     editor.remove("questAP");
                     editor.remove("questXP");
                     editor.commit();
+                    loadNotificationQuests();
 
                     changeUserStats(username, questAP, questXP);
                     upgradeAchievementExpertQuestsLover();

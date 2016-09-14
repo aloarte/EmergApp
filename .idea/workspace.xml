@@ -18,9 +18,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d7bc5ae-4284-448e-a74e-4dcbff2be9b5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/AchievementsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/AchievementsActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/HomeScreenActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/HomeScreenActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Emergapp.iws" />
@@ -61,7 +60,37 @@
     <favorites_list name="Emergapp" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="EmergencyActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="1.7283019">
+              <caret line="1548" column="0" selection-start-line="1548" selection-start-column="0" selection-end-line="1548" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#onMapReady#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#onMarkerDragEnd#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#onBackPressed#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#putFirstVideos#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#loadToolbar#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#performLogout#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#loadColor#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#checkUpdateSameLastLocation#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#upgradeAchievementSecret#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#upgradeAchievementMetaExpert#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#upgradeAchievementExpertImagesLover#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#upgradeAchievementExpertVideosLover#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#upgradeAchievementExpertQuestsLover#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#upgradeAchievementExpertLocations#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#upgradeAchievementSecretLocations#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#onClickTakePhoto#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#onClickTakeVideo#0;class#EmergencyActivity#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -2048,7 +2077,77 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Emergapp" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="manifests" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -2474,77 +2573,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Emergapp" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2788,7 +2817,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="59" y="24" width="1307" height="744" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.48453608" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.79877585" order="13" side_tool="false" content_ui="tabs" />
@@ -3318,30 +3347,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.43486974">
           <caret line="1053" column="0" selection-start-line="1053" selection-start-column="0" selection-end-line="1053" selection-end-column="0" />
-          <folding>
-            <element signature="method#changeCompletedReward#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#loadProgressUnlocked#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#loadToolbar#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#loadColor#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#loadNotificationQuests#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#setElementToVisible#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#checkUnlockAcountConfiguration#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#onClickChangeProfileActivity#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#onClickSelectItemToStore#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#onClickPurchaseElement#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#markElementSelected#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#addAPDifferenceToScreen#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#haveUserMoreAPPointsThan#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#setElementToUnlockedToUser#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#checkElementIsAlreadyUnlocked#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#getBooleanFromString#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#getStringFromBooleanArray#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#changeCompletedButton#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#clearSelectedElement#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="method#upgradeElementViewIntoDDBB#0;class#RewardsSActivity#0" expanded="false" />
-            <element signature="e#45439#45440#0" expanded="true" />
-            <element signature="e#45477#45478#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3381,10 +3386,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/HomeScreenActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.039622642">
+          <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#13817#13846#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48296595">
-          <caret line="1531" column="0" selection-start-line="1531" selection-start-column="0" selection-end-line="1531" selection-end-column="0" />
+        <state vertical-scroll-proportion="1.7283019">
+          <caret line="1548" column="0" selection-start-line="1548" selection-start-column="0" selection-end-line="1548" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#onMapReady#0;class#EmergencyActivity#0" expanded="false" />
@@ -3404,17 +3420,6 @@
             <element signature="method#upgradeAchievementSecretLocations#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#onClickTakePhoto#0;class#EmergencyActivity#0" expanded="false" />
             <element signature="method#onClickTakeVideo#0;class#EmergencyActivity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/HomeScreenActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.039622642">
-          <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#13817#13846#0" expanded="true" />
           </folding>
         </state>
       </provider>
