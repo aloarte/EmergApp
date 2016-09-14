@@ -17,8 +17,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1d7bc5ae-4284-448e-a74e-4dcbff2be9b5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/database/DBHelper.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/database/DBHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/LoginActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/AchievementsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/AchievementsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Emergapp.iws" />
@@ -60,38 +60,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/LoginActivity.java">
+      <file leaf-file-name="EmergencyActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21428572">
-              <caret line="178" column="0" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.7863894">
+              <caret line="1660" column="30" selection-start-line="1660" selection-start-column="0" selection-end-line="1661" selection-end-column="0" />
               <folding>
-                <element signature="method#insertInitialValues#0;class#LoginActivity#0" expanded="false" />
-                <element signature="method#insertUserTitles#0;class#LoginActivity#0" expanded="false" />
-                <element signature="method#insertUserAchievementsCompleted#0;class#LoginActivity#0" expanded="false" />
-                <element signature="method#insertQuests#0;class#LoginActivity#0" expanded="false" />
-                <element signature="method#checkLogIn#0;class#LoginActivity#0" expanded="false" />
+                <element signature="imports" expanded="true" />
+                <element signature="method#onClickChangeProfileActivity#0;class#EmergencyActivity#0" expanded="false" />
+                <element signature="method#onClickChangeACActivity#0;class#EmergencyActivity#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DBHelper.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/database/DBHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="54" selection-start-line="14" selection-start-column="54" selection-end-line="14" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DBUserManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/database/DBUserManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="616" column="47" selection-start-line="616" selection-start-column="47" selection-end-line="616" selection-end-column="47" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -2023,7 +2001,6 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/AchievementsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/AccountConfigurationActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/HomeScreenActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ProfileActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/RankingActivity.java" />
@@ -2038,6 +2015,7 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/content_home_screen.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/database/DBHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/LoginActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java" />
       </list>
     </option>
   </component>
@@ -2056,9 +2034,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="59" />
-    <option name="y" value="-4" />
+    <option name="y" value="24" />
     <option name="width" value="1307" />
-    <option name="height" value="772" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -2083,9 +2061,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -2420,6 +2396,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2732,8 +2710,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="59" y="-4" width="1307" height="772" extended-state="6" />
-    <editor active="true" />
+    <frame x="59" y="24" width="1307" height="744" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.48453608" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26086956" sideWeight="0.79877585" order="13" side_tool="false" content_ui="tabs" />
@@ -2751,7 +2729,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.52334946" sideWeight="0.5400476" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31641555" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" x="481" y="251" width="463" height="458" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.08168121" sideWeight="0.48470208" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44488502" sideWeight="0.48470208" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24980174" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1665345" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -3135,19 +3113,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8988764">
-          <caret line="1710" column="5" selection-start-line="1710" selection-start-column="5" selection-end-line="1710" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#26016#26048#0" expanded="true" />
-            <element signature="method#onClickChangeProfileActivity#0;class#EmergencyActivity#0" expanded="false" />
-            <element signature="method#onClickChangeACActivity#0;class#EmergencyActivity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/ProfileActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9325843">
@@ -3171,9 +3136,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9325843">
           <caret line="403" column="5" selection-start-line="403" selection-start-column="5" selection-end-line="403" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3283,6 +3245,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.08035714">
+          <caret line="178" column="0" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
+          <folding>
+            <element signature="method#insertInitialValues#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#insertUserTitles#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#insertUserAchievementsCompleted#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#insertQuests#0;class#LoginActivity#0" expanded="false" />
+            <element signature="method#checkLogIn#0;class#LoginActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/database/DBHelper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3293,22 +3269,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/helpers/database/DBUserManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.25">
           <caret line="616" column="47" selection-start-line="616" selection-start-column="47" selection-end-line="616" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/LoginActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/uc3m/p4r4d0x/emergapp/EmergencyActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21428572">
-          <caret line="178" column="0" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.7863894">
+          <caret line="1660" column="30" selection-start-line="1660" selection-start-column="0" selection-end-line="1661" selection-end-column="0" />
           <folding>
-            <element signature="method#insertInitialValues#0;class#LoginActivity#0" expanded="false" />
-            <element signature="method#insertUserTitles#0;class#LoginActivity#0" expanded="false" />
-            <element signature="method#insertUserAchievementsCompleted#0;class#LoginActivity#0" expanded="false" />
-            <element signature="method#insertQuests#0;class#LoginActivity#0" expanded="false" />
-            <element signature="method#checkLogIn#0;class#LoginActivity#0" expanded="false" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#onClickChangeProfileActivity#0;class#EmergencyActivity#0" expanded="false" />
+            <element signature="method#onClickChangeACActivity#0;class#EmergencyActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -1640,10 +1640,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     editor.remove("questAP");
                     editor.remove("questXP");
                     editor.commit();
-
+                    loadNotificationQuests();
                     changeUserStats(username, questAP, questXP);
                     upgradeAchievementExpertQuestsLover();
-                    questNotification();
                 }
             }
             else if(questName.compareTo("Quest2")==0){
@@ -1659,10 +1658,9 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                     editor.remove("questAP");
                     editor.remove("questXP");
                     editor.commit();
-
+                    loadNotificationQuests();
                     changeUserStats(username, questAP, questXP);
                     upgradeAchievementExpertQuestsLover();
-                    questNotification();
             }
         }
 
@@ -1710,23 +1708,6 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
-    /*
-    * Desc: put into the shared preferences quest notification one notif less
-    * */
-    public void questNotification(){
-        //Get the number of notifications
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        int notifNumber=sharedpreferences.getInt("quest_notifications",0);
-        if(notifNumber==0){
-
-        }
-        else{
-            sharedpreferences.edit().putInt("quest_notifications",notifNumber-1).commit();
-        }
-
-        loadNotificationQuests();
-
-    }
 
     /*
     * Desc: Check from the DDBB if the user can select his account configuration
