@@ -774,7 +774,9 @@ public class AchievementsActivity extends AppCompatActivity {
         sharedpreferences.edit().putInt("questAP", Integer.parseInt(tvAP.getText().toString())).commit();
         sharedpreferences.edit().putInt("questXP", Integer.parseInt(tvXP.getText().toString())).commit();
 
-        loadNotificationQuests();
+
+            removeQuestNotification();
+
 
         Toast.makeText(this, "Quest selected", Toast.LENGTH_SHORT).show();
 
@@ -798,9 +800,27 @@ public class AchievementsActivity extends AppCompatActivity {
         sharedpreferences.edit().putInt("questAP", Integer.parseInt(tvAP.getText().toString())).commit();
         sharedpreferences.edit().putInt("questXP"      , Integer.parseInt(tvXP.getText().toString())).commit();
 
-        loadNotificationQuests();
+        removeQuestNotification();
 
         Toast.makeText(this, "Quest selected", Toast.LENGTH_SHORT).show();
+
+    }
+
+    /*
+    * Desc: put into the shared preferences quest notification one notif less
+    * */
+    public void removeQuestNotification(){
+        //Get the number of notifications
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        int notifNumber=sharedpreferences.getInt("quest_notifications", 0);
+        if(notifNumber==0){
+
+        }
+        else{
+            sharedpreferences.edit().putInt("quest_notifications",0).commit();
+        }
+
+        loadNotificationQuests();
 
     }
 

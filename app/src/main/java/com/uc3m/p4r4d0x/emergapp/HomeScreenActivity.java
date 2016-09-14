@@ -223,6 +223,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
 
+
+
     /*
    * Desc: load the notification icon for the quests
    * */
