@@ -12,7 +12,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
-        applicationId "com.uc3m.p4r4d0x.emergapp"
+        applicationId "com.uc3m.p4r4d0x.eReportG1"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1

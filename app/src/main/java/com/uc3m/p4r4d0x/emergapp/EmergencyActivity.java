@@ -1308,7 +1308,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             else
             {
                 //If is not deleted, copy the path value
-                toSendVideosPathAux[i]= toSendVideosPath[i];
+                //toSendVideosPathAux[i]= toSendVideosPath[i];
             }
         }
 
@@ -1322,7 +1322,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             else
             {
                 //If is not deleted, copy the path value
-                toSendPicturesPathAux[i]= toSendPicturesPath[i];
+                //toSendPicturesPathAux[i]= toSendPicturesPath[i];
             }
         }
 
