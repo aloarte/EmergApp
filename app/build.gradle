@@ -12,7 +12,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
-        applicationId "com.uc3m.p4r4d0x.emergapp"
+        applicationId "com.uc3m.p4r4d0x.eReportG2"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
@@ -41,4 +41,3 @@ dependencies {
     compile files('/home/p4r4d0x/AndroidStudioProjects/Emergapp/libs/mail.jar')
     compile files('libs/activation.jar')
 }
-
