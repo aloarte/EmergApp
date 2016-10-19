@@ -1,14 +1,18 @@
 package com.uc3m.p4r4d0x.emergapp;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -30,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText etPassword,etUser;
     final String MyPREFERENCES="userPreferences";
     SharedPreferences sharedpreferences;
+    final int REQUEST_CODE_ASK_PERMISSIONS= 4;
+
     TextView tvFailLogin;
     int retriesLogin = 3;
 
@@ -69,6 +75,9 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        checkPermissions();
+
 
         //Get the buttons
         bLogin=(Button)findViewById(R.id.bSSignIn);
@@ -213,6 +222,29 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return logged;
+    }
+
+    /*
+     * Desc: Check the permissions and request them to the user if necessary
+     *  */
+    public void checkPermissions(){
+        //Check if some of the core permissions are not already granted
+        if ((ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(LoginActivity.this,Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(LoginActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)) {
+            Toast.makeText(this, "Some permissions are not granted. Please enable them.", Toast.LENGTH_SHORT).show();
+
+            //If so, request the activation of this permissions
+            ActivityCompat.requestPermissions(LoginActivity.this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_CODE_ASK_PERMISSIONS);
+        }
+        else{
+            //Permissions already granted
+        }
     }
 
 }

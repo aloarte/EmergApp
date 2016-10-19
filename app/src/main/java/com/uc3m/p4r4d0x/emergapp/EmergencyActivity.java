@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -66,6 +67,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     final static int C_VIDEO         = 2;
     final static int C_GALLERY_IMAGE = 11;
     final static int C_GALLERY_VIDEO = 12;
+    final int REQUEST_CODE_ASK_PERMISSIONS= 4;
 
     //Define constants to identify which previous message has been chosen
     final int C_YES_YES = 1
@@ -162,6 +164,8 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        checkPermissions();
 
         //Load the toolbar
         loadToolbar();
@@ -523,7 +527,26 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+    /*OnRequestPermissions
+        * Desc: check the status of the permissions
+        * */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
 
+                } else {
+                    // Permission Denied
+                    Toast.makeText(EmergencyActivity.this, "Some permissions have been rejected. Please, enable them to use this app.", Toast.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 
 
     //---------------------------------------------------//
@@ -1037,7 +1060,29 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         startService(intent);
     }
 
+    /*
+         * Desc: Check the permissions and request them to the user if necessary
+         *  */
+    public void checkPermissions(){
+        //Check if some of the core permissions are not already granted
+        if ((ContextCompat.checkSelfPermission(EmergencyActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(EmergencyActivity.this,Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(EmergencyActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)) {
+            Toast.makeText(this, "Some permissions are not granted. Please enable them.", Toast.LENGTH_SHORT).show();
 
+            //If so, request the activation of this permissions
+            ActivityCompat.requestPermissions(EmergencyActivity.this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_CODE_ASK_PERMISSIONS);
+
+        }
+        else{
+            //Permissions already granted
+        }
+    }
 
     //-----------------------------------------------------------//
     //---------------------ON CLICK BUTTON METHODS---------------//
