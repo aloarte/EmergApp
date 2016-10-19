@@ -5,7 +5,6 @@
     <!-- Camera permission -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- GPS permission -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!-- Internet permission -->
@@ -27,7 +26,7 @@
         <!-- android:name="com.google.android.maps.v2.API_KEY" -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCiZyNl-qN8jU5iqbI1dTce7ZGUz-Lfrl0" />
+            android:value=" AIzaSyCrzW3K5St54mQQQfEASomTWHeYSPGqWDY" />
 
         <activity
             android:name=".LoginActivity"

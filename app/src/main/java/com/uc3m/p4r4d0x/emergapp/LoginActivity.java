@@ -1,5 +1,6 @@
 package com.uc3m.p4r4d0x.emergapp;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,9 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -37,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText etPassword,etUser;
     final String MyPREFERENCES="userPreferences";
     SharedPreferences sharedpreferences;
+    final int REQUEST_CODE_ASK_PERMISSIONS= 4;
     TextView tvFailLogin;
     int retriesLogin = 3;
     Context context;
@@ -63,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarL);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        checkPermissions();
 
         context= getApplicationContext();
         //Get the buttons
@@ -123,6 +130,28 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /*OnRequestPermissions
+    * Desc: check the status of the permissions
+    * */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+
+                } else {
+                    // Permission Denied
+                    Toast.makeText(LoginActivity.this, "Some permissions have been rejected. Please, enable them to use this app.", Toast.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+
     /*
   * Desc: on click function to change email
   * */
@@ -162,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void insertInitialValues(){
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        sharedpreferences.edit().putBoolean("first_time", true).commit();
+        //sharedpreferences.edit().putBoolean("first_time", true).commit();
         if (sharedpreferences.getBoolean("first_time", true)){
             insertExampleUsers();
             insertQuests();
@@ -540,6 +569,29 @@ public class LoginActivity extends AppCompatActivity {
         sharedpreferences.edit().putInt("quest_notifications", 2).commit();
         startActivity(myIntent);
 
+    }
+
+    /*
+     * Desc: Check the permissions and request them to the user if necessary
+     *  */
+    public void checkPermissions(){
+        //Check if some of the core permissions are not already granted
+        if ((ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(LoginActivity.this,Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(LoginActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)) {
+            Toast.makeText(this, "Some permissions are not granted. Please enable them.", Toast.LENGTH_SHORT).show();
+
+            //If so, request the activation of this permissions
+            ActivityCompat.requestPermissions(LoginActivity.this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_CODE_ASK_PERMISSIONS);
+        }
+        else{
+            //Permissions already granted
+        }
     }
 
 

@@ -19,18 +19,16 @@
         android:weightSum="1"
         android:background="#f9fafa"
         android:id="@+id/llAssitedReport"
-        android:layout_gravity="left"
         android:layout_marginBottom="5dp"
         android:onClick="onClickAssistedReport"
         android:gravity="center_horizontal">
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Assisted Report"
-            android:id="@+id/button"
-            android:textStyle="bold"
+            android:id="@+id/bAssistedReport"
             android:onClick="onClickAssistedReport"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
@@ -47,16 +45,14 @@
         android:background="#f9fafa"
         android:id="@+id/llFastReport"
         android:layout_marginBottom="5dp"
-        style="@style/Base.Theme.AppCompat.Light.Dialog"
         android:gravity="center_horizontal">
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Fast Report"
-            android:id="@+id/bTextFastReport"
-            android:textStyle="bold"
+            android:id="@+id/bFastReport"
             android:onClick="onClickFastReport"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
