@@ -50,7 +50,6 @@
                     android:layout_height="45dp"
                     android:weightSum="1"
                     android:gravity="center"
-                    android:onClick="onClickChangeACActivity"
                     android:id="@+id/llImageProfile">
 
                     <ImageView
@@ -67,7 +66,6 @@
                     android:layout_height="45dp"
                     android:weightSum="1"
                     android:gravity="center"
-                    android:onClick="onClickShowQuest"
                     android:visibility="gone"
                     android:id="@+id/llQuestActive" >
 
@@ -86,7 +84,6 @@
                     android:weightSum="1"
                     android:layout_marginRight="5dp"
                     android:gravity="center"
-                    android:onClick="onClickChangeQuestActivity"
                     android:layout_marginLeft="5dp">
 
                     <ImageView
@@ -103,7 +100,6 @@
                     android:layout_height="match_parent"
                     android:weightSum="1"
                     android:layout_gravity="left"
-                    android:onClick="onClickChangeProfileActivity"
                     android:gravity="center_horizontal">
 
                     <LinearLayout
@@ -148,7 +144,6 @@
                     android:layout_height="match_parent"
                     android:weightSum="1"
                     android:layout_weight="0.36"
-                    android:onClick="onClickChangeProfileActivity"
                     android:gravity="center_horizontal">
 
                     <LinearLayout

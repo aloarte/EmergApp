@@ -1,5 +1,6 @@
 package com.uc3m.p4r4d0x.emergapp;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,9 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -34,6 +38,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     String   sGPSAddr, sGPSCoord ,sGPSCity, sGPSStreet;
     //Info to use shared preferences to have a session
     final String MyPREFERENCES = "userPreferences";
+    final int REQUEST_CODE_ASK_PERMISSIONS= 4;
+
     SharedPreferences sharedpreferences;
 
     /*
@@ -50,6 +56,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarH);
         setSupportActionBar(toolbar);
 
+        checkPermissions();
 
         //Get the GPS position
         getGPSposition();
@@ -59,8 +66,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         loadColor();
         //check if this activity came from EmergencyActivity to make another report
         checkResend();
-
-        checkFirstTimeHome();
 
         loadNotificationQuests();
 
@@ -129,6 +134,28 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
     }
+
+    /*OnRequestPermissions
+    * Desc: check the status of the permissions
+    * */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+
+                } else {
+                    // Permission Denied
+                    Toast.makeText(HomeScreenActivity.this, "Some permissions have been rejected. Please, enable them to use this app.", Toast.LENGTH_LONG)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
 
     /*
      * Desc: load the data into the toolbar
@@ -417,29 +444,26 @@ public class HomeScreenActivity extends AppCompatActivity {
    }
 
     /*
-    * desc: check if its the first time in home screen to set the new quests
-    * */
-    public void checkFirstTimeHome(){
-        /*Log.d("ALR","here");
+     * Desc: Check the permissions and request them to the user if necessary
+     *  */
+    public void checkPermissions(){
+        //Check if some of the core permissions are not already granted
+        if ((ContextCompat.checkSelfPermission(HomeScreenActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(HomeScreenActivity.this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(HomeScreenActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)) {
+            Toast.makeText(this, "Some permissions are not granted. Please enable them.", Toast.LENGTH_SHORT).show();
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            //If its the first time
-            int firstTime = extras.getInt("firstTime");
-            if(firstTime == 1){
-                Log.d("ALR","FT");
-                //Modify the shared preferences notifier to 2
-                sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-                sharedpreferences.edit().putInt("quest_notifications", 2).commit();
-                getIntent().putExtra("firstTime",2);
-
-            }
+            //If so, request the activation of this permissions
+            ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_CODE_ASK_PERMISSIONS);
         }
-        //if extras == null is not the first time
         else{
-
+            //Permissions already granted
         }
-        */
     }
 
     // ----------- ON CLICK METHODS --------------
@@ -460,7 +484,10 @@ public class HomeScreenActivity extends AppCompatActivity {
             startActivity(i);
         }
         //if is not ready, dont do anything when the button is pressed
-        else{}
+        else{
+            Toast.makeText(this, "Couldn't get your position. Please, check if the requested permissions are enabled before trying to make a report.", Toast.LENGTH_LONG).show();
+            checkPermissions();
+        }
 
     }
 
@@ -481,7 +508,10 @@ public class HomeScreenActivity extends AppCompatActivity {
             startActivity(i);
         }
         //if is not ready, dont do anything when the button is pressed
-        else{}
+        else{
+            Toast.makeText(this, "Couldn't get your position. Please, check if the requested permissions are enabled before trying to make a report.", Toast.LENGTH_LONG).show();
+            checkPermissions();
+        }
     }
 
 

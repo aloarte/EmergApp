@@ -32,7 +32,6 @@
                     android:layout_height="45dp"
                     android:weightSum="1"
                     android:baselineAligned="true"
-                    android:onClick="onClickChangeACActivity"
                     android:gravity="center_vertical|center_horizontal">
 
                     <ImageView
