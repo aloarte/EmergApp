@@ -28,7 +28,8 @@ import java.util.Locale;
 public class FetchAddressService extends IntentService {
     protected ResultReceiver mSender;
     public Context sContext;
-    double latitude=0,longitude=0;
+    //latitud and longitude are from Madrid - Puerta del sol, by default
+    double latitude=40.4169416,longitude=-3.7083866;
     int accuracy;
     String city="",street="";
 

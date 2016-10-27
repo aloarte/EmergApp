@@ -25,7 +25,7 @@ import org.w3c.dom.Text;
 public class AchievementFragment4 extends Fragment {
     View mView;
     String [][] data;
-    final String MyPREFERENCES="userPreferences";
+    final String MyPREFERENCES="userPreferencesG1";
     SharedPreferences sharedpreferences;
     @Nullable
     @Override

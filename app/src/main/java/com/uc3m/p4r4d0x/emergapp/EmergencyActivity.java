@@ -155,7 +155,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     GoogleMap googleMapCP;
 
     //Info to use shared preferences to have a session
-    final String MyPREFERENCES = "userPreferences";
+    final String MyPREFERENCES = "userPreferencesG1";
     SharedPreferences sharedpreferences;
 
     //For achievements
@@ -310,6 +310,11 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
                 }
                 //Set a button to send the message and close the popup
                 alertBuilder.setCancelable(true)
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
                         .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -416,6 +421,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
             //Parse into float both strings
             lat=Float.parseFloat(parts[0]);
             longit=Float.parseFloat(parts[1]);
+
 
             //Create a LatLng object with the GPS position
             LatLng currentLatLng = new LatLng(lat, longit);
@@ -1426,7 +1432,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiverReady,ap,xp,achievementObtained);
 
         //Get the destiny mail to send the report
-        String maiToReport = sharedpreferences.getString("email_to_report", "albrathojaverde@gmail.com");
+        String maiToReport = sharedpreferences.getString("email_to_report", "deisresearch@gmail.com");
 
         //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
         sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSAddress,maiToReport);
