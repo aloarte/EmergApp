@@ -144,7 +144,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
     GoogleMap googleMapCP;
 
     //Info to use shared preferences to have a session
-    final String MyPREFERENCES = "userPreferences";
+    final String MyPREFERENCES = "userPreferencesNG";
     SharedPreferences sharedpreferences;
 
 
@@ -1028,7 +1028,7 @@ public class EmergencyActivity extends AppCompatActivity implements OnMapReadyCa
         //Iniciate the mail sender service
         MailSenderService sMSS = new MailSenderService(getApplicationContext(),mReceiverReady);
 //Get the destiny mail to send the report
-        String maiToReport = sharedpreferences.getString("email_to_report", "albrathojaverde@gmail.com");
+        String maiToReport = sharedpreferences.getString("email_to_report", "deisresearch@gmail.com");
 
         //Send the message with all the info (message, all the pictures, all the videos, the gps latitude&longitude and the address)
         sMSS.sendMessage(toSendMessage,toSendPicturesPathAux,toSendVideosPathAux,toSendGPSCoord,toSendGPSStreet,maiToReport);

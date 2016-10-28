@@ -1,12 +1,17 @@
 package com.uc3m.p4r4d0x.emergapp;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uc3m.p4r4d0x.emergapp.servicios.GPSService;
 
@@ -16,6 +21,7 @@ public class EmMessage1 extends AppCompatActivity {
     final int C_YES=1,C_NO=2;
     TextView tViewGPS, tViewGPSCoord;
     String   sGPSAddr, sGPSCoord;
+    final int REQUEST_CODE_ASK_PERMISSIONS= 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +30,7 @@ public class EmMessage1 extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
 
+        checkPermissions();
         //Get the GPS position
         getGPSposition();
     }
@@ -108,5 +115,29 @@ public class EmMessage1 extends AppCompatActivity {
         return (!sGPSAddr.isEmpty() && !sGPSCoord.isEmpty());
 
 
+    }
+
+    /*
+        * Desc: Check the permissions and request them to the user if necessary
+        *  */
+    public void checkPermissions(){
+        //Check if some of the core permissions are not already granted
+        if ((ContextCompat.checkSelfPermission(EmMessage1.this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(EmMessage1.this,Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(EmMessage1.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)) {
+            Toast.makeText(this, "Some permissions are not granted. Please enable them.", Toast.LENGTH_SHORT).show();
+
+            //If so, request the activation of this permissions
+            ActivityCompat.requestPermissions(EmMessage1.this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_CODE_ASK_PERMISSIONS);
+
+        }
+        else{
+            //Permissions already granted
+        }
     }
 }

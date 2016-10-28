@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Button bLogin,bNewAc;
     EditText etPassword,etUser;
-    final String MyPREFERENCES="userPreferences";
+    final String MyPREFERENCES="userPreferencesNG";
     SharedPreferences sharedpreferences;
     final int REQUEST_CODE_ASK_PERMISSIONS= 4;
 
