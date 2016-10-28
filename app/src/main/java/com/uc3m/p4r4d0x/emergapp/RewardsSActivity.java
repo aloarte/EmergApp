@@ -34,7 +34,7 @@ import com.uc3m.p4r4d0x.emergapp.helpers.database.DBUserManager;
 public class RewardsSActivity extends AppCompatActivity {
 
     //Info to use shared preferences to have a session
-    final String MyPREFERENCES = "userPreferences";
+    final String MyPREFERENCES = "userPreferencesG2";
     SharedPreferences sharedpreferences;
 
     LinearLayout[] llElementsOnShop = new LinearLayout[9];

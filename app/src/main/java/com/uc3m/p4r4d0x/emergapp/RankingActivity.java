@@ -42,7 +42,7 @@ public class RankingActivity extends AppCompatActivity {
     TabLayout tabLayoutRanking;
     ViewPager viewPagerRanking;
     //Info to use shared preferences to have a session
-    final String MyPREFERENCES = "userPreferences";
+    final String MyPREFERENCES = "userPreferencesG2";
     SharedPreferences sharedpreferences;
 
     /*Inner class implemented for the TabLayout*/

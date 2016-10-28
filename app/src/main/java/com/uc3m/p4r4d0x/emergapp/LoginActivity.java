@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Button bLogin,bNewAc;
     EditText etPassword,etUser;
-    final String MyPREFERENCES="userPreferences";
+    final String MyPREFERENCES="userPreferencesG2";
     SharedPreferences sharedpreferences;
     final int REQUEST_CODE_ASK_PERMISSIONS= 4;
     TextView tvFailLogin;
@@ -191,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void insertInitialValues(){
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        //sharedpreferences.edit().putBoolean("first_time", true).commit();
+        sharedpreferences.edit().putBoolean("first_time", true).commit();
         if (sharedpreferences.getBoolean("first_time", true)){
             insertExampleUsers();
             insertQuests();

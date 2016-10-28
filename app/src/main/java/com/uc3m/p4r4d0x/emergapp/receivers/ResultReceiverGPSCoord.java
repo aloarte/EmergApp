@@ -17,7 +17,7 @@ import com.uc3m.p4r4d0x.emergapp.R;
 public class ResultReceiverGPSCoord extends ResultReceiver {
     private Receiver mReceiver=null;
     private String address="";
-    private String gpsCoord="0,0";
+    private String gpsCoord="40.4169416,-3.7083866";
     private String gpsCity="";
     private String gpsStreet="";
     private String errorMessage="";

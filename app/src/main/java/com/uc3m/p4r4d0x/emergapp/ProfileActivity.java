@@ -37,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
     int progressStatus=0;
     Handler handler =new Handler();
     //Info to use shared preferences to have a session
-    final String MyPREFERENCES = "userPreferences";
+    final String MyPREFERENCES = "userPreferencesG2";
     SharedPreferences sharedpreferences;
 
     /*

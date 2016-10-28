@@ -37,7 +37,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     TextView tViewGPS, tViewGPSCoord,tViewGPSCity, tViewGPSStreet;
     String   sGPSAddr, sGPSCoord ,sGPSCity, sGPSStreet;
     //Info to use shared preferences to have a session
-    final String MyPREFERENCES = "userPreferences";
+    final String MyPREFERENCES = "userPreferencesG2";
     final int REQUEST_CODE_ASK_PERMISSIONS= 4;
     SharedPreferences sharedpreferences;
 
@@ -377,7 +377,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         } else {
             //If the location couldnt get obtained
-            tViewGPS.setText(R.string.address_not_obtained);
+            tViewGPS.setText(tViewGPSCoord.getText().toString());
 
         }
     }
@@ -445,10 +445,10 @@ public class HomeScreenActivity extends AppCompatActivity {
     /*
      * Desc: Check the permissions and request them to the user if necessary
      *  */
-    public void checkPermissions(){
+    public boolean checkPermissions(){
         //Check if some of the core permissions are not already granted
-        if ((ContextCompat.checkSelfPermission(HomeScreenActivity.this,Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
-                || (ContextCompat.checkSelfPermission(HomeScreenActivity.this,Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+        if ((ContextCompat.checkSelfPermission(HomeScreenActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
+                || (ContextCompat.checkSelfPermission(HomeScreenActivity.this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
                 || (ContextCompat.checkSelfPermission(HomeScreenActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)) {
             Toast.makeText(this, "Some permissions are not granted. Please enable them.", Toast.LENGTH_SHORT).show();
 
@@ -459,9 +459,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                             Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_CODE_ASK_PERMISSIONS);
+            return false;
         }
         else{
             //Permissions already granted
+            return true;
         }
     }
 
@@ -485,8 +487,13 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
         //if is not ready, dont do anything when the button is pressed
         else{
-            Toast.makeText(this, "Couldn't get your position. Please, check if the requested permissions are enabled before trying to make a report.", Toast.LENGTH_LONG).show();
-            checkPermissions();
+            if(checkPermissions()){
+                Toast.makeText(this, "Couldn't get your position. Please, try again.", Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(this, "Couldn't get your position. Please, check if the requested permissions are enabled before trying to make a report.", Toast.LENGTH_LONG).show();
+
+            }
         }
 
     }
@@ -509,11 +516,15 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
         //if is not ready, dont do anything when the button is pressed
         else{
-            Toast.makeText(this, "Couldn't get your position. Please, check if the requested permissions are enabled before trying to make a report.", Toast.LENGTH_LONG).show();
-            checkPermissions();
+            if(checkPermissions()){
+                Toast.makeText(this, "Couldn't get your position. Please, try again.", Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(this, "Couldn't get your position. Please, check if the requested permissions are enabled before trying to make a report.", Toast.LENGTH_LONG).show();
+
+            }
         }
     }
-
 
     /*
     * Desc: on click function to change to Ranking activity

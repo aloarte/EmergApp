@@ -26,7 +26,7 @@ public class MailSenderService extends Service {
     private Context sContext;
     protected ResultReceiver mSender;
     private int xp,ap,achievement;
-    final String MyPREFERENCES="userPreferences";
+    final String MyPREFERENCES="userPreferencesG2";
     SharedPreferences sharedpreferences;
     public MailSenderService(Context c,ResultReceiverSentReady mReceiver,int ap,int xp,int achievement) {
         this.ap=ap;
